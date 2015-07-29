@@ -16,12 +16,8 @@
       "Description": "Name of an existing SecurityGroup for Cassandra, required if Cassandra instance to be created",
       "Type": "CommaDelimitedList"
     },
-    "KongSecurityGroupName": {
-      "Description": "Name of an existing SecurityGroup for Kong",
-      "Type": "List<AWS::EC2::SecurityGroup::GroupName>"
-    },
     "SSHLocation": {
-      "Description": "The IP address range that can be used to SSH to the EC2 instances",
+      "Description": "The IP address range that can be used to SSH to the Kong EC2 instances",
       "Type": "String",
       "MinLength": "9",
       "MaxLength": "18",
@@ -33,8 +29,8 @@
       "Description": "AZ for the Cassandra instance, required if Cassandra instance to be created",
       "Type": "String"
     },
-    "CassandraSeedNodesHost": {
-      "Description": "comma separated DNS name of Cassandra seed nodes.",
+    "CassandraSeedNodes": {
+      "Description": "Comma separated Cassandra seed nodes address with or without port ex. example.com:1234[, abc.com], ",
       "Type": "CommaDelimitedList",
       "ConstraintDescription": "must be a valid host name, ex. example.com:1234, example.com, 123.123.123.123:1234 "
     },
@@ -133,7 +129,7 @@
     },
     "ClusterName": {
       "Default": "Cassandra Cluster",
-      "Description": "name of Cassandra cluster, required if Cassandra instance to be created",
+      "Description": "Name of Cassandra cluster, required if Cassandra instance to be created",
       "Type": "String"
     },
     "ClusterVersion": {
@@ -176,7 +172,7 @@
           "Fn::Select": [
             "0",
             {
-              "Ref": "CassandraSeedNodesHost"
+              "Ref": "CassandraSeedNodes"
             }
           ]
         },
@@ -273,7 +269,7 @@
                       "Fn::Join": [
                         "\" \"",
                         {
-                          "Ref": "CassandraSeedNodesHost"
+                          "Ref": "CassandraSeedNodes"
                         }
                       ]
                     }
