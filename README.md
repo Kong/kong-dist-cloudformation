@@ -17,8 +17,7 @@ You have option to choose between two templates, one provisions Kong resources a
 
 ### Launching Kong with Cassandra
 
- 
-[![Kong Stack launch][kong-stack-badge]][kong-stack-url]
+
 
 | Region          | Launch stack                                                           |
 | ---------------:|-----------------------------------------------------------------------|
@@ -26,7 +25,6 @@ You have option to choose between two templates, one provisions Kong resources a
 
 
 ### Bring your own Cassandra
-
 
 
 | Region        | Launch stack                                                           |
