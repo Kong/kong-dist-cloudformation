@@ -1,4 +1,4 @@
-# KONG Cloudformation stack tempalte
+# KONG Cloudformation Stack Template
 
 [![Kong Stack launch][kong-stack-badge]][kong-stack-url]
 
