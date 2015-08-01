@@ -155,7 +155,7 @@
          "KONGAMI": "ami-ff9cecc5"
       },
       "sa-east-1" : {
-          "AMI" : "ami-bb2890a6"
+         "KONGAMI" : "ami-bb2890a6"
       }
     },
      "RegionCaasAmiMap": {

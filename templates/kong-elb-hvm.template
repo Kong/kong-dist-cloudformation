@@ -84,16 +84,28 @@
   "Mappings": {
     "RegionMap": {
       "us-east-1": {
-        "KONGAMI": "ami-1ecae776",
-        "CASSANDRAAMI": "ami-ada2b6c4"
+        "KONGAMI": "ami-1ecae776"
       },
       "us-west-1": {
-        "KONGAMI": "ami-e7527ed7",
-        "CASSANDRAAMI": "ami-3cf7c979"
+        "KONGAMI": "ami-d114f295"
       },
       "us-west-2": {
-        "KONGAMI": "ami-d114f295",
-        "CASSANDRAAMI": "ami-1cff962c"
+        "KONGAMI": "ami-e7527ed7"
+      },
+      "eu-west-1" : {
+        "KONGAMI": "ami-a10897d6"
+      },
+      "ap-northeast-1" : {
+         "KONGAMI": "ami-cbf90ecb"
+      },
+      "ap-southeast-1" : {
+         "KONGAMI": "ami-68d8e93a"
+      },
+      "ap-southeast-2" : {
+         "KONGAMI": "ami-fd9cecc7"
+      },
+      "sa-east-1" : {
+         "KONGAMI" : "ami-b52890a8"
       }
     }
   },

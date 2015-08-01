@@ -1,46 +1,16 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Kong with single node Cassandra cluster CloudFormation template file. version v1.0",
+  "Description": "Kong with Cassandra cluster demo CloudFormation template file.",
   "Parameters": {
-    "CassandraKeyName": {
-      "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instances for Cassandra",
-      "Type": "AWS::EC2::KeyPair::KeyName",
-      "Default": ""
-    },
-    "CassandraVirtualisationType": {
-      "Description": "Kong EC2 instance type",
-      "Type": "String",
-      "Default": "HVM",
-      "AllowedValues": [
-        "PV",
-        "HVM"
-      ]
-    },
-    "CassandraSecurityGroupName": {
-      "Description": "Name of an existing SecurityGroup for Cassandra",
-      "Type": "List<AWS::EC2::SecurityGroup::GroupName>",
-      "MinLength": "1",
-      "MaxLength": "64",
-      "AllowedPattern": "[-_ a-zA-Z0-9]*",
-      "ConstraintDescription": "can contain only alphanumeric characters, spaces, dashes and underscores."
-    },
-    "CassandraAvailabilityZone": {
-      "Description": "AZ for the Cassandra instance",
-      "Type": "AWS::EC2::AvailabilityZone::Name"
-    },
-    "KongSSHLocation": {
-      "Description": "The IP address range that can be used to SSH to the Kong EC2 instances",
-      "Type": "String",
-      "MinLength": "9",
-      "MaxLength": "18",
-      "Default": "0.0.0.0\/0",
-      "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\/(\\d{1,2})",
-      "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x\/x."
-    },
     "KongKeyName": {
       "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instances for Kong",
       "Type": "AWS::EC2::KeyPair::KeyName",
       "Default": ""
+    },
+    "CassandraSeedNodes": {
+      "Description": "Comma separated Cassandra seed nodes address with or without port ex. example.com:1234[, abc.com]",
+      "Type": "CommaDelimitedList",
+      "ConstraintDescription": "must be a valid host name, ex. example.com:1234, example.com, 123.123.123.123:1234 "
     },
     "KongFleetMaxSize": {
       "Description": "Max Number of EC2 instances to launch for the Kong proxy",
@@ -56,10 +26,19 @@
       "MaxValue": "10",
       "MinValue": "1"
     },
+    "KongSSHLocation": {
+      "Description": "The IP address range that can be used to SSH to the Kong EC2 instances",
+      "Type": "String",
+      "MinLength": "9",
+      "MaxLength": "18",
+      "Default": "0.0.0.0\/0",
+      "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\/(\\d{1,2})",
+      "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x\/x."
+    },
     "KongInstanceType": {
       "Description": "Kong EC2 instance type",
       "Type": "String",
-      "Default": "m3.medium",
+      "Default": "c4.2xlarge",
       "AllowedValues": [
         "t1.micro",
         "t2.micro",
@@ -100,128 +79,50 @@
         "cg1.4xlarge"
       ],
       "ConstraintDescription": "must be a valid EC2 instance type."
-    },
-    "CassandraInstanceType": {
-      "Description": "Cassandra EC2 instance type",
-      "Type": "String",
-      "Default": "m3.medium",
-      "AllowedValues": [
-        "m3.medium",
-        "m3.large",
-        "m3.xlarge",
-        "m3.2xlarge",
-        "c1.medium",
-        "c1.xlarge",
-        "c3.large",
-        "c3.xlarge",
-        "c3.2xlarge",
-        "c3.4xlarge",
-        "c3.8xlarge",
-        "g2.2xlarge",
-        "r3.large",
-        "r3.xlarge",
-        "r3.2xlarge",
-        "r3.4xlarge",
-        "r3.8xlarge",
-        "i2.xlarge",
-        "i2.2xlarge",
-        "i2.4xlarge",
-        "i2.8xlarge",
-        "hi1.4xlarge",
-        "hs1.8xlarge",
-        "cr1.8xlarge",
-        "cc2.8xlarge",
-        "cg1.4xlarge"
-      ],
-      "ConstraintDescription": "must be a valid EC2 instance type."
-    },
-    "CassandraClusterName": {
-      "Default": "Cassandra Cluster",
-      "Description": "Name of Cassandra cluster, required if Cassandra instance to be created",
-      "Type": "String"
-    },
-    "CassandraClusterVersion": {
-      "Description": "Cassandra cluster version",
-      "Type": "String",
-      "Default": "Community",
-      "AllowedValues": [
-        "Community",
-        "Enterprise"
-      ]
-    },
-    "CassandraVersion": {
-      "Description": "Cassandra version",
-      "Type": "String",
-      "Default": "2.2.0",
-      "AllowedValues": [
-        "2.1.8",
-        "2.2.0"
-      ]
     }
   },
   "Mappings": {
-    "RegionKongAmiMap": {
+    "RegionMap": {
       "us-east-1": {
-        "KONGAMI": "ami-1ecae776"
+        "KONGAMI": "ami-1ccae774"
       },
       "us-west-1": {
-        "KONGAMI": "ami-d114f295"
+        "KONGAMI": "ami-d514f291"
       },
       "us-west-2": {
-        "KONGAMI": "ami-e7527ed7"
+        "KONGAMI": "ami-ff527ecf"
       },
       "eu-west-1" : {
-        "KONGAMI": "ami-a10897d6"
+        "KONGAMI": "ami-bf0897c8"
       },
       "ap-northeast-1" : {
-         "KONGAMI": "ami-cbf90ecb"
+         "KONGAMI": "ami-27f90e27"
       },
       "ap-southeast-1" : {
-         "KONGAMI": "ami-68d8e93a"
+         "KONGAMI": "ami-acd9e8fe"
       },
       "ap-southeast-2" : {
-         "KONGAMI": "ami-fd9cecc7"
+         "KONGAMI": "ami-ff9cecc5"
       },
       "sa-east-1" : {
-         "KONGAMI" : "ami-b52890a8"
-      }
-    },
-     "RegionCaasAmiMap": {
-      "us-east-1": {
-        "PV": "ami-f9a2b690",
-        "HVM": "ami-ada2b6c4"
-      },
-      "us-west-1": {
-        "PV": "ami-32f7c977",
-        "HVM": "ami-3cf7c979"
-      },
-      "us-west-2": {
-        "PV": "ami-16ff9626",
-        "HVM": "ami-1cff962c"
-      },
-      "eu-west-1" : {
-        "PV": "ami-8932ccfe",
-        "HVM": "ami-7f33cd08"
-      },
-      "ap-northeast-1" : {
-        "PV": "ami-6b4a376a",
-        "HVM": "ami-714a3770"
-      },
-      "ap-southeast-1" : {
-        "PV": "ami-8c7828de",
-        "HVM": "ami-b47828e6"
-      },
-      "ap-southeast-2" : {
-        "PV": "ami-57d54d6d",
-        "HVM": "ami-55d54d6f"
-      },
-      "sa-east-1" : {
-        "PV": "ami-15da7808",
-        "HVM": "ami-1dda7800"
+         "KONGAMI" : "ami-bb2890a6"
       }
     }
-    
-    
+  },
+  "Conditions": {
+    "CreateCassandraInstance": {
+      "Fn::Equals": [
+        {
+          "Fn::Select": [
+            "0",
+            {
+              "Ref": "CassandraSeedNodes"
+            }
+          ]
+        },
+        ""
+      ]
+    }
   },
   "Resources": {
     "KongGroup": {
@@ -269,7 +170,7 @@
       "Properties": {
         "ImageId": {
           "Fn::FindInMap": [
-            "RegionKongAmiMap",
+            "RegionMap",
             {
               "Ref": "AWS::Region"
             },
@@ -301,16 +202,17 @@
                 "yum install -y kong-0.4.1.*.noarch.rpm --nogpgcheck\n",
                 "CASSANDRA_HOSTS=(\"",
                 {
-                   "Fn::GetAtt": [
-                     "CassandraSeed",
-                     "PublicDnsName"
-                   ]
+                   "Fn::Join": [
+                      "\" \"",
+                      {
+                        "Ref": "CassandraSeedNodes"
+                      }
+                    ]
                 },
                 "\")\n",
                 "echo \"      hosts:\" > hosts\n",
                 "for i in \"${CASSANDRA_HOSTS[@]}\"; do echo -e \"        - $i\"  >> hosts; done;\n",
                 "sed -i $'\/hosts: \"localhost\"\/{r hosts\\n d}' \/etc\/kong\/kong.yml\n",
-                "sleep 2m\n",
                 "count=4\n",
                 "until [ -f \"\/usr\/local\/kong\/kong.pid\" ] || [ $var -le 0 ]; do echo \"trying to start kong..\"; su -s \/bin\/sh -c \"\/usr\/local\/bin\/kong start\" ec2-user; var=\"$(($var-1))\" ;sleep 15s; done\n",
                 "\/opt\/aws\/bin\/cfn-signal -e 0",
@@ -406,56 +308,6 @@
             }
           }
         ]
-      }
-    },
-    "CassandraSeed": {
-      "Type": "AWS::EC2::Instance",
-      "Properties": {
-        "ImageId": {
-          "Fn::FindInMap": [
-            "RegionCaasAmiMap",
-            {
-              "Ref": "AWS::Region"
-            },
-            {
-              "Ref": "CassandraVirtualisationType"
-            }
-          ]
-        },
-        "AvailabilityZone": {
-          "Ref": "CassandraAvailabilityZone"
-        },
-        "InstanceType": {
-          "Ref": "CassandraInstanceType"
-        },
-        "KeyName": {
-          "Ref": "CassandraKeyName"
-        },
-        "SecurityGroups": {
-          "Ref": "CassandraSecurityGroupName"
-        },
-        "UserData": {
-          "Fn::Base64": {
-            "Fn::Join": [
-              "",
-              [
-                "--clustername ",
-                {
-                  "Ref": "CassandraClusterName"
-                },
-                " --totalnodes 1 --version ",
-                {
-                  "Ref": "CassandraClusterVersion"
-                },
-                " --release ",
-                {
-                  "Ref": "CassandraVersion"
-                },
-                "\n"
-              ]
-            ]
-          }
-        }
       }
     }
   },
