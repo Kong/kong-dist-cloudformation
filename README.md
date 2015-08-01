@@ -22,21 +22,21 @@ You have option to choose between two templates, one provisions Kong resources a
 | Region          | Launch stack                                                                           |
 | ---------------:|----------------------------------------------------------------------------------------|
 | `us-east-1`          | HVM: [![Kong Stack launch][kong-stack-badge]][us-east-1-caas-hvm-stack-url]       |
-|				       | PV: [![Kong Stack launch][kong-stack-badge]][us-east-1-caas-pv-stack-url]         |
+|				       | PV:  [![Kong Stack launch][kong-stack-badge]][us-east-1-caas-pv-stack-url]         |
 | `us-west-1`          | HVM: [![Kong Stack launch][kong-stack-badge]][us-west-1-caas-hvm-stack-url]       |
-|				       | PV: [![Kong Stack launch][kong-stack-badge]][us-west-1-caas-pv-stack-url]         |
+|				       | PV:  [![Kong Stack launch][kong-stack-badge]][us-west-1-caas-pv-stack-url]         |
 | `us-west-2`          | HVM: [![Kong Stack launch][kong-stack-badge]][us-west-2-caas-hvm-stack-url]       |
-|				       | PV: [![Kong Stack launch][kong-stack-badge]][us-west-2-caas-pv-stack-url]         |
+|				       | PV:  [![Kong Stack launch][kong-stack-badge]][us-west-2-caas-pv-stack-url]         |
 | `eu-west-1`          | HVM: [![Kong Stack launch][kong-stack-badge]][eu-west-1-caas-hvm-stack-url]       |
-|				       | PV: [![Kong Stack launch][kong-stack-badge]][eu-west-1-caas-pv-stack-url]         |
+|				       | PV:  [![Kong Stack launch][kong-stack-badge]][eu-west-1-caas-pv-stack-url]         |
 | `ap-northeast-1`     | HVM: [![Kong Stack launch][kong-stack-badge]][ap-northeast-1-caas-hvm-stack-url]  |
-|				       | PV: [![Kong Stack launch][kong-stack-badge]][ap-northeast-1-caas-pv-stack-url]    |
+|				       | PV:  [![Kong Stack launch][kong-stack-badge]][ap-northeast-1-caas-pv-stack-url]    |
 | `ap-southeast-1`     | HVM: [![Kong Stack launch][kong-stack-badge]][ap-southeast-1-caas-hvm-stack-url]  |
-|				       | PV: [![Kong Stack launch][kong-stack-badge]][ap-southeast-1-caas-pv-stack-url]    |
+|				       | PV:  [![Kong Stack launch][kong-stack-badge]][ap-southeast-1-caas-pv-stack-url]    |
 | `ap-southeast-2`     | HVM: [![Kong Stack launch][kong-stack-badge]][ap-southeast-2-caas-hvm-stack-url]  |
-|				       | PV: [![Kong Stack launch][kong-stack-badge]][ap-southeast-2-caas-pv-stack-url]    |
+|				       | PV:  [![Kong Stack launch][kong-stack-badge]][ap-southeast-2-caas-pv-stack-url]    |
 | `sa-east-1`          | HVM: [![Kong Stack launch][kong-stack-badge]][sa-east-1-caas-hvm-stack-url]       |
-|				       | PV: [![Kong Stack launch][kong-stack-badge]][sa-east-1-caas-pv-stack-url]         |
+|				       | PV:  [![Kong Stack launch][kong-stack-badge]][sa-east-1-caas-pv-stack-url]         |
 
 
 ### Bring your own Cassandra
@@ -87,7 +87,7 @@ Support, Demo, Training, API Certifications and Consulting available at http://g
 
 [ap-northeast-1-caas-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/stacks/new?stackName=kong-elb-cassandra&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Fkong-elb-cassandra-hvm-v1.0.template
 
-[ap-northeast-1-caas-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/stacks/new?stackName=kong-elb-cassandra&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Fkong-elb-cassandra-hvm-v1.0.template
+[ap-southeast-1-caas-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-1#/stacks/new?stackName=kong-elb-cassandra&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Fkong-elb-cassandra-hvm-v1.0.template
 
 [ap-southeast-2-caas-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-2#/stacks/new?stackName=kong-elb-cassandra&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Fkong-elb-cassandra-hvm-v1.0.template
 
@@ -104,7 +104,7 @@ Support, Demo, Training, API Certifications and Consulting available at http://g
 
 [ap-northeast-1-caas-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/stacks/new?stackName=kong-elb-cassandra&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Fkong-elb-cassandra-pv-v1.0.template
 
-[ap-northeast-1-caas-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/stacks/new?stackName=kong-elb-cassandra&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Fkong-elb-cassandra-pv-v1.0.template
+[ap-southeast-1-caas-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-1#/stacks/new?stackName=kong-elb-cassandra&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Fkong-elb-cassandra-pv-v1.0.template
 
 [ap-southeast-2-caas-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-2#/stacks/new?stackName=kong-elb-cassandra&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Fkong-elb-cassandra-pv-v1.0.template
 
