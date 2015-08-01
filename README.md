@@ -19,24 +19,24 @@ You have option to choose between two templates, one provisions Kong resources a
 
 
 
-| Region          | Launch stack                                                                           |
-| ---------------:|----------------------------------------------------------------------------------------|
-| `us-east-1`          | HVM: [![Kong Stack launch][kong-stack-badge]][us-east-1-caas-hvm-stack-url]       |
-|				       | PV:  [![Kong Stack launch][kong-stack-badge]][us-east-1-caas-pv-stack-url]         |
-| `us-west-1`          | HVM: [![Kong Stack launch][kong-stack-badge]][us-west-1-caas-hvm-stack-url]       |
-|				       | PV:  [![Kong Stack launch][kong-stack-badge]][us-west-1-caas-pv-stack-url]         |
-| `us-west-2`          | HVM: [![Kong Stack launch][kong-stack-badge]][us-west-2-caas-hvm-stack-url]       |
-|				       | PV:  [![Kong Stack launch][kong-stack-badge]][us-west-2-caas-pv-stack-url]         |
-| `eu-west-1`          | HVM: [![Kong Stack launch][kong-stack-badge]][eu-west-1-caas-hvm-stack-url]       |
-|				       | PV:  [![Kong Stack launch][kong-stack-badge]][eu-west-1-caas-pv-stack-url]         |
-| `ap-northeast-1`     | HVM: [![Kong Stack launch][kong-stack-badge]][ap-northeast-1-caas-hvm-stack-url]  |
-|				       | PV:  [![Kong Stack launch][kong-stack-badge]][ap-northeast-1-caas-pv-stack-url]    |
-| `ap-southeast-1`     | HVM: [![Kong Stack launch][kong-stack-badge]][ap-southeast-1-caas-hvm-stack-url]  |
-|				       | PV:  [![Kong Stack launch][kong-stack-badge]][ap-southeast-1-caas-pv-stack-url]    |
-| `ap-southeast-2`     | HVM: [![Kong Stack launch][kong-stack-badge]][ap-southeast-2-caas-hvm-stack-url]  |
-|				       | PV:  [![Kong Stack launch][kong-stack-badge]][ap-southeast-2-caas-pv-stack-url]    |
-| `sa-east-1`          | HVM: [![Kong Stack launch][kong-stack-badge]][sa-east-1-caas-hvm-stack-url]       |
-|				       | PV:  [![Kong Stack launch][kong-stack-badge]][sa-east-1-caas-pv-stack-url]         |
+| Region          | virtualization Type                      | Launch stack                                 |
+| ---------------:|------------------------------------------:|----------------------------------------------|
+| `us-east-1`          | HVM | [![Kong Stack launch][kong-stack-badge]][us-east-1-caas-hvm-stack-url]       |
+|				       | PV | [![Kong Stack launch][kong-stack-badge]][us-east-1-caas-pv-stack-url]         |
+| `us-west-1`          | HVM | [![Kong Stack launch][kong-stack-badge]][us-west-1-caas-hvm-stack-url]       |
+|				       | PV | [![Kong Stack launch][kong-stack-badge]][us-west-1-caas-pv-stack-url]         |
+| `us-west-2`          | HVM |[![Kong Stack launch][kong-stack-badge]][us-west-2-caas-hvm-stack-url]       |
+|				       | PV | [![Kong Stack launch][kong-stack-badge]][us-west-2-caas-pv-stack-url]         |
+| `eu-west-1`          | HVM | [![Kong Stack launch][kong-stack-badge]][eu-west-1-caas-hvm-stack-url]       |
+|				       | PV | [![Kong Stack launch][kong-stack-badge]][eu-west-1-caas-pv-stack-url]         |
+| `ap-northeast-1`     | HVM |[![Kong Stack launch][kong-stack-badge]][ap-northeast-1-caas-hvm-stack-url]  |
+|				       | PV | [![Kong Stack launch][kong-stack-badge]][ap-northeast-1-caas-pv-stack-url]    |
+| `ap-southeast-1`     | HVM |[![Kong Stack launch][kong-stack-badge]][ap-southeast-1-caas-hvm-stack-url]  |
+|				       | PV | [![Kong Stack launch][kong-stack-badge]][ap-southeast-1-caas-pv-stack-url]    |
+| `ap-southeast-2`     | HVM |[![Kong Stack launch][kong-stack-badge]][ap-southeast-2-caas-hvm-stack-url]  |
+|				       | PV | [![Kong Stack launch][kong-stack-badge]][ap-southeast-2-caas-pv-stack-url]    |
+| `sa-east-1`          | HVM| [![Kong Stack launch][kong-stack-badge]][sa-east-1-caas-hvm-stack-url]       |
+|				       | PV | [![Kong Stack launch][kong-stack-badge]][sa-east-1-caas-pv-stack-url]         |
 
 
 ### Bring your own Cassandra
