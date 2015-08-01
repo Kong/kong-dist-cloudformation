@@ -7,6 +7,15 @@
       "Type": "AWS::EC2::KeyPair::KeyName",
       "Default": ""
     },
+    "CassandraVirtualisationType": {
+      "Description": "Kong EC2 instance type",
+      "Type": "String",
+      "Default": "HVM",
+      "AllowedValues": [
+        "PV",
+        "HVM"
+      ]
+    },
     "CassandraSecurityGroupName": {
       "Description": "Name of an existing SecurityGroup for Cassandra",
       "Type": "List<AWS::EC2::SecurityGroup::GroupName>",
@@ -50,45 +59,17 @@
     "KongInstanceType": {
       "Description": "Kong EC2 instance type",
       "Type": "String",
-      "Default": "t2.micro",
+      "Default": "m3.medium",
       "AllowedValues": [
-        "t1.micro",
-        "t2.micro",
-        "t2.small",
-        "t2.medium",
-        "m1.small",
-        "m1.medium",
-        "m1.large",
-        "m1.xlarge",
-        "m2.xlarge",
-        "m2.2xlarge",
-        "m2.4xlarge",
         "m3.medium",
         "m3.large",
         "m3.xlarge",
         "m3.2xlarge",
-        "c1.medium",
-        "c1.xlarge",
         "c3.large",
         "c3.xlarge",
         "c3.2xlarge",
         "c3.4xlarge",
-        "c3.8xlarge",
-        "g2.2xlarge",
-        "r3.large",
-        "r3.xlarge",
-        "r3.2xlarge",
-        "r3.4xlarge",
-        "r3.8xlarge",
-        "i2.xlarge",
-        "i2.2xlarge",
-        "i2.4xlarge",
-        "i2.8xlarge",
-        "hi1.4xlarge",
-        "hs1.8xlarge",
-        "cr1.8xlarge",
-        "cc2.8xlarge",
-        "cg1.4xlarge"
+        "c3.8xlarge"
       ],
       "ConstraintDescription": "must be a valid EC2 instance type."
     },
@@ -151,20 +132,68 @@
     }
   },
   "Mappings": {
-    "RegionMap": {
+    "RegionKongAmiMap": {
       "us-east-1": {
-        "KONGAMI": "ami-1ecae776",
-        "CASSANDRAAMI": "ami-ada2b6c4"
+        "KONGAMI": "ami-1ccae774"
       },
       "us-west-1": {
-        "KONGAMI": "ami-e7527ed7",
-        "CASSANDRAAMI": "ami-3cf7c979"
+        "KONGAMI": "ami-d514f291"
       },
       "us-west-2": {
-        "KONGAMI": "ami-d114f295",
-        "CASSANDRAAMI": "ami-1cff962c"
+        "KONGAMI": "ami-ff527ecf"
+      },
+      "eu-west-1" : {
+        "KONGAMI": "ami-bf0897c8"
+      },
+      "ap-northeast-1" : {
+         "KONGAMI": "ami-27f90e27"
+      },
+      "ap-southeast-1" : {
+         "KONGAMI": "ami-acd9e8fe"
+      },
+      "ap-southeast-2" : {
+         "KONGAMI": "ami-ff9cecc5"
+      },
+      "sa-east-1" : {
+          "AMI" : "ami-bb2890a6"
+      }
+    },
+     "RegionCaasAmiMap": {
+      "us-east-1": {
+        "PV": "ami-f9a2b690",
+        "HVM": "ami-ada2b6c4"
+      },
+      "us-west-1": {
+        "PV": "ami-32f7c977",
+        "HVM": "ami-3cf7c979"
+      },
+      "us-west-2": {
+        "PV": "ami-16ff9626",
+        "HVM": "ami-1cff962c"
+      },
+      "eu-west-1" : {
+        "PV": "ami-8932ccfe",
+        "HVM": "ami-7f33cd08"
+      },
+      "ap-northeast-1" : {
+        "PV": "ami-6b4a376a",
+        "HVM": "ami-714a3770"
+      },
+      "ap-southeast-1" : {
+        "PV": "ami-8c7828de",
+        "HVM": "ami-b47828e6"
+      },
+      "ap-southeast-2" : {
+        "PV": "ami-57d54d6d",
+        "HVM": "ami-55d54d6f"
+      },
+      "sa-east-1" : {
+        "PV": "ami-15da7808",
+        "HVM": "ami-1dda7800"
       }
     }
+    
+    
   },
   "Resources": {
     "KongGroup": {
@@ -212,7 +241,7 @@
       "Properties": {
         "ImageId": {
           "Fn::FindInMap": [
-            "RegionMap",
+            "RegionKongAmiMap",
             {
               "Ref": "AWS::Region"
             },
@@ -356,11 +385,13 @@
       "Properties": {
         "ImageId": {
           "Fn::FindInMap": [
-            "RegionMap",
+            "RegionCaasAmiMap",
             {
               "Ref": "AWS::Region"
             },
-            "CASSANDRAAMI"
+            {
+              "Ref": "CassandraVirtualisationType"
+            }
           ]
         },
         "AvailabilityZone": {
