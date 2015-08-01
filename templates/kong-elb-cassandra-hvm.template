@@ -312,18 +312,19 @@
                 "sed -i $'\/hosts: \"localhost\"\/{r hosts\\n d}' \/etc\/kong\/kong.yml\n",
                 "sleep 2m\n",
                 "count=4\n",
-                "until [ -f \"\/usr\/local\/kong\/kong.pid\" ] || [ $var -le 0 ]; do echo \"trying to start kong..\"; su -s \/bin\/sh -c \"\/usr\/local\/bin\/kong start\" ec2-user; var=\"$(($var-1))\" ;sleep 15s; done\n",
-                "\/opt\/aws\/bin\/cfn-signal -e 0",
-                "         --stack ",
-                {
-                  "Ref": "AWS::StackName"
-                },
-                "         --resource KongGroup ",
-                "         --region ",
-                {
-                  "Ref": "AWS::Region"
-                },
-                "\n"
+                "until [ -f \"\/usr\/local\/kong\/kong.pid\" ] || [ $var -le 0 ]\n",
+                "do\n",
+                "   echo \"trying to start kong..\"\n",
+                "   su -s \/bin\/sh -c \"\/usr\/local\/bin\/kong start\" ec2-user\n",
+                "   var=\"$(($var-1))\"\n",
+                "   sleep 15s\n",
+                "done\n",
+                "if [ -f \"\/usr\/local\/kong\/kong.pid\" ]\n",
+				"then\n",
+                "   \/opt\/aws\/bin\/cfn-signal -e 0 --stack ",{ "Ref": "AWS::StackName" }, " --resource KongGroup --region ", { "Ref": "AWS::Region" },"\n",
+                "else\n",
+                "   \/opt\/aws\/bin\/cfn-signal -e 1 -r \"failed to start kong\" --stack ",{ "Ref": "AWS::StackName" }, " --resource KongGroup --region ", { "Ref": "AWS::Region" },"\n",
+                "fi\n"    
               ]
             ]
           }
