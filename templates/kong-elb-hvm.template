@@ -62,6 +62,7 @@
         "c3.2xlarge",
         "c3.4xlarge",
         "c3.8xlarge",
+        "c4.2xlarge",
         "g2.2xlarge",
         "r3.large",
         "r3.xlarge",
