@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Kong with single node Cassandra cluster CloudFormation template file. version v1.0",
+  "Description": "Kong with single node Cassandra cluster CloudFormation template. version v1.0",
   "Parameters": {
     "CassandraKeyName": {
       "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instances for Cassandra",
