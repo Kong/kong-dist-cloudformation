@@ -147,14 +147,6 @@
         ],
         "HealthCheckGracePeriod": "300"
       },
-      "CreationPolicy": {
-        "ResourceSignal": {
-          "Count": {
-            "Ref": "KongFleetDesiredSize"
-          },
-          "Timeout": "PT15M"
-        }
-      },
       "UpdatePolicy": {
         "AutoScalingRollingUpdate": {
           "MinInstancesInService": "1",
@@ -162,6 +154,18 @@
           "PauseTime": "PT15M",
           "WaitOnResourceSignals": "true"
         }
+      }
+    },
+    "KongWaitHandle" : {
+      "Type" : "AWS::CloudFormation::WaitConditionHandle"
+    },
+    "KongWaitCondition" : {
+      "Type" : "AWS::CloudFormation::WaitCondition",
+      "DependsOn" : "BackendFleet",
+      "Properties" : {
+        "Handle"  : { "Ref" : "KongWaitHandle" },
+        "Timeout" : "900",
+        "Count"   : { "Ref" : "KongFleetDesiredSize" }
       }
     },
     "KongLaunchConfig": {
@@ -213,19 +217,21 @@
                 "for i in \"${CASSANDRA_HOSTS[@]}\"; do echo -e \"        - $i\"  >> hosts; done;\n",
                 "sed -i $'\/hosts: \"localhost\"\/{r hosts\\n d}' \/etc\/kong\/kong.yml\n",
                 "count=4\n",
-                "until [ -f \"\/usr\/local\/kong\/kong.pid\" ] || [ $count -le 0 ]\n",
+                "until [ -f \"\/usr\/local\/kong\/kong.pid\" ]\n",
                 "do\n",
-                "   echo \"trying to start kong..\"\n",
-                "   su -s \/bin\/sh -c \"\/usr\/local\/bin\/kong start\" ec2-user\n",
-                "   count=\"$(($count-1))\"\n",
-                "   sleep 15s\n",
+                "   if [ $count -le 0 ]\n",
+                "   then\n",
+                "      /opt/aws/bin/cfn-signal -e 1 --reason \"Failed to start Kong\" '", { "Ref" : "KongWaitHandle" }, "'\n",
+                "      echo \"failed to start kong, exiting...\" \n",
+                "      exit\n",
+                "   else\n",
+                "      echo \"trying to start kong..\"\n",
+                "      su -s \/bin\/sh -c \"\/usr\/local\/bin\/kong start\" ec2-user\n",
+                "      count=\"$(($count-1))\"\n",
+                "      sleep 15s\n",
+                "   fi\n", 
                 "done\n",
-                "if [ -f \"\/usr\/local\/kong\/kong.pid\" ]\n",
-				"then\n",
-                "   \/opt\/aws\/bin\/cfn-signal -e 0 --stack ",{ "Ref": "AWS::StackName" }, " --resource KongGroup --region ", { "Ref": "AWS::Region" },"\n",
-                "else\n",
-                "   \/opt\/aws\/bin\/cfn-signal -e 1 -r \"failed to start kong\" --stack ",{ "Ref": "AWS::StackName" }, " --resource KongGroup --region ", { "Ref": "AWS::Region" },"\n",
-                "fi\n" 
+                "/opt/aws/bin/cfn-signal -e 0 --reason \"Kong setup completed\" '", { "Ref" : "KongWaitHandle" }, "'\n"
               ]
             ]
           }
