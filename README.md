@@ -64,7 +64,7 @@ In case if you chose Kong with Cassandra option, Template use [Datastax Cassandr
 				       | PV |  [![Kong Stack launch][kong-stack-badge]][sa-east-1-pv-stack-url]         |
  
  
- ### Cloudformation parameters
+### Cloudformation parameters
  
 | Parameter          | Description                                                           |
 | ---------------:|---------------------------------------------------------------------------|   
