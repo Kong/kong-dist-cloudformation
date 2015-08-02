@@ -13,9 +13,9 @@ Kong Cloudformation template helps you model and set up Kong resources in AWS ea
 
 ## Summary
 
-You have option to choose between two templates, one provisions Kong resources along with a new Cassandra single node clusture another provisions kong resources with user provided Cassandra seed nodes. 
+You have option to chose between two templates, one provisions Kong resources along with a new Cassandra single node clusture another provisions kong resources with user provided Cassandra seed nodes. 
 
-In case if you choose Kong with Cassandra option, Template use [Datastax Cassandra](http://docs.datastax.com/en/cassandra/2.2/cassandra/install/installAMI.html) ami to create the Cassandra instance.The DataStax AMI allows you to set up a simple DataStax Community cluster using the Amazon Web Services EC2 Management Console. Installing via the AMI allows you to quickly deploy a Cassandra cluster within a single availability zone.
+In case if you chose Kong with Cassandra option, Template use [Datastax Cassandra](http://docs.datastax.com/en/cassandra/2.2/cassandra/install/installAMI.html) ami to create the Cassandra instance.The DataStax AMI allows you to set up a simple DataStax Community cluster using the Amazon Web Services EC2 Management Console. Installing via the AMI allows you to quickly deploy a Cassandra cluster within a single availability zone.
 
 
 ### Launching Kong with Cassandra
