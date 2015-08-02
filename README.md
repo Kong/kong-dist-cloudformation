@@ -107,7 +107,7 @@ In case if you chose Kong with Cassandra option, Template use [Datastax Cassandr
 9.	AWS CloudFormation begins creating the resources that are specified in the template. To monitor the progress go to AWS CloudFormation    	console, select the stack MyWPTestStack in the list. In the stack details pane, click the Events tab. 
 
 10. It will take several minutes(~ 15 minutes) to create the stack. Once the stack has a status of CREATE_COMPLETE, click on output tab 
-	to get the proxy and Admin url  
+	to get the proxy and Admin url.  
 	 
 	 	  
  
