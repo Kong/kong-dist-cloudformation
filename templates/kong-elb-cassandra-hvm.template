@@ -61,14 +61,14 @@
       "Default": ""
     },
     "KongFleetMaxSize": {
-      "Description": "Max Number of EC2 instances to launch for the Kong proxy",
+      "Description": "Max Number of Kong instances",
       "Type": "Number",
       "Default": "2",
       "MaxValue": "10",
       "MinValue": "1"
     },
     "KongFleetDesiredSize": {
-      "Description": "Desired Number of EC2 instances to launch for the Kong proxy",
+      "Description": "Desired Number of Kong instances",
       "Type": "Number",
       "Default": "2",
       "MaxValue": "10",
@@ -155,7 +155,7 @@
     },
     "CassandraClusterName": {
       "Default": "Cassandra Cluster",
-      "Description": "Name of Cassandra cluster, required if Cassandra instance to be created",
+      "Description": "Cassandra cluster name",
       "Type": "String"
     },
     "CassandraClusterVersion": {

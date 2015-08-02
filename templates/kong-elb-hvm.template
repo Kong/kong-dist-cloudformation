@@ -13,14 +13,14 @@
       "ConstraintDescription": "must be a valid host name, ex. example.com:1234, example.com, 123.123.123.123:1234 "
     },
     "KongFleetMaxSize": {
-      "Description": "Max Number of EC2 instances to launch for the Kong proxy",
+      "Description": "Max Number of Kong instances",
       "Type": "Number",
       "Default": "2",
       "MaxValue": "10",
       "MinValue": "1"
     },
     "KongFleetDesiredSize": {
-      "Description": "Desired Number of EC2 instances to launch for the Kong proxy",
+      "Description": "Desired Number of Kong instances",
       "Type": "Number",
       "Default": "2",
       "MaxValue": "10",
