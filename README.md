@@ -13,7 +13,7 @@ Kong Cloudformation template helps you model and set up Kong resources in AWS ea
 
 ## Summary
 
-You have option to chose between two templates, one provisions Kong resources along with a new Cassandra single node clusture another provisions kong resources with user provided Cassandra seed nodes. 
+You have option to chose between two templates, one provisions Kong resources along with a new Cassandra clustre another provisions kong resources with user provided Cassandra seed nodes. 
 
 In case if you chose Kong with Cassandra option, Template use [Datastax Cassandra](http://docs.datastax.com/en/cassandra/2.2/cassandra/install/installAMI.html) ami to create the Cassandra instance.The DataStax AMI allows you to set up a simple DataStax Community cluster using the Amazon Web Services EC2 Management Console. Installing via the AMI allows you to quickly deploy a Cassandra cluster within a single availability zone.
 
@@ -69,52 +69,53 @@ In case if you chose Kong with Cassandra option, Template use [Datastax Cassandr
 | Parameter          | Description                                                           |
 | ---------------:|---------------------------------------------------------------------------|   
 |CassandraKeyName | Existing EC2 KeyPair to enable SSH access to the instances for Cassandra |
-|CassandraVirtualisationType | Ec2 instance CassandraVirtualisationType for Cassandra        |
-|CassandraSecurityGroupName | Existing SecurityGroup for Cassandra|
-|CassandraAvailabilityZone| Availablity zone in which cassandra would be created|
-|CassandraInstanceType|EC2 instance type for kong|
+|CassandraFleetSize|Number of nodes in cluster. (Default: 1, Min: 1, Max: 10) |
+|CassandraAvailabilityZone| Availablity zone in which cassandra clustre would be created, for multi regions and zones clustre please refer [Datastax documentation](http://docs.datastax.com/en/cassandra/2.2/cassandra/planning/planPlanningEC2.html?scroll=planPlanningEC2__multi-region-deploy).|
+|CassandraInstanceType|EC2 instance type for Cassandra, (Default: c3.2xlarge)|
 |CassandraClusterName|Cassandra cluster name|
-|CassandraClusterVersion|Cassandra cluster version|
-|CassandraVersion|Cassandra version|
-|KongSSHLocation|Existing EC2 KeyPair to enable SSH access to the kong instance|
-|KongProxyCidrIp|The IP address range that can be used to access the Kong admin server|
-|KongAdminCidrIp|The IP address range that can be used to access the Kong proxy server|
-|KongKeyName|Existing EC2 KeyPair to enable SSH access to the instances for Kong|
-|KongFleetMaxSize|Max Number of Kong instances|
-|KongFleetDesiredSize|Desired Number of Kong instances|
-|KongInstanceType|EC2 instance type for kong|
+|CassandraClusterVersion|Cassandra cluster version. (Default: 2.2.0)|
+|CassandraVersion|Cassandra version. (Defualt: Community)|
+|CassandraOpsCenterAccess|The IP address range that can access OpsCenter for Cassandra cluster management.  (Default: 0.0.0.0/0)|
+|SSHLocation|The IP address range that can be used to SSH to the Kong and Cassandra EC2 instances. (Default: 0.0.0.0/0)|
+|KongProxyAccess|The IP address range that can be used to access the Kong admin server. (Default: 0.0.0.0/0)|
+|KongAdminAccess|The IP address range that can be used to access the Kong proxy server. (Default: 0.0.0.0/0)|
+|KongKeyName|Existing EC2 KeyPair to enable SSH access to the kong instances|
+|KongFleetMaxSize|Max Number of Kong instances. (Default: 2, Min: 1, Max: 10)|
+|KongFleetDesiredSize|Desired Number of Kong instances. (Default: 2, Min: 1, Max: 10)|
+|KongInstanceType|EC2 instance type for kong. (Default: )|
 
 
 ### Steps to launch a kong stack on AWS cloud
 
-1.	Please follow the [Datastax documention](http://docs.datastax.com/en/cassandra/2.2/cassandra/install/installAMISecurityGroup.html) to create a security group to open ports needed for funtioning of Cassandra clusture.(Jump to step 3 if you created your own Cassandra clusture)
+1.	Create a key pair to access Cassandra instance. Move to next step if you want to use any existing key pair.
 
-2.	Create a key pair to access Cassandra instance.
+2.	Create a key pair to access Kong instances. Move to next step if you want to use any existing key pair.
 
-3.	Create a key pair to access Kong instances.
+3.	Select the region where you want kong stack to located, the virtualization type and then click launch stack. You should see AWS cloudformation "Select Tempalte" page.
 
-4.	Select the region where you want kong stack to located and click launch stack. You should see AWS cloudformation "Select Tempalte" page.
-		![Select Tempalte](../images/select_template.png)
+4.	You can change the stack name. Click next to move to "Specify parameter" page.
 
-5.	You can change the stack name. Click next to move to "Specify parameter" page.
+5.	Fill in all the parameters details. If you chose to launch kong with cassandra you would be asked extra parameters to create a single  	  	node Cassandra clusture. Read description of field and enter the value for each field. 
 
-6.	Fill in all the parameters details. If you chose to launch kong with cassandra you would be asked extra parameters to create a single  	  	node Cassandra clusture. Read description of field and enter the value for each field. 
+6.	Click next to move to "Option page". Add Tags and other fields according to your requirements otherwise click next.
 
-7.	Click next to move to "Option page". Add Tags and other fields according to your requirements otherwise click next.
+7.	Review the information for the stack. When you're satisfied with the settings, click Create
 
-8.	Review the information for the stack. When you're satisfied with the settings, click Create
+8.	AWS CloudFormation begins creating the resources that are specified in the template. To monitor the progress go to AWS CloudFormation    	console, select the stack MyWPTestStack in the list. In the stack details pane, click the Events tab. 
 
-9.	AWS CloudFormation begins creating the resources that are specified in the template. To monitor the progress go to AWS CloudFormation    	console, select the stack MyWPTestStack in the list. In the stack details pane, click the Events tab. 
-
-10. It will take several minutes(~ 15 minutes) to create the stack. Once the stack has a status of CREATE_COMPLETE, click on output tab 
+9. It will take several minutes(~ 20 minutes) to create the stack. Once the stack has a status of CREATE_COMPLETE, click on output tab 
 	to get the proxy and Admin url.  
-	 
-	 	  
  
 
+#### Important note
+
+1.	 The security configuration on the templates opens up all externally accessible ports to incoming traffic from any IP address if defualt is chosen(0.0.0.0/0). The risk of data loss is high. If you desire a more secure configuration, please update access fileds with appropiate ip address range.
+
+2. Tempalate install bunch of resources on AWS.You will be billed for the AWS resources used.
 
 
-
+ 
+ 
 
 
 

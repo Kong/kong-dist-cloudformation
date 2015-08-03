@@ -7,15 +7,6 @@
       "Type": "AWS::EC2::KeyPair::KeyName",
       "Default": ""
     },
-    "CassandraVirtualiZationType": {
-      "Description": "Cassandra intance Virtualization type",
-      "Type": "String",
-      "Default": "HVM",
-      "AllowedValues": [
-        "PV",
-        "HVM"
-      ]
-    },
     "CassandraFleetSize": {
       "Description": "Number of nodes in cassandra cluster",
       "Type": "Number",
@@ -85,7 +76,7 @@
     "KongInstanceType": {
       "Description": "Kong EC2 instance type",
       "Type": "String",
-      "Default": "m3.medium",
+      "Default": "c3.4xlarge",
       "AllowedValues": [
         "m1.small",
         "m1.medium",
@@ -109,36 +100,35 @@
       "ConstraintDescription": "must be a valid EC2 instance type."
     },
     "CassandraInstanceType": {
-      "Description": "Cassandra EC2 instance type, please chose supported type based on Virtualization type selected",
+      "Description": "Cassandra EC2 instance type",
       "Type": "String",
-      "Default": "m3.medium",
+      "Default": "c3.2xlarge",
       "AllowedValues": [
         "m3.medium",
         "m3.large",
         "m3.xlarge",
         "m3.2xlarge",
-        "c1.medium",
-        "c1.xlarge",
         "c3.large",
         "c3.xlarge",
         "c3.2xlarge",
         "c3.4xlarge",
         "c3.8xlarge",
+        "cc2.8xlarge",
+        "cc1.4xlarge",
         "g2.2xlarge",
+        "g2.8xlarge",
+        "cg1.4xlarge",
         "r3.large",
         "r3.xlarge",
         "r3.2xlarge",
         "r3.4xlarge",
         "r3.8xlarge",
+        "d2.xlarge",
+        "d2.2xlarge",
+        "d2.4xlarge",
+        "d2.8xlarge",
         "i2.xlarge",
-        "i2.2xlarge",
-        "i2.4xlarge",
-        "i2.8xlarge",
-        "hi1.4xlarge",
-        "hs1.8xlarge",
-        "cr1.8xlarge",
-        "cc2.8xlarge",
-        "cg1.4xlarge"
+        "i2.2xlarge"
       ],
       "ConstraintDescription": "must be a valid EC2 instance type."
     },
@@ -193,7 +183,7 @@
          "KONGAMI" : "ami-bb2890a6"
       }
     },
-    "RegionCaasAmiMap": {
+    "RegionCassAmiMap": {
       "us-east-1": {
         "PV": "ami-f9a2b690",
         "HVM": "ami-ada2b6c4"
@@ -539,13 +529,11 @@
       "Properties": {
         "ImageId": {
           "Fn::FindInMap": [
-            "RegionCaasAmiMap",
+            "RegionCassAmiMap",
             {
               "Ref": "AWS::Region"
             },
-            {
-              "Ref": "CassandraVirtualiZationType"
-            }
+            "HVM"
           ]
         },
         "InstanceType": {

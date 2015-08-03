@@ -35,7 +35,7 @@
       "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\/(\\d{1,2})",
       "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x\/x."
     },
-    "KongProxyCidrIp": {
+    "KongProxyAccess": {
       "Description": "The IP address range that can be used to access the Kong proxy server",
       "Type": "String",
       "MinLength": "9",
@@ -44,7 +44,7 @@
       "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\/(\\d{1,2})",
       "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x\/x."
     },
-    "KongAdminCidrIp": {
+    "KongAdminAccess": {
       "Description": "The IP address range that can be used to access the Kong admin server",
       "Type": "String",
       "MinLength": "9",
@@ -56,7 +56,7 @@
     "KongInstanceType": {
       "Description": "Kong EC2 instance type",
       "Type": "String",
-      "Default": "c4.2xlarge",
+      "Default": "c3.4xlarge",
       "AllowedValues": [
         "m1.small",
         "m1.medium",
@@ -279,7 +279,7 @@
             "FromPort": "8000",
             "ToPort": "8000",
             "CidrIp": {
-              "Ref": "KongProxyCidrIp"
+              "Ref": "KongProxyAccess"
             }
           },
           {
@@ -287,7 +287,7 @@
             "FromPort": "8001",
             "ToPort": "8001",
             "CidrIp": {
-              "Ref": "KongAdminCidrIp"
+              "Ref": "KongAdminAccess"
             }
           },
           {
