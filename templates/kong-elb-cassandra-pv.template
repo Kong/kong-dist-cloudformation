@@ -7,8 +7,8 @@
       "Type": "AWS::EC2::KeyPair::KeyName",
       "Default": ""
     },
-    "CassandraVirtualisationType": {
-      "Description": "Kong EC2 instance type",
+    "CassandraVirtualiZationType": {
+      "Description": "Cassandra intance Virtualization type",
       "Type": "String",
       "Default": "HVM",
       "AllowedValues": [
@@ -16,20 +16,19 @@
         "HVM"
       ]
     },
-    "CassandraSecurityGroupName": {
-      "Description": "Name of an existing SecurityGroup for Cassandra",
-      "Type": "List<AWS::EC2::SecurityGroup::GroupName>",
-      "MinLength": "1",
-      "MaxLength": "64",
-      "AllowedPattern": "[-_ a-zA-Z0-9]*",
-      "ConstraintDescription": "can contain only alphanumeric characters, spaces, dashes and underscores."
+    "CassandraFleetSize": {
+      "Description": "Number of nodes in cassandra cluster",
+      "Type": "Number",
+      "Default": "1",
+      "MaxValue": "10",
+      "MinValue": "1"
     },
     "CassandraAvailabilityZone": {
       "Description": "AZ for the Cassandra instance",
       "Type": "AWS::EC2::AvailabilityZone::Name"
     },
-    "KongSSHLocation": {
-      "Description": "The IP address range that can be used to SSH to the Kong EC2 instances",
+    "SSHLocation": {
+      "Description": "The IP address range that can be used to SSH to the Kong and Cassandra EC2 instances",
       "Type": "String",
       "MinLength": "9",
       "MaxLength": "18",
@@ -37,8 +36,8 @@
       "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\/(\\d{1,2})",
       "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x\/x."
     },
-    "KongProxyCidrIp": {
-      "Description": "The IP address range that can be used to access the Kong proxy server",
+    "CassandraOpsCenterAccess": {
+      "Description": "The IP address range that can access OpsCenter for Cassandra cluster management",
       "Type": "String",
       "MinLength": "9",
       "MaxLength": "18",
@@ -46,8 +45,17 @@
       "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\/(\\d{1,2})",
       "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x\/x."
     },
-    "KongAdminCidrIp": {
+    "KongProxyAccess": {
       "Description": "The IP address range that can be used to access the Kong admin server",
+      "Type": "String",
+      "MinLength": "9",
+      "MaxLength": "18",
+      "Default": "0.0.0.0\/0",
+      "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\/(\\d{1,2})",
+      "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x\/x."
+    },
+    "KongAdminAccess": {
+      "Description": "The IP address range that can be used to access the Kong proxy server",
       "Type": "String",
       "MinLength": "9",
       "MaxLength": "18",
@@ -101,7 +109,7 @@
       "ConstraintDescription": "must be a valid EC2 instance type."
     },
     "CassandraInstanceType": {
-      "Description": "Cassandra EC2 instance type",
+      "Description": "Cassandra EC2 instance type, please chose supported type based on Virtualization type selected",
       "Type": "String",
       "Default": "m3.medium",
       "AllowedValues": [
@@ -185,7 +193,7 @@
          "KONGAMI" : "ami-bb2890a6"
       }
     },
-     "RegionCaasAmiMap": {
+    "RegionCaasAmiMap": {
       "us-east-1": {
         "PV": "ami-f9a2b690",
         "HVM": "ami-ada2b6c4"
@@ -225,7 +233,7 @@
   "Resources": {
     "KongGroup": {
       "Type": "AWS::AutoScaling::AutoScalingGroup",
-      "DependsOn" : "CassandraSeed",
+      "DependsOn" : "CassandraWaitCondition",
       "Properties": {
         "AvailabilityZones": {
           "Fn::GetAZs": ""
@@ -288,7 +296,7 @@
         },
         "SecurityGroups": [
           {
-            "Ref": "InstanceSecurityGroup"
+            "Ref": "KongSecurityGroup"
           }
         ],
         "UserData": {
@@ -303,16 +311,23 @@
                 "wget https:\/\/github.com\/Mashape\/kong\/releases\/download\/0.4.1\/kong-0.4.1.el5.noarch.rpm\n",
                 "yum install -y epel-release\n",
                 "yum install -y kong-0.4.1.*.noarch.rpm --nogpgcheck\n",
-                "CASSANDRA_HOSTS=(\"",
+                "cassandra_hosts=",
                 {
                    "Fn::GetAtt": [
-                     "CassandraSeed",
-                     "PublicDnsName"
+                     "CassandraWaitCondition",
+                     "Data"
                    ]
                 },
-                "\")\n",
+                "\n",
+                "cassandra_hosts=$(echo $cassandra_hosts | awk -F\"{\" '{print $2}')\n",
+                "cassandra_hosts=$(echo $cassandra_hosts | awk -F\"}\" '{print $1}')\n",
+                "IFS=', ' read -a host_array <<< \"$cassandra_hosts\"\n",   
                 "echo \"      hosts:\" > hosts\n",
-                "for i in \"${CASSANDRA_HOSTS[@]}\"; do echo -e \"        - $i\"  >> hosts; done;\n",
+                "for i in \"${host_array[@]}\"\n",
+                "do\n",
+                "   hostName=$(echo $i | awk -F\":\" '{print $1}')\n",
+                "   echo -e \"        - $hostName\"  >> hosts\n",
+                "done;\n",
                 "sed -i $'\/hosts: \"localhost\"\/{r hosts\\n d}' \/etc\/kong\/kong.yml\n",
                 "sleep 1m\n",
                 "count=4\n",
@@ -330,7 +345,7 @@
                 "      sleep 15s\n",
                 "   fi\n", 
                 "done\n",
-                "/opt/aws/bin/cfn-signal -e 0 --reason \"Kong setup completed\" '", { "Ref" : "KongWaitHandle" }, "'\n" 
+                "/opt/aws/bin/cfn-signal -e 0 --reason \"Kong setup completed\" '", { "Ref" : "KongWaitHandle" }, "'\n"   
               ]
             ]
           }
@@ -365,7 +380,7 @@
         }
       }
     },
-    "InstanceSecurityGroup": {
+    "KongSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "Enable SSH access and HTTP access on the inbound port",
@@ -375,7 +390,7 @@
             "FromPort": "8000",
             "ToPort": "8000",
             "CidrIp": {
-              "Ref": "KongProxyCidrIp"
+              "Ref": "KongProxyAccess"
             }
           },
           {
@@ -383,7 +398,7 @@
             "FromPort": "8001",
             "ToPort": "8001",
             "CidrIp": {
-              "Ref": "KongAdminCidrIp"
+              "Ref": "KongAdminAccess"
             }
           },
           {
@@ -391,14 +406,130 @@
             "FromPort": "22",
             "ToPort": "22",
             "CidrIp": {
-              "Ref": "KongSSHLocation"
+              "Ref": "SSHLocation"
             }
           }
         ]
       }
     },
-    "CassandraSeed": {
-      "Type": "AWS::EC2::Instance",
+    "CassandraWaitHandle" : {
+      "Type" : "AWS::CloudFormation::WaitConditionHandle"
+    },
+    "CassandraWaitCondition" : {
+      "Type" : "AWS::CloudFormation::WaitCondition",
+      "DependsOn" : "CaasandraGroup",
+      "Properties" : {
+        "Handle"  : { "Ref" : "CassandraWaitHandle" },
+        "Timeout" : "900",
+        "Count"   : { "Ref" : "CassandraFleetSize" }
+      }
+    },
+    "CaasandraGroup": {
+      "Type": "AWS::AutoScaling::AutoScalingGroup",
+      "Properties": {
+        "LaunchConfigurationName": {
+          "Ref": "CassandraLaunchConfig"
+        },
+        "AvailabilityZones": [
+          {
+            "Ref": "CassandraAvailabilityZone"
+          }
+        ], 
+        "MinSize": {
+          "Ref": "CassandraFleetSize"
+        },
+        "MaxSize": {
+          "Ref": "CassandraFleetSize"
+        },
+        "DesiredCapacity": {
+          "Ref": "CassandraFleetSize"
+        }
+      },
+      "UpdatePolicy": {
+        "AutoScalingRollingUpdate": {
+          "MinInstancesInService": "1",
+          "MaxBatchSize": "1",
+          "PauseTime": "PT15M",
+          "WaitOnResourceSignals": "true"
+        }
+      }
+    },
+    "CassandraSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Cassandra SecurityGroup",
+        "SecurityGroupIngress": [
+          {"IpProtocol": "tcp", "FromPort": "22", "ToPort": "22", "CidrIp": {"Ref": "SSHLocation"}},
+          {"IpProtocol": "tcp", "FromPort": "8888", "ToPort": "8888", "CidrIp": {"Ref": "CassandraOpsCenterAccess"}}
+        ]
+      }
+    },
+    "Ingress1024To65355": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupName": {"Ref": "CassandraSecurityGroup"}, "IpProtocol": "tcp", "FromPort": "1024", "ToPort": "65355", "SourceSecurityGroupId": {
+          "Fn::GetAtt" : [ "CassandraSecurityGroup", "GroupId" ]
+        }
+      }
+    },
+    "Ingress7000": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupName": {"Ref": "CassandraSecurityGroup"}, "IpProtocol": "tcp", "FromPort": "7000", "ToPort": "7000", "SourceSecurityGroupId": {
+          "Fn::GetAtt" : [ "CassandraSecurityGroup", "GroupId" ]
+        }
+      }
+    },
+    "Ingress7001": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupName": {"Ref": "CassandraSecurityGroup"}, "IpProtocol": "tcp", "FromPort": "7001", "ToPort": "7001", "SourceSecurityGroupId": {
+          "Fn::GetAtt" : [ "CassandraSecurityGroup", "GroupId" ]
+        }
+      }
+    },
+    "Ingress7199": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupName": {"Ref": "CassandraSecurityGroup"}, "IpProtocol": "tcp", "FromPort": "7199", "ToPort": "7199", "SourceSecurityGroupId": {
+          "Fn::GetAtt" : [ "CassandraSecurityGroup", "GroupId" ]
+        }
+      }
+    },
+    "Ingress61620": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupName": {"Ref": "CassandraSecurityGroup"}, "IpProtocol": "tcp", "FromPort": "61620", "ToPort": "61620", "SourceSecurityGroupId": {
+          "Fn::GetAtt" : [ "CassandraSecurityGroup", "GroupId" ]
+        }
+      }
+    },
+    "Ingress61621": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupName": {"Ref": "CassandraSecurityGroup"}, "IpProtocol": "tcp", "FromPort": "61621", "ToPort": "61621", "SourceSecurityGroupId": {
+          "Fn::GetAtt" : [ "CassandraSecurityGroup", "GroupId" ]
+        }
+      }
+    },
+    "Ingress9042": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupName": {"Ref": "CassandraSecurityGroup"}, "IpProtocol": "tcp", "FromPort": "9042", "ToPort": "9042", "SourceSecurityGroupId": {
+          "Fn::GetAtt" : [ "KongSecurityGroup", "GroupId" ]
+        }
+      }
+    },
+    "Ingress9160": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupName": {"Ref": "CassandraSecurityGroup"}, "IpProtocol": "tcp", "FromPort": "9160", "ToPort": "9160", "SourceSecurityGroupId": {
+          "Fn::GetAtt" : [ "KongSecurityGroup", "GroupId" ]
+        }
+      }
+    },
+    "CassandraLaunchConfig": {
+      "Type": "AWS::AutoScaling::LaunchConfiguration",
       "Properties": {
         "ImageId": {
           "Fn::FindInMap": [
@@ -407,12 +538,9 @@
               "Ref": "AWS::Region"
             },
             {
-              "Ref": "CassandraVirtualisationType"
+              "Ref": "CassandraVirtualiZationType"
             }
           ]
-        },
-        "AvailabilityZone": {
-          "Ref": "CassandraAvailabilityZone"
         },
         "InstanceType": {
           "Ref": "CassandraInstanceType"
@@ -420,27 +548,24 @@
         "KeyName": {
           "Ref": "CassandraKeyName"
         },
-        "SecurityGroups": {
-          "Ref": "CassandraSecurityGroupName"
-        },
+        "SecurityGroups": [
+          {
+            "Ref": "CassandraSecurityGroup"
+          }
+        ],  
         "UserData": {
           "Fn::Base64": {
             "Fn::Join": [
               "",
-              [
-                "--clustername ",
-                {
-                  "Ref": "CassandraClusterName"
-                },
-                " --totalnodes 1 --version ",
-                {
-                  "Ref": "CassandraClusterVersion"
-                },
-                " --release ",
-                {
-                  "Ref": "CassandraVersion"
-                },
-                "\n"
+              [ 
+                "#!\/bin\/bash\n",
+                "apt-get -y install python-setuptools\n",
+                "easy_install https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz\n",
+                "publicip=`curl http://169.254.169.254/latest/meta-data/public-ipv4`\n",
+                "publichost=`curl http://169.254.169.254/latest/meta-data/public-hostname`\n",
+                "cfn-signal -e 0 --data $publicip --id $publichost --reason \"Kong setup completed\" '", { "Ref" : "CassandraWaitHandle" }, "'\n",
+                "--clustername ",{ "Ref": "CassandraClusterName" }, " --totalnodes ", { "Ref": "KongFleetDesiredSize" }," --version ", { "Ref": "CassandraClusterVersion" }," --release ",{"Ref": "CassandraVersion"},
+                "\n"   
               ]
             ]
           }
