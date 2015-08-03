@@ -18,7 +18,7 @@ You have option to chose between two templates, one provisions Kong resources al
 In case if you chose Kong with Cassandra option, Template use [Datastax Cassandra](http://docs.datastax.com/en/cassandra/2.2/cassandra/install/installAMI.html) ami to create the Cassandra instance.
 
 
-### Launching Kong with Cassandra DB
+###  Kong with Cassandra DB
 
 
 
@@ -41,7 +41,7 @@ In case if you chose Kong with Cassandra option, Template use [Datastax Cassandr
 | `sa-east-1`          | HVM| [![Kong Stack launch][kong-stack-badge]][sa-east-1-caas-hvm-stack-url]       |
 |				       | PV | [![Kong Stack launch][kong-stack-badge]][sa-east-1-caas-pv-stack-url]         |
 
-### Launching kong with your own Cassandra DB
+###  Kong with your own Cassandra DB
 
 
 | Region          | virtualization Type                      | Launch stack                                 |
