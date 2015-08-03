@@ -13,7 +13,7 @@ Kong Cloudformation template helps you model and set up Kong resources in AWS ea
 
 ## Summary
 
-You have option to chose between two templates, one provisions Kong resources along with a new Cassandra cluster another provisions kong resources with user provided Cassandra seed nodes. 
+You have option to chose between two templates, one provisions Kong resources along with a new Cassandra cluster another provisions Kong resources with user provided Cassandra seed nodes. 
 
 In case if you chose Kong with Cassandra option, Template use [Datastax Cassandra](http://docs.datastax.com/en/cassandra/2.2/cassandra/install/installAMI.html) ami to create the Cassandra instance.
 
@@ -70,7 +70,7 @@ In case if you chose Kong with Cassandra option, Template use [Datastax Cassandr
 | ---------------:|---------------------------------------------------------------------------|   
 |CassandraKeyName | Existing EC2 KeyPair to enable SSH access to the instances for Cassandra |
 |CassandraFleetSize|Number of nodes in cluster. (Default: 1, Min: 1, Max: 10) |
-|CassandraAvailabilityZone| Availablity zone in which cassandra clustre would be created, for multi regions and zones clustre please refer [Datastax documentation](http://docs.datastax.com/en/cassandra/2.2/cassandra/planning/planPlanningEC2.html?scroll=planPlanningEC2__multi-region-deploy).|
+|CassandraAvailabilityZone| Availablity zone in which cassandra cluster would be created, for multi regions and zones cluster please refer to [Datastax documentation](http://docs.datastax.com/en/cassandra/2.2/cassandra/planning/planPlanningEC2.html?scroll=planPlanningEC2__multi-region-deploy).|
 |CassandraInstanceType|EC2 instance type for Cassandra, (Default: c3.2xlarge)|
 |CassandraClusterName|Cassandra cluster name|
 |CassandraClusterVersion|Cassandra cluster version. (Default: 2.2.0)|
@@ -91,11 +91,11 @@ In case if you chose Kong with Cassandra option, Template use [Datastax Cassandr
 
 2.	Create a key pair to access Kong instances. Move to next step if you want to use any existing key pair.
 
-3.	Select the region, the virtualization type and then click launch stack. You should see AWS cloudformation "Select Tempalte" page.
+3.	Select the region, the virtualization type and then click launch stack. You should see AWS cloudformation "Select Template" page.
 
 4.	You can change the stack name. Click next to move to "Specify parameter" page.
 
-5.	Fill in all the parameters details. If you chose to launch kong with cassandra you would be asked to fill in extra parameters to create a Cassandra clusture. Read description of field and enter the value for each field. 
+5.	Fill in all the parameters details. If you chose to launch Kong with Cassandra you would be asked to fill in extra parameters to create a Cassandra cluster. Read description of field and enter the value for each field. 
 
 6.	Click next to move to "Option page". Add Tags and other fields according to your requirements otherwise click next.Note: Template is configured to add a "Name" tag to each relevant resource. 
 
@@ -103,15 +103,14 @@ In case if you chose Kong with Cassandra option, Template use [Datastax Cassandr
 
 8.	AWS CloudFormation begins creating the resources that are specified in the template. To monitor the progress go to AWS CloudFormation console, select the stack in the list. In the stack details pane, click the Events tab to see the progress. 
 
-9. It will take several minutes(~ 20 minutes) to create the stack. Once the stack has a status of CREATE_COMPLETE, click on output tab 
-	to get the proxy and Admin url. it may take 60 seconds more for links to become active 
+9. It will take several minutes(~20 minutes) to create the stack. Once the stack has a status of CREATE_COMPLETE, click on output tab to get the proxy and Admin URL, it may take 60 seconds more for links to become active 
  
 
 #### Important note
 
-1.	 The security configuration on the templates opens up all externally accessible ports to incoming traffic from any IP address if defualt is chosen(0.0.0.0/0). The risk of data loss is high. If you desire a more secure configuration, please update access fileds with appropiate ip address range.
+1.	 The security configuration on the templates opens up all externally accessible ports to incoming traffic from any IP address if defualt is chosen(0.0.0.0/0). The risk of data loss is high. If you desire a more secure configuration, please update access fields with appropiate IP address range.
 
-2. Tempalate installs bunch of resources on AWS.You will be billed for the AWS resources used.
+2. Template installs many resources on AWS. You will be billed just for the AWS resources used.
 
 
  
