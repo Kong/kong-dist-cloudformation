@@ -13,9 +13,9 @@ Kong Cloudformation template helps you model and set up Kong resources in AWS ea
 
 ## Summary
 
-You have option to chose between two templates, one provisions Kong resources along with a new Cassandra clustre another provisions kong resources with user provided Cassandra seed nodes. 
+You have option to chose between two templates, one provisions Kong resources along with a new Cassandra cluster another provisions kong resources with user provided Cassandra seed nodes. 
 
-In case if you chose Kong with Cassandra option, Template use [Datastax Cassandra](http://docs.datastax.com/en/cassandra/2.2/cassandra/install/installAMI.html) ami to create the Cassandra instance.The DataStax AMI allows you to set up a simple DataStax Community cluster using the Amazon Web Services EC2 Management Console. Installing via the AMI allows you to quickly deploy a Cassandra cluster within a single availability zone.
+In case if you chose Kong with Cassandra option, Template use [Datastax Cassandra](http://docs.datastax.com/en/cassandra/2.2/cassandra/install/installAMI.html) ami to create the Cassandra instance.
 
 
 ### Launching Kong with Cassandra
@@ -91,20 +91,20 @@ In case if you chose Kong with Cassandra option, Template use [Datastax Cassandr
 
 2.	Create a key pair to access Kong instances. Move to next step if you want to use any existing key pair.
 
-3.	Select the region where you want kong stack to located, the virtualization type and then click launch stack. You should see AWS cloudformation "Select Tempalte" page.
+3.	Select the region, the virtualization type and then click launch stack. You should see AWS cloudformation "Select Tempalte" page.
 
 4.	You can change the stack name. Click next to move to "Specify parameter" page.
 
-5.	Fill in all the parameters details. If you chose to launch kong with cassandra you would be asked extra parameters to create a single  	  	node Cassandra clusture. Read description of field and enter the value for each field. 
+5.	Fill in all the parameters details. If you chose to launch kong with cassandra you would be asked to fill in extra parameters to create a Cassandra clusture. Read description of field and enter the value for each field. 
 
-6.	Click next to move to "Option page". Add Tags and other fields according to your requirements otherwise click next.
+6.	Click next to move to "Option page". Add Tags and other fields according to your requirements otherwise click next.Note: Template is configured to add a "Name" tag to each relevant resource. 
 
 7.	Review the information for the stack. When you're satisfied with the settings, click Create
 
-8.	AWS CloudFormation begins creating the resources that are specified in the template. To monitor the progress go to AWS CloudFormation    	console, select the stack MyWPTestStack in the list. In the stack details pane, click the Events tab. 
+8.	AWS CloudFormation begins creating the resources that are specified in the template. To monitor the progress go to AWS CloudFormation console, select the stack in the list. In the stack details pane, click the Events tab to see the progress. 
 
 9. It will take several minutes(~ 20 minutes) to create the stack. Once the stack has a status of CREATE_COMPLETE, click on output tab 
-	to get the proxy and Admin url.  
+	to get the proxy and Admin url. it may take 60 seconds more for links to become active 
  
 
 #### Important note
