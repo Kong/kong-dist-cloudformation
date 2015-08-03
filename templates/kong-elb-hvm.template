@@ -36,7 +36,7 @@
       "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x\/x."
     },
     "KongProxyAccess": {
-      "Description": "The IP address range that can be used to the Kong proxy server",
+      "Description": "The IP address range that can be used to access the Kong proxy port 8000",
       "Type": "String",
       "MinLength": "9",
       "MaxLength": "18",
@@ -45,7 +45,7 @@
       "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x\/x."
     },
     "KongAdminAccess": {
-      "Description": "The IP address range that can be used to access the Kong admin server",
+      "Description": "The IP address range that can be used to access the Kong Admin port 8001",
       "Type": "String",
       "MinLength": "9",
       "MaxLength": "18",

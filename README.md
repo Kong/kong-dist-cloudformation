@@ -111,7 +111,7 @@ In case if you chose Kong with Cassandra option, Template use [Datastax Cassandr
 
 1.	 The security configuration on the templates opens up all externally accessible ports to incoming traffic from any IP address if defualt is chosen(0.0.0.0/0). The risk of data loss is high. If you desire a more secure configuration, please update access fileds with appropiate ip address range.
 
-2. Tempalate install bunch of resources on AWS.You will be billed for the AWS resources used.
+2. Tempalate installs bunch of resources on AWS.You will be billed for the AWS resources used.
 
 
  
