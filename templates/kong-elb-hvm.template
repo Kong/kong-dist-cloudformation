@@ -165,7 +165,10 @@
             "Ref": "KongLoadBalancer"
           }
         ],
-        "HealthCheckGracePeriod": "300"
+        "HealthCheckGracePeriod": "300",
+        "Tags" : [
+          { "Key" : "Name", "Value" : { "Ref" : "AWS::StackId" }, "PropagateAtLaunch" : "true" }
+        ]
       },
       "UpdatePolicy": {
         "AutoScalingRollingUpdate": {
