@@ -25,7 +25,7 @@
     },
     "CassandraAvailabilityZone": {
       "Description": "AZ for the Cassandra instance",
-      "Type": "List<AWS::EC2::AvailabilityZone::Name>"
+      "Type": "AWS::EC2::AvailabilityZone::Name"
     },
     "SSHLocation": {
       "Description": "The IP address range that can be used to SSH to the Kong and Cassandra EC2 instances",
