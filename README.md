@@ -1,4 +1,4 @@
-# KONG Cloudformation Templates
+# KONG CloudFormation Templates
 
 - Website: [getkong.org][kong-url]
 - Documentation: [getkong.org/docs][kong-docs]
