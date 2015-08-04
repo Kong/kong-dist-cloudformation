@@ -56,7 +56,7 @@
     "KongInstanceType": {
       "Description": "Kong EC2 instance type",
       "Type": "String",
-      "Default": "c4.4xlarge",
+      "Default": "c3.8xlarge",
       "AllowedValues": [
         "t2.small",
         "t2.micro",
@@ -94,28 +94,28 @@
   "Mappings": {
     "RegionMap": {
       "us-east-1": {
-        "KONGAMI": "ami-1ecae776"
+        "HVM": "ami-1ecae776"
       },
       "us-west-1": {
-        "KONGAMI": "ami-d114f295"
+        "HVM": "ami-d114f295"
       },
       "us-west-2": {
-        "KONGAMI": "ami-e7527ed7"
+        "HVM": "ami-e7527ed7"
       },
       "eu-west-1" : {
-        "KONGAMI": "ami-a10897d6"
+        "HVM": "ami-a10897d6"
       },
       "ap-northeast-1" : {
-         "KONGAMI": "ami-cbf90ecb"
+         "HVM": "ami-cbf90ecb"
       },
       "ap-southeast-1" : {
-         "KONGAMI": "ami-68d8e93a"
+         "HVM": "ami-68d8e93a"
       },
       "ap-southeast-2" : {
-         "KONGAMI": "ami-fd9cecc7"
+         "HVM": "ami-fd9cecc7"
       },
       "sa-east-1" : {
-         "KONGAMI" : "ami-b52890a8"
+         "HVM" : "ami-b52890a8"
       }
     }
   },
@@ -191,7 +191,7 @@
             {
               "Ref": "AWS::Region"
             },
-            "KONGAMI"
+            "HVM"
           ]
         },
         "InstanceType": {

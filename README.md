@@ -82,7 +82,7 @@ In case if you chose Kong with Cassandra option, Template use [Datastax Cassandr
 |KongKeyName|Existing EC2 KeyPair to enable SSH access to the kong instances|
 |KongFleetMaxSize|Max Number of Kong instances. (Default: 2, Min: 1, Max: 10)|
 |KongFleetDesiredSize|Desired Number of Kong instances. (Default: 2, Min: 1, Max: 10)|
-|KongInstanceType|EC2 instance type for kong. (Default: )|
+|KongInstanceType|EC2 instance type for kong. (Default: c3.8xlarge)|
 
 
 ### Steps to launch a kong stack on AWS cloud

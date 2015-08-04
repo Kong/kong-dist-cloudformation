@@ -76,7 +76,7 @@
     "KongInstanceType": {
       "Description": "Kong EC2 instance type",
       "Type": "String",
-      "Default": "c4.4xlarge",
+      "Default": "c3.8xlarge",
       "AllowedValues": [
         "t2.small",
         "t2.micro",
@@ -170,66 +170,56 @@
   "Mappings": {
     "RegionKongAmiMap": {
       "us-east-1": {
-        "KONGAMI": "ami-1ecae776"
+        "HVM": "ami-1ecae776"
       },
       "us-west-1": {
-        "KONGAMI": "ami-d114f295"
+        "HVM": "ami-d114f295"
       },
       "us-west-2": {
-        "KONGAMI": "ami-e7527ed7"
+        "HVM": "ami-e7527ed7"
       },
       "eu-west-1" : {
-        "KONGAMI": "ami-a10897d6"
+        "HVM": "ami-a10897d6"
       },
       "ap-northeast-1" : {
-         "KONGAMI": "ami-cbf90ecb"
+         "HVM": "ami-cbf90ecb"
       },
       "ap-southeast-1" : {
-         "KONGAMI": "ami-68d8e93a"
+         "HVM": "ami-68d8e93a"
       },
       "ap-southeast-2" : {
-         "KONGAMI": "ami-fd9cecc7"
+         "HVM": "ami-fd9cecc7"
       },
       "sa-east-1" : {
-         "KONGAMI" : "ami-b52890a8"
+         "HVM" : "ami-b52890a8"
       }
     },
     "RegionCassAmiMap": {
       "us-east-1": {
-        "PV": "ami-f9a2b690",
         "HVM": "ami-ada2b6c4"
       },
       "us-west-1": {
-        "PV": "ami-32f7c977",
         "HVM": "ami-3cf7c979"
       },
       "us-west-2": {
-        "PV": "ami-16ff9626",
         "HVM": "ami-1cff962c"
       },
       "eu-west-1" : {
-        "PV": "ami-8932ccfe",
         "HVM": "ami-7f33cd08"
       },
       "ap-northeast-1" : {
-        "PV": "ami-6b4a376a",
         "HVM": "ami-714a3770"
       },
       "ap-southeast-1" : {
-        "PV": "ami-8c7828de",
         "HVM": "ami-b47828e6"
       },
       "ap-southeast-2" : {
-        "PV": "ami-57d54d6d",
         "HVM": "ami-55d54d6f"
       },
       "sa-east-1" : {
-        "PV": "ami-15da7808",
         "HVM": "ami-1dda7800"
       }
     }
-    
-    
   },
   "Resources": {
     "KongGroup": {
@@ -289,7 +279,7 @@
             {
               "Ref": "AWS::Region"
             },
-            "KONGAMI"
+            "HVM"
           ]
         },
         "InstanceType": {

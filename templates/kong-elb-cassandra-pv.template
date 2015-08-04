@@ -159,28 +159,28 @@
   "Mappings": {
     "RegionKongAmiMap": {
       "us-east-1": {
-        "KONGAMI": "ami-1ccae774"
+        "PV": "ami-1ccae774"
       },
       "us-west-1": {
-        "KONGAMI": "ami-d514f291"
+        "PV": "ami-d514f291"
       },
       "us-west-2": {
-        "KONGAMI": "ami-ff527ecf"
+        "PV": "ami-ff527ecf"
       },
       "eu-west-1" : {
-        "KONGAMI": "ami-bf0897c8"
+        "PV": "ami-bf0897c8"
       },
       "ap-northeast-1" : {
-         "KONGAMI": "ami-27f90e27"
+         "PV": "ami-27f90e27"
       },
       "ap-southeast-1" : {
-         "KONGAMI": "ami-acd9e8fe"
+         "PV": "ami-acd9e8fe"
       },
       "ap-southeast-2" : {
-         "KONGAMI": "ami-ff9cecc5"
+         "PV": "ami-ff9cecc5"
       },
       "sa-east-1" : {
-         "KONGAMI" : "ami-bb2890a6"
+         "PV" : "ami-bb2890a6"
       }
     },
     "RegionCassAmiMap": {
@@ -278,7 +278,7 @@
             {
               "Ref": "AWS::Region"
             },
-            "KONGAMI"
+            "PV"
           ]
         },
         "InstanceType": {
