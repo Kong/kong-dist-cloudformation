@@ -113,6 +113,8 @@ In case if you chose Kong with Cassandra option, Template use [Datastax Cassandr
 
 2. Template installs many resources on AWS. You will be billed just for the AWS resources used.
 
+3. Some of the instance types may not supported in all the AWS Regions, so chose next best available option.
+
 
  
  
