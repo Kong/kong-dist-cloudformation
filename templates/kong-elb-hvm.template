@@ -89,6 +89,11 @@
         "r3.8xlarge"
       ],
       "ConstraintDescription": "must be a valid EC2 instance type."
+    },
+    "KongVersion": {
+      "Description": "Kong version",
+      "Type": "String",
+      "Default": "0.4.1"
     }
   },
   "Mappings": {
@@ -216,17 +221,8 @@
                 "echo '* hard nofile 65000' >> \/etc\/security\/limits.conf\n",
                 "wget https:\/\/github.com\/Mashape\/kong\/releases\/download\/0.4.1\/kong-0.4.1.el5.noarch.rpm\n",
                 "yum install -y epel-release\n",
-                "yum install -y kong-0.4.1.*.noarch.rpm --nogpgcheck\n",
-                "CASSANDRA_HOSTS=(\"",
-                {
-                   "Fn::Join": [
-                      "\" \"",
-                      {
-                        "Ref": "CassandraSeedNodes"
-                      }
-                    ]
-                },
-                "\")\n",
+                "yum install -y kong-", { "Ref" : "KongVersion" }, ".*.noarch.rpm --nogpgcheck\n",
+                "CASSANDRA_HOSTS=(\"", { "Fn::Join": [ "\" \"", { "Ref": "CassandraSeedNodes" } ] }, "\")\n",
                 "echo \"      hosts:\" > hosts\n",
                 "for i in \"${CASSANDRA_HOSTS[@]}\"; do echo -e \"        - $i\"  >> hosts; done;\n",
                 "sed -i $'\/hosts: \"localhost\"\/{r hosts\\n d}' \/etc\/kong\/kong.yml\n",
