@@ -22,7 +22,7 @@ In case if you chose Kong with Cassandra option, Template use [Datastax Cassandr
 
 
 
-| Region          | virtualization Type                      | Launch stack                                 |
+| Region          | Virtualization Type                      | Launch stack                                 |
 | ---------------:|------------------------------------------:|----------------------------------------------|
 | `us-east-1`          | HVM | [![Kong Stack launch][kong-stack-badge]][us-east-1-caas-hvm-stack-url]       |
 |				       | PV | [![Kong Stack launch][kong-stack-badge]][us-east-1-caas-pv-stack-url]         |
@@ -41,10 +41,10 @@ In case if you chose Kong with Cassandra option, Template use [Datastax Cassandr
 | `sa-east-1`          | HVM| [![Kong Stack launch][kong-stack-badge]][sa-east-1-caas-hvm-stack-url]       |
 |				       | PV | [![Kong Stack launch][kong-stack-badge]][sa-east-1-caas-pv-stack-url]         |
 
-###  kong without cassandra (you need to bring yours)
+###  Kong without cassandra (you need to bring yours)
 
 
-| Region          | virtualization Type                      | Launch stack                                 |
+| Region          | Virtualization Type                      | Launch stack                                 |
 | ---------------:|------------------------------------------:|----------------------------------------------|
 | `us-east-1`          | HVM | [![Kong Stack launch][kong-stack-badge]][us-east-1-hvm-stack-url]       |
 				       | PV |  [![Kong Stack launch][kong-stack-badge]][us-east-1-pv-stack-url]         |
@@ -86,7 +86,7 @@ In case if you chose Kong with Cassandra option, Template use [Datastax Cassandr
 |KongVersion|kong version. (Default: 0.4.1)|
 
 
-### Steps to launch a kong stack on AWS cloud
+### Steps to launch a Kong stack on AWS cloud
 
 1.	Create a key pair to access Cassandra instance. Move to next step if you want to use any existing key pair.
 
