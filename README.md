@@ -41,7 +41,7 @@ In case if you chose Kong with Cassandra option, Template use [Datastax Cassandr
 | `sa-east-1`          | HVM| [![Kong Stack launch][kong-stack-badge]][sa-east-1-caas-hvm-stack-url]       |
 |				       | PV | [![Kong Stack launch][kong-stack-badge]][sa-east-1-caas-pv-stack-url]         |
 
-###  Kong without cassandra (you need to bring yours)
+###  Kong without Cassandra DB (you need to bring yours)
 
 
 | Region          | Virtualization Type                      | Launch stack                                 |
