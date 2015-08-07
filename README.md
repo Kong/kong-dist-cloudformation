@@ -17,30 +17,30 @@ You have option to chose between two templates:
 
 ###  Kong with Cassandra DB
 
-| Region            | HVM AMIs                                                                    | PV AMIs                                                                     |
-| ----------------: | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| `us-east-1`       | [![Kong Stack launch][kong-stack-badge]][us-east-1-caas-hvm-stack-url]      | [![Kong Stack launch][kong-stack-badge]][us-east-1-caas-pv-stack-url]       |
-| `us-west-1`       | [![Kong Stack launch][kong-stack-badge]][us-west-1-caas-hvm-stack-url]      | [![Kong Stack launch][kong-stack-badge]][us-west-1-caas-pv-stack-url]       |
-| `us-west-2`       | [![Kong Stack launch][kong-stack-badge]][us-west-2-caas-hvm-stack-url]      | [![Kong Stack launch][kong-stack-badge]][us-west-2-caas-pv-stack-url]       |
-| `eu-west-1`       | [![Kong Stack launch][kong-stack-badge]][eu-west-1-caas-hvm-stack-url]      | [![Kong Stack launch][kong-stack-badge]][eu-west-1-caas-pv-stack-url]       |
-| `ap-northeast-1`  | [![Kong Stack launch][kong-stack-badge]][ap-northeast-1-caas-hvm-stack-url] | [![Kong Stack launch][kong-stack-badge]][ap-northeast-1-caas-pv-stack-url]  |
-| `ap-southeast-1`  | [![Kong Stack launch][kong-stack-badge]][ap-southeast-1-caas-hvm-stack-url] | [![Kong Stack launch][kong-stack-badge]][ap-southeast-1-caas-pv-stack-url]  |
-| `ap-southeast-2`  | [![Kong Stack launch][kong-stack-badge]][ap-southeast-2-caas-hvm-stack-url] | [![Kong Stack launch][kong-stack-badge]][ap-southeast-2-caas-pv-stack-url]  |
-| `sa-east-1`       | [![Kong Stack launch][kong-stack-badge]][sa-east-1-caas-hvm-stack-url]      | [![Kong Stack launch][kong-stack-badge]][sa-east-1-caas-pv-stack-url]       |
+| Region            | HVM AMIs                                                               | PV AMIs                                                                |
+| ----------------: | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `us-east-1`       | [![Kong Stack launch][stack-badge]][us-east-1-caas-hvm-stack-url]      | [![Kong Stack launch][stack-badge]][us-east-1-caas-pv-stack-url]       |
+| `us-west-1`       | [![Kong Stack launch][stack-badge]][us-west-1-caas-hvm-stack-url]      | [![Kong Stack launch][stack-badge]][us-west-1-caas-pv-stack-url]       |
+| `us-west-2`       | [![Kong Stack launch][stack-badge]][us-west-2-caas-hvm-stack-url]      | [![Kong Stack launch][stack-badge]][us-west-2-caas-pv-stack-url]       |
+| `eu-west-1`       | [![Kong Stack launch][stack-badge]][eu-west-1-caas-hvm-stack-url]      | [![Kong Stack launch][stack-badge]][eu-west-1-caas-pv-stack-url]       |
+| `ap-northeast-1`  | [![Kong Stack launch][stack-badge]][ap-northeast-1-caas-hvm-stack-url] | [![Kong Stack launch][stack-badge]][ap-northeast-1-caas-pv-stack-url]  |
+| `ap-southeast-1`  | [![Kong Stack launch][stack-badge]][ap-southeast-1-caas-hvm-stack-url] | [![Kong Stack launch][stack-badge]][ap-southeast-1-caas-pv-stack-url]  |
+| `ap-southeast-2`  | [![Kong Stack launch][stack-badge]][ap-southeast-2-caas-hvm-stack-url] | [![Kong Stack launch][stack-badge]][ap-southeast-2-caas-pv-stack-url]  |
+| `sa-east-1`       | [![Kong Stack launch][stack-badge]][sa-east-1-caas-hvm-stack-url]      | [![Kong Stack launch][stack-badge]][sa-east-1-caas-pv-stack-url]       |
 
 ###  Kong without Cassandra DB (you need to bring yours)
 
 
-| Region            | HVM AMIs                                                                | PV AMIs                                                               |
-| ----------------: | ----------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| `us-east-1`       | [![Kong Stack launch][kong-stack-badge]][us-east-1-hvm-stack-url]       | [![Kong Stack launch][kong-stack-badge]][us-east-1-pv-stack-url]      |
-| `us-west-1`       | [![Kong Stack launch][kong-stack-badge]][us-west-1-hvm-stack-url]       | [![Kong Stack launch][kong-stack-badge]][us-west-1-pv-stack-url]      |
-| `us-west-2`       | [![Kong Stack launch][kong-stack-badge]][us-west-2-hvm-stack-url]       | [![Kong Stack launch][kong-stack-badge]][us-west-2-pv-stack-url]      |
-| `eu-west-1`       | [![Kong Stack launch][kong-stack-badge]][eu-west-1-hvm-stack-url]       | [![Kong Stack launch][kong-stack-badge]][eu-west-1-pv-stack-url]      |
-| `ap-northeast-1`  | [![Kong Stack launch][kong-stack-badge]][ap-northeast-1-hvm-stack-url]  | [![Kong Stack launch][kong-stack-badge]][ap-northeast-1-pv-stack-url] |
-| `ap-southeast-1`  | [![Kong Stack launch][kong-stack-badge]][ap-southeast-1-hvm-stack-url]  | [![Kong Stack launch][kong-stack-badge]][ap-southeast-1-pv-stack-url] |
-| `ap-southeast-2`  | [![Kong Stack launch][kong-stack-badge]][ap-southeast-2-hvm-stack-url]  | [![Kong Stack launch][kong-stack-badge]][ap-southeast-2-pv-stack-url] |
-| `sa-east-1`       | [![Kong Stack launch][kong-stack-badge]][sa-east-1-hvm-stack-url]       | [![Kong Stack launch][kong-stack-badge]][sa-east-1-pv-stack-url]      |
+| Region            | HVM AMIs                                                           | PV AMIs                                                          |
+| ----------------: | ------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| `us-east-1`       | [![Kong Stack launch][stack-badge]][us-east-1-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][us-east-1-pv-stack-url]      |
+| `us-west-1`       | [![Kong Stack launch][stack-badge]][us-west-1-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][us-west-1-pv-stack-url]      |
+| `us-west-2`       | [![Kong Stack launch][stack-badge]][us-west-2-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][us-west-2-pv-stack-url]      |
+| `eu-west-1`       | [![Kong Stack launch][stack-badge]][eu-west-1-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][eu-west-1-pv-stack-url]      |
+| `ap-northeast-1`  | [![Kong Stack launch][stack-badge]][ap-northeast-1-hvm-stack-url]  | [![Kong Stack launch][stack-badge]][ap-northeast-1-pv-stack-url] |
+| `ap-southeast-1`  | [![Kong Stack launch][stack-badge]][ap-southeast-1-hvm-stack-url]  | [![Kong Stack launch][stack-badge]][ap-southeast-1-pv-stack-url] |
+| `ap-southeast-2`  | [![Kong Stack launch][stack-badge]][ap-southeast-2-hvm-stack-url]  | [![Kong Stack launch][stack-badge]][ap-southeast-2-pv-stack-url] |
+| `sa-east-1`       | [![Kong Stack launch][stack-badge]][sa-east-1-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][sa-east-1-pv-stack-url]      |
  
  
 ### Cloudformation parameters
@@ -67,23 +67,23 @@ You have option to chose between two templates:
 
 ### Steps to launch a Kong stack on AWS cloud
 
-1. Create a key pair to access Cassandra instance. Move to next step if you want to use any existing key pair.
-2. Create a key pair to access Kong instances. Move to next step if you want to use any existing key pair.
-3. Select the region, the virtualization type and then click *"Launch Stack"*. You should see AWS cloudformation *"Select Template"* page.
+1. Create a key pair to access Cassandra instance. Move to next step if you want to use any existing key pair
+2. Create a key pair to access Kong instances. Move to next step if you want to use any existing key pair
+3. Select the region, the virtualization type and then click *"Launch Stack"*. You should see AWS cloudformation *"Select Template"* page
 4. You can change the stack name. Click next to move to *"Specify parameter"* page.
-5. Fill in all the parameters details. If you chose to launch Kong with Cassandra you would be asked to fill in extra parameters to create a Cassandra cluster. Read description of field and enter the value for each field.
-6. Click next to move to *"Option page"*. Add Tags and other fields according to your requirements otherwise click "Next"
-  - Note: The template is configured to add a *"Name"* tag to each relevant resource.
+5. Fill in all the parameters details. If you chose to launch Kong with Cassandra you would be asked to fill in extra parameters to create a Cassandra cluster. Read description of field and enter the value for each field
+6. Click next to move to *"Option page"*. Add Tags and other fields according to your requirements otherwise click *"Next"*
+  - Note: The template is configured to add a *"Name"* tag to each relevant resource
 7. Review the information for the stack. When you're satisfied with the settings, click *"Create"*
-8. AWS CloudFormation begins creating the resources that are specified in the template. To monitor the progress go to AWS CloudFormation console, select the stack in the list. In the stack details pane, click the *"Events"* tab to see the progress.
-9. It will take several minutes(~20 minutes) to create the stack. Once the stack has a status of `CREATE_COMPLETE`, click on *"Output"* tab to get the proxy and Admin URL, it may take 60 seconds more for links to become active 
+8. AWS CloudFormation begins creating the resources that are specified in the template. To monitor the progress go to AWS CloudFormation console, select the stack in the list. In the stack details pane, click the *"Events"* tab to see the progress
+9. It will take several minutes *(~20 minutes)* to create the stack. Once the stack has a status of `CREATE_COMPLETE`, click on *"Output"* tab to get the proxy and Admin URL, it may take *60 seconds* more for links to become active 
  
 #### Important note
 
-1. The security configuration on the templates opens up all externally accessible ports to incoming traffic from any IP address if defualt is chosen *(`0.0.0.0/0`)*. 
-2. The risk of data leakage is high. If you desire a more secure configuration, please update access fields with appropiate IP address range.
-3. The template installs many resources on AWS. You will be billed just for the AWS resources used.
-4. Some of the instance types may not be supported in all the AWS Regions, so chose next best available option.
+1. The security configuration on the templates opens up all externally accessible ports to incoming traffic from any IP address if defualt is chosen *(`0.0.0.0/0`)*
+2. The risk of data leakage is high. If you desire a more secure configuration, please update access fields with appropiate IP address range
+3. The template installs many resources on AWS. You will be billed just for the AWS resources used
+4. Some of the instance types may not be supported in all the AWS Regions, so chose next best available option
 
 ## Enterprise Support
 
@@ -132,4 +132,4 @@ Support, Demo, Training, API Certifications and Consulting available at http://g
 [ap-southeast-1-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-1#/stacks/new?stackName=kong-elb-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Fv1.0%2Fkong-elb-pv.template
 [ap-southeast-2-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-2#/stacks/new?stackName=kong-elb-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Fv1.0%2Fkong-elb-pv.template
 [sa-east-1-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=sa-east-1#/stacks/new?stackName=kong-elb-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Fv1.0%2Fkong-elb-pv.template
-[kong-stack-badge]: https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png
+[stack-badge]: https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png
