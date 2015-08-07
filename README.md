@@ -70,19 +70,21 @@ You have option to chose between two templates:
 
 1. Create a key pair to access Cassandra instance. Move to next step if you want to use any existing key pair.
 2. Create a key pair to access Kong instances. Move to next step if you want to use any existing key pair.
-3. Select the region, the virtualization type and then click launch stack. You should see AWS cloudformation "Select Template" page.
-4. You can change the stack name. Click next to move to "Specify parameter" page.
-5. Fill in all the parameters details. If you chose to launch Kong with Cassandra you would be asked to fill in extra parameters to create a Cassandra cluster. Read description of field and enter the value for each field. 
-6. Click next to move to "Option page". Add Tags and other fields according to your requirements otherwise click next.Note: Template is configured to add a "Name" tag to each relevant resource. 
-7. Review the information for the stack. When you're satisfied with the settings, click Create
-8. AWS CloudFormation begins creating the resources that are specified in the template. To monitor the progress go to AWS CloudFormation console, select the stack in the list. In the stack details pane, click the Events tab to see the progress. 
-9. It will take several minutes(~20 minutes) to create the stack. Once the stack has a status of CREATE_COMPLETE, click on output tab to get the proxy and Admin URL, it may take 60 seconds more for links to become active 
+3. Select the region, the virtualization type and then click *"Launch Stack"*. You should see AWS cloudformation *"Select Template"* page.
+4. You can change the stack name. Click next to move to *"Specify parameter"* page.
+5. Fill in all the parameters details. If you chose to launch Kong with Cassandra you would be asked to fill in extra parameters to create a Cassandra cluster. Read description of field and enter the value for each field.
+6. Click next to move to *"Option page"*. Add Tags and other fields according to your requirements otherwise click "Next"
+  - Note: The template is configured to add a *"Name"* tag to each relevant resource.
+7. Review the information for the stack. When you're satisfied with the settings, click *"Create"*
+8. AWS CloudFormation begins creating the resources that are specified in the template. To monitor the progress go to AWS CloudFormation console, select the stack in the list. In the stack details pane, click the *"Events"* tab to see the progress.
+9. It will take several minutes(~20 minutes) to create the stack. Once the stack has a status of `CREATE_COMPLETE`, click on *"Output"* tab to get the proxy and Admin URL, it may take 60 seconds more for links to become active 
  
 #### Important note
 
-1. The security configuration on the templates opens up all externally accessible ports to incoming traffic from any IP address if defualt is chosen(0.0.0.0/0). The risk of data loss is high. If you desire a more secure configuration, please update access fields with appropiate IP address range.
-2. Template installs many resources on AWS. You will be billed just for the AWS resources used.
-3. Some of the instance types may not be supported in all the AWS Regions, so chose next best available option.
+1. The security configuration on the templates opens up all externally accessible ports to incoming traffic from any IP address if defualt is chosen *(`0.0.0.0/0`)*. 
+2. The risk of data leakage is high. If you desire a more secure configuration, please update access fields with appropiate IP address range.
+3. The template installs many resources on AWS. You will be billed just for the AWS resources used.
+4. Some of the instance types may not be supported in all the AWS Regions, so chose next best available option.
 
 ## Enterprise Support
 
