@@ -13,7 +13,6 @@ This CloudFormation template helps you model and set up Kong's resources in AWS 
 You have option to chose between two templates:
 
 1. provision Kong resources along with a new [Cassandra cluster](http://cassandra.apache.org/), using The [Datastax Cassandra](http://docs.datastax.com/en/cassandra/2.2/cassandra/install/installAMI.html) ami.
-2. 
 2. provisions Kong resources with user provided Cassandra seed nodes. 
 
 ###  Kong with Cassandra DB
