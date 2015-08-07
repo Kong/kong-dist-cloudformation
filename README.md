@@ -6,19 +6,17 @@
 
 [![][kong-logo]][kong-url]
 
-Kong CloudFormation template helps you model and set up Kong resources in AWS easily. Template describes all the resources you need to start a Kong Proxy and Admin server behind a load balancer.
-
+This CloudFormation template helps you model and set up Kong's resources in AWS easily.
 
 ## Summary
 
-You have option to chose between two templates, one provisions Kong resources along with a new Cassandra cluster another provisions Kong resources with user provided Cassandra seed nodes. 
+You have option to chose between two templates:
 
-In case if you chose Kong with Cassandra option, Template use [Datastax Cassandra](http://docs.datastax.com/en/cassandra/2.2/cassandra/install/installAMI.html) ami to create the Cassandra instance.
-
+1. provision Kong resources along with a new [Cassandra cluster](http://cassandra.apache.org/), using The [Datastax Cassandra](http://docs.datastax.com/en/cassandra/2.2/cassandra/install/installAMI.html) ami.
+2. 
+2. provisions Kong resources with user provided Cassandra seed nodes. 
 
 ###  Kong with Cassandra DB
-
-
 
 | Region          | Virtualization Type                      | Launch stack                                 |
 | ---------------:|------------------------------------------:|----------------------------------------------|
