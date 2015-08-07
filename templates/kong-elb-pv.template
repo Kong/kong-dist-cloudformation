@@ -254,11 +254,6 @@
             "LoadBalancerPort": "8001",
             "InstancePort": "8001",
             "Protocol": "HTTP"
-          },
-          {
-            "LoadBalancerPort": "8443",
-            "InstancePort": "8443",
-            "Protocol": "HTTPS"
           }
         ],
         "HealthCheck": {
