@@ -92,7 +92,7 @@ Support, Demo, Training, API Certifications and Consulting available at http://g
 
 [kong-logo]: http://i.imgur.com/4jyQQAZ.png
 [website-url]: https://getkong.org/
-[website-badge]: https://img.shields.io/badge/GETKong.org-Visit%20Website-43bf58.svg
+[website-badge]: https://img.shields.io/badge/GETKong.org-Learn%20More-43bf58.svg
 [documentation-url]: https://getkong.org/docs/
 [documentation-badge]: https://img.shields.io/badge/Documentation-Read%20Online-green.svg
 [gitter-url]: https://gitter.im/Mashape/kong
