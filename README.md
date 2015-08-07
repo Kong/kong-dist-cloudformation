@@ -1,10 +1,11 @@
-# [KONG][kong-url] :heavy_plus_sign: [AWS CloudFormation](https://aws.amazon.com/cloudformation/)
+# [KONG][website-url] :heavy_plus_sign: [AWS CloudFormation](https://aws.amazon.com/cloudformation/)
 
-- Website: [getkong.org][kong-url]
-- Documentation: [getkong.org/docs][kong-docs]
-- Mailing List: [Google Groups][google-groups-url]
+[![Website][website-badge]][website-url]
+[![Documentation][documentation-badge]][documentation-url]
+[![Mailing List][mailing-list-badge]][mailing-list-url]
+[![Gitter Badge][gitter-badge]][gitter-url]
 
-[![][kong-logo]][kong-url]
+[![][kong-logo]][website-url]
 
 This CloudFormation template helps you model and set up Kong's resources in AWS easily.
 
@@ -89,16 +90,15 @@ You have option to chose between two templates:
 
 Support, Demo, Training, API Certifications and Consulting available at http://getkong.org/enterprise.
 
-[kong-url]: https://getkong.org/
-[kong-docs]: https://getkong.org/docs/
 [kong-logo]: http://i.imgur.com/4jyQQAZ.png
-[kong-benefits]: http://cl.ly/image/1B3J3b3h1H1c/Image%202015-07-07%20at%206.57.25%20PM.png
-[mashape-url]: https://www.mashape.com
-[license-url]: https://github.com/Mashape/kong/blob/master/LICENSE
-[license-badge]: https://img.shields.io/github/license/mashape/kong.svg
+[website-url]: https://getkong.org/
+[website-badge]: https://img.shields.io/badge/GETKong.org-Visit%20Website-43bf58.svg
+[documentation-url]: https://getkong.org/docs/
+[documentation-badge]: https://img.shields.io/badge/Documentation-Read%20Online-green.svg
 [gitter-url]: https://gitter.im/Mashape/kong
 [gitter-badge]: https://img.shields.io/badge/Gitter-Join%20Chat-blue.svg
-[google-groups-url]: https://groups.google.com/forum/#!forum/konglayer
+[mailing-list-badge]: https://img.shields.io/badge/Email-Join%20Mailing%20List-blue.svg
+[mailing-list-url]: https://groups.google.com/forum/#!forum/konglayer
 
 [us-east-1-caas-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=kong-elb-cassandra-hvm&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Fv1.0%2Fkong-elb-cassandra-hvm.template
 [us-west-1-caas-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-1#/stacks/new?stackName=kong-elb-cassandra-hvm&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Fv1.0%2Fkong-elb-cassandra-hvm.template
