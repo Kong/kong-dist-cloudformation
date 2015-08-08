@@ -13,10 +13,8 @@ This CloudFormation template helps you model and set up Kong's resources in AWS 
 
 You have option to chose between two templates:
 
-1. provision Kong resources along with a new [Cassandra cluster](http://cassandra.apache.org/), using The [Datastax Cassandra](http://docs.datastax.com/en/cassandra/2.2/cassandra/install/installAMI.html) ami.
-2. provisions Kong resources with user provided Cassandra seed nodes. 
-
-###  Kong with Cassandra DB
+###  1) Kong with Cassandra DB
+Provision Kong resources along with a new [Cassandra cluster](http://cassandra.apache.org/), using The [Datastax Cassandra](http://docs.datastax.com/en/cassandra/2.2/cassandra/install/installAMI.html) AMI.
 
 | Region            | HVM AMIs                                                               | PV AMIs                                                                |
 | ----------------: | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
@@ -29,7 +27,8 @@ You have option to chose between two templates:
 | `ap-southeast-2`  | [![Kong Stack launch][stack-badge]][ap-southeast-2-caas-hvm-stack-url] | [![Kong Stack launch][stack-badge]][ap-southeast-2-caas-pv-stack-url]  |
 | `sa-east-1`       | [![Kong Stack launch][stack-badge]][sa-east-1-caas-hvm-stack-url]      | [![Kong Stack launch][stack-badge]][sa-east-1-caas-pv-stack-url]       |
 
-###  Kong without Cassandra DB (you need to bring yours)
+###  2) Kong without Cassandra DB (you need to bring yours)
+Provisions Kong resources with user provided Cassandra seed nodes. 
 
 
 | Region            | HVM AMIs                                                           | PV AMIs                                                          |
