@@ -78,12 +78,42 @@ Provisions Kong resources with user provided Cassandra seed nodes.
 8. AWS CloudFormation begins creating the resources that are specified in the template. To monitor the progress go to AWS CloudFormation console, select the stack in the list. In the stack details pane, click the *"Events"* tab to see the progress
 9. It will take several minutes *(~20 minutes)* to create the stack. Once the stack has a status of `CREATE_COMPLETE`, click on *"Output"* tab to get the proxy and Admin URL, it may take *60 seconds* more for links to become active 
  
+#### SSL Support
+
+You can install SSL Certificate on the Kong Load Balancer or use the SSl plugin on Kong to enable HTTPS support.
+
+#####  1) [SSL Certificates for Elastic Load Balancing](http://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/ssl-server-cert.html)
+1. Once you launch the Stack, get the Kong Load Balancer id from the Resources tab.
+2. In the navigation pane, under LOAD BALANCING, click Load Balancers.
+3. Search for the Kong Load Balancer and select it.
+4. In the bottom pane, select the Listeners tab.
+5. Click Edit.
+6  In the Edit Listeners dialog box, click Add.
+7. In the Load Balancer Protocol column, select HTTPS (Secure HTTP). This updates the Load Balancer Port, Instance Protocol, and Instance Port columns. In the Instance Protocol column, select HTTP and update the Instance port to 8000.
+8. By default, Elastic Load Balancing selects the current predefined security policy, ELBSecurityPolicy-2015-05, for your HTTPS/SSL listener. This is the recommended setting.
+9. In the SSL Certificate column, click Change, and then you either upload a new certificate or choose an existing Certificate.
+10. Click Save to add the listeners you just configured.
+11. Click on Security tab. 
+12. Click on Security Group id.
+13. In the bottom pane, select the Inbound tab.
+14. Click Edit.
+15. Add Load Balancer Port for the HTTPS to the list and save.
+
+#####  2) [Using Kong SSl Plugin](https://getkong.org/plugins/ssl/)
+1. SSH on each Kong node, upload the Certificate.
+2. Update Kong node Security Group to open TCP port 8443.
+3. Add HTTPS listener on Kong Load Balancer forwarding request to 8443 Instance port.
+4. Open HTTPS listener port in Kong Load Balancer security group.
+5. Enable the Kong [SSL plugin](https://getkong.org/plugins/ssl/).
+     
+     
 #### Important note
 
 1. The security configuration on the templates opens up all externally accessible ports to incoming traffic from any IP address if default is chosen *(`0.0.0.0/0`)*
 2. The risk of data leakage is high. If you desire a more secure configuration, please update access fields with appropiate IP address range
 3. The template installs many resources on AWS. You will be billed just for the AWS resources used
 4. Some of the instance types may not be supported in all the AWS Regions, so chose next best available option
+
 
 ## Enterprise Support
 
