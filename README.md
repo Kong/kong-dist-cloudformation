@@ -99,7 +99,7 @@ You can install SSL Certificate on the Kong Load Balancer or use the SSl plugin 
 14. Click Edit.
 15. Add Load Balancer Port for the HTTPS to the list and save.
 
-#####  2) [Using Kong SSl Plugin](https://getkong.org/plugins/ssl/)
+#####  2) [Using Kong SSL Plugin](https://getkong.org/plugins/ssl/)
 1. SSH on each Kong node, upload the Certificate.
 2. Update Kong node Security Group to open TCP port 8443.
 3. Add HTTPS listener on Kong Load Balancer forwarding request to 8443 Instance port.
