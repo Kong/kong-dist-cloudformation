@@ -81,8 +81,7 @@
     },
     "KongVersion": {
       "Description": "Kong version",
-      "Type": "String",
-      "Default": "0.4.1"
+      "Type": "Kong version, leave empty to install latest version"
     }
   },
   "Mappings": {
@@ -208,13 +207,26 @@
                 "yum update -y aws-cfn-bootstrap\n",
                 "echo '* soft nofile 65000' >> \/etc\/security\/limits.conf\n",
                 "echo '* hard nofile 65000' >> \/etc\/security\/limits.conf\n",
-                "wget https:\/\/github.com\/Mashape\/kong\/releases\/download\/", { "Ref" : "KongVersion" }, "\/kong-", { "Ref" : "KongVersion" }, ".el5.noarch.rpm\n",
+                "kong_version=",{ "Ref" : "KongVersion" }, "\n",
+                "if [ -z $kong_version ]\n",
+                "then\n",
+                "   wget -O kong.rpm downloadkong.org/el5.noarch.rpm\n",
+                "else\n",
+                "   wget -O kong.rpm downloadkong.org/el5.noarch.rpm?version=$kong_version\n",
+                "fi\n",
+                "if [ -e \".\/kong.rpm\" ]\n",
+                "then\n",
+                "   echo \"Installing Kong...\" \n",
+                "else\n", 
+                "   /opt/aws/bin/cfn-signal -e 1 --reason \"Failed to download Kong\" '", { "Ref" : "KongWaitHandle" }, "'\n",
+                "   echo \"failed to download kong, exiting...\" \n",
+                "   exit\n",
+                "fi\n", 
                 "yum install -y epel-release\n",
-                "yum install -y kong-0.4.1.*.noarch.rpm --nogpgcheck\n",
+                "yum install -y kong.rpm --nogpgcheck\n",
                 "CASSANDRA_HOSTS=(\"", { "Fn::Join": [ "\" \"", { "Ref": "CassandraSeedNodes" } ] }, "\")\n",
-                "echo \"      hosts:\" > hosts\n",
                 "for i in \"${CASSANDRA_HOSTS[@]}\"; do echo -e \"        - $i\"  >> hosts; done;\n",
-                "yum install -y kong-", { "Ref" : "KongVersion" }, ".*.noarch.rpm --nogpgcheck\n",
+                "sed -i $'/.*\"localhost:9042\"\/{r hosts\\n d}' \/etc\/kong\/kong.yml\n",
                 "count=4\n",
                 "until [ -f \"\/usr\/local\/kong\/kong.pid\" ]\n",
                 "do\n",
@@ -230,7 +242,7 @@
                 "      sleep 15s\n",
                 "   fi\n", 
                 "done\n",
-                "/opt/aws/bin/cfn-signal -e 0 --reason \"Kong setup completed\" '", { "Ref" : "KongWaitHandle" }, "'\n"
+                "/opt/aws/bin/cfn-signal -e 0 --reason \"Kong setup completed\" '", { "Ref" : "KongWaitHandle" }, "'\n" 
               ]
             ]
           }
