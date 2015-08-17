@@ -324,7 +324,7 @@
                 "   echo -e \"        - $hostName\"  >> hosts\n",
                 "done;\n",
                 "sed -i $'/.*\"localhost:9042\"\/{r hosts\\n d}' \/etc\/kong\/kong.yml\n",
-                "sleep 1m\n",
+                "sleep `echo $(( RANDOM % ( 60 - 30 + 1 ) + 30 ))`\n",
                 "count=4\n",
                 "until [ -f \"\/usr\/local\/kong\/kong.pid\" ]\n",
                 "do\n",
@@ -337,7 +337,7 @@
                 "      echo \"trying to start kong..\"\n",
                 "      su -s \/bin\/sh -c \"\/usr\/local\/bin\/kong start\" ec2-user\n",
                 "      count=\"$(($count-1))\"\n",
-                "      sleep 15s\n",
+                "      sleep `echo $(( RANDOM % ( 60 - 30 + 1 ) + 30 ))`\n",
                 "   fi\n", 
                 "done\n",
                 "/opt/aws/bin/cfn-signal -e 0 --reason \"Kong setup completed\" '", { "Ref" : "KongWaitHandle" }, "'\n"   

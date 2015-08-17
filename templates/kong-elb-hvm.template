@@ -250,7 +250,7 @@
                 "      echo \"trying to start kong..\"\n",
                 "      su -s \/bin\/sh -c \"\/usr\/local\/bin\/kong start\" ec2-user\n",
                 "      count=\"$(($count-1))\"\n",
-                "      sleep 15s\n",
+                "      sleep `echo $(( RANDOM % ( 60 - 30 + 1 ) + 30 ))`\n",
                 "   fi\n", 
                 "done\n",
                 "/opt/aws/bin/cfn-signal -e 0 --reason \"Kong setup completed\" '", { "Ref" : "KongWaitHandle" }, "'\n" 
