@@ -97,7 +97,7 @@ Provisions Kong resources with user provided Cassandra seed nodes.
    
 7. **Use Kong:**
 
-    Quickly learn how to use Kong with the [5-minute Quickstart](/docs/{{site.data.kong_latest.release}}/getting-started/quickstart).
+    Quickly learn how to use Kong with the [5-minute Quickstart](http://localhost:3000/docs/0.4.x/getting-started/quickstart/).
 
 #### SSL Support
 
