@@ -16,6 +16,7 @@ Note: For Kong's version older than 0.4.2 switch to tag 1.0.0
 You have option to chose between two templates:
 
 ###  1) Kong with Cassandra DB
+
 Provision Kong resources along with a new [Cassandra cluster](http://cassandra.apache.org/), using The [Datastax Cassandra](http://docs.datastax.com/en/cassandra/2.2/cassandra/install/installAMI.html) AMI.
 
 | Region            | HVM AMIs                                                               | PV AMIs                                                                |
@@ -30,8 +31,8 @@ Provision Kong resources along with a new [Cassandra cluster](http://cassandra.a
 | `sa-east-1`       | [![Kong Stack launch][stack-badge]][sa-east-1-caas-hvm-stack-url]      | [![Kong Stack launch][stack-badge]][sa-east-1-caas-pv-stack-url]       |
 
 ###  2) Kong without Cassandra DB (you need to bring yours)
-Provisions Kong resources with user provided Cassandra seed nodes. 
 
+Provisions Kong resources with user provided Cassandra seed nodes.
 
 | Region            | HVM AMIs                                                           | PV AMIs                                                          |
 | ----------------: | ------------------------------------------------------------------ | ---------------------------------------------------------------- |
@@ -45,7 +46,7 @@ Provisions Kong resources with user provided Cassandra seed nodes.
 | `sa-east-1`       | [![Kong Stack launch][stack-badge]][sa-east-1-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][sa-east-1-pv-stack-url]      |
  
  
-### Cloudformation parameters
+### parameters
  
 | Parameter                   | Default      | Description                                                                          |
 | --------------------------: | ------------ | ------------------------------------------------------------------------------------ |
@@ -83,6 +84,8 @@ Provisions Kong resources with user provided Cassandra seed nodes.
 
     Fill in all the parameters details. If you chose to launch Kong with Cassandra you would be asked to fill in extra parameters to create a Cassandra cluster. check the description of each field and provide appropriate values.
 
+    **Note**: *consult the [parameters table](#parameters) for detailed description of parameters*
+
 5. **Option page**:
 
     Add Tags and other fields according to your requirements.  
@@ -104,12 +107,10 @@ Provisions Kong resources with user provided Cassandra seed nodes.
 You can install SSL Certificate on the Kong Load Balancer or use the SSl plugin on Kong to enable HTTPS support.
 
 #####  1) [SSL Certificate for Kong Load Balancer](http://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/ssl-server-cert.html)
-1. Once you launch the Stack, get the Kong Load Balancer id from the Resources tab.
-2. In the navigation pane, under LOAD BALANCING, click Load Balancers.
-3. Search for the Kong Load Balancer and select it.
-4. In the bottom pane, select the Listeners tab.
-5. Click Edit.
-6  In the Edit Listeners dialog box, click Add.
+
+1. Obtain the Kong Load Balancer `id` from the *"Resources tab"*.
+2. Find the matching Kong Load Balancer instance.
+6  Edit Listeners from the bottom pane, click Add.
 7. In the Load Balancer Protocol column, select HTTPS (Secure HTTP). This updates the Load Balancer Port, Instance Protocol, and Instance Port columns. In the Instance Protocol column, select HTTP and update the Instance port to 8000.
 8. By default, Elastic Load Balancing selects the current predefined security policy, ELBSecurityPolicy-2015-05, for your HTTPS/SSL listener. This is the recommended setting.
 9. In the SSL Certificate column, click Change, and then you either upload a new certificate or choose an existing Certificate.
@@ -121,6 +122,7 @@ You can install SSL Certificate on the Kong Load Balancer or use the SSl plugin 
 15. Add Load Balancer Port for the HTTPS to the list and save.
 
 #####  2) [Using Kong SSL Plugin](https://getkong.org/plugins/ssl/)
+
 1. SSH on each Kong node, upload the Certificate.
 2. Update Kong node Security Group to open TCP port 8443.
 3. Add HTTPS listener on Kong Load Balancer forwarding request to 8443 Instance port.
