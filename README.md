@@ -67,19 +67,38 @@ Provisions Kong resources with user provided Cassandra seed nodes.
 | `CassandraOpsCenterAccess`  | `0.0.0.0/0`  | The IP address range that can access OpsCenter for Cassandra cluster management      |
 
 
-### Steps to launch a Kong stack on AWS cloud
+### Instructions:
 
-1. Create a key pair to access Cassandra instance. Move to next step if you want to use any existing key pair
-2. Create a key pair to access Kong instances. Move to next step if you want to use any existing key pair
-3. Select the region, the virtualization type and then click *"Launch Stack"*. You should see AWS cloudformation *"Select Template"* page
-4. You can change the stack name. Click next to move to *"Specify parameter"* page.
-5. Fill in all the parameters details. If you chose to launch Kong with Cassandra you would be asked to fill in extra parameters to create a Cassandra cluster. Read description of field and enter the value for each field
-6. Click next to move to *"Option page"*. Add Tags and other fields according to your requirements otherwise click *"Next"*
-  - Note: The template is configured to add a *"Name"* tag to each relevant resource
-7. Review the information for the stack. When you're satisfied with the settings, click *"Create"*
-8. AWS CloudFormation begins creating the resources that are specified in the template. To monitor the progress go to AWS CloudFormation console, select the stack in the list. In the stack details pane, click the *"Events"* tab to see the progress
-9. It will take several minutes *(~20 minutes)* to create the stack. Once the stack has a status of `CREATE_COMPLETE`, click on *"Output"* tab to get the proxy and Admin URL, it may take *60 seconds* more for links to become active 
- 
+1. **Key Pairs**:
+
+    Create two sets of key pairs, one to access Cassandra instances & one for Kong instances. *Continue to next step if you want to use an existing key pair*
+
+3. **Choose a Region & VM Type**:
+
+    Choose the region closest to your API servers, and pick the virtualization type you'd like from the list of available [templates](#tempaltes) above.
+
+    You should land on AWS Cloud Formation *"Select Template"* page
+
+4. **Parameters**:
+
+    Fill in all the parameters details. If you chose to launch Kong with Cassandra you would be asked to fill in extra parameters to create a Cassandra cluster. check the description of each field and provide appropriate values.
+
+5. **Option page**:
+
+    Add Tags and other fields according to your requirements.  
+
+    **Note:** *The template is configured to add a "Name" tag to each relevant resource*
+
+6. **Grab a Coffee!**:
+
+    It will take several minutes *(~20 minutes)* to create the stack. Once the stack has a status of `CREATE_COMPLETE`, click on *"Output"* tab to get the proxy and Admin URL, it may take *60 seconds* more for links to become active.
+
+    **Note**: *To monitor the progress go to AWS CloudFormation console, select the stack in the list. In the stack details pane, click the "Events" tab to see the progress.*
+   
+7. **Use Kong:**
+
+    Quickly learn how to use Kong with the [5-minute Quickstart](/docs/{{site.data.kong_latest.release}}/getting-started/quickstart).
+
 #### SSL Support
 
 You can install SSL Certificate on the Kong Load Balancer or use the SSl plugin on Kong to enable HTTPS support.
