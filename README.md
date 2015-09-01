@@ -115,7 +115,7 @@ You can install SSL Certificate on the Kong Load Balancer or use the SSl plugin 
 1. The security configuration on the templates opens up all externally accessible ports to incoming traffic from any IP address if default is chosen *(`0.0.0.0/0`)*
 2. The risk of data leakage is high. If you desire a more secure configuration, please update access fields with appropiate IP address range
 3. The template installs many resources on AWS. You will be billed just for the AWS resources used
-4. Some of the instance types may not be supported in all the AWS Regions, so chose next best available option
+4. Some of the instance types may not be supported in all the AWS Regions or Availiblity Zones, so chose next best available option
 
 
 ## Enterprise Support
