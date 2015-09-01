@@ -55,8 +55,9 @@ Provisions Kong resources with user provided Cassandra seed nodes.
 | `KongKeyName`               | `-`          | Existing EC2 KeyPair to enable SSH access to the Kong instances                      |
 | `KongFleetMaxSize`          | `2`          | Max Number of Kong instances *(Min: `1`, Max: `10`)*                                 |
 | `KongFleetDesiredSize`      | `2`          | Desired Number of Kong instances *(Min: `1`, Max: `10`)*                             |
-| `KongInstanceType`          | `c3.8xlarge` | EC2 instance type for Kong                                                           |
+| `KongInstanceType`          | `c3.8xlarge` | EC2 instance type for Kong. Note: T2 instance is not supported on the EC2-Classic platform |
 | `KongVersion`               | `-`          | Kong version, leave empty to install latest version                                  |
+| `KongAvailabilityZones`     | `-`          | AZ for the Kong instances                                                            |
 | `CassandraKeyName`          | `-`          | Existing EC2 KeyPair to enable SSH access to the instances for Cassandra             |
 | `CassandraFleetSize`        | `1`          | Number of nodes in cluster. *(Min: `1`, Max: `10`)*                                  |
 | `CassandraAvailabilityZone` | `-`          | Availablity zone in which cassandra cluster would be created, *for multi regions and zones cluster please refer to [Datastax documentation](http://docs.datastax.com/en/cassandra/2.2/cassandra/planning/planPlanningEC2.html?scroll=planPlanningEC2__multi-region-deploy).* |
