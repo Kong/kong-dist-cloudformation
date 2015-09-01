@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Kong CloudFormation template.Template creates load balanced Kong instances with user provided Cassandra contact points",
+  "Description": "Kong CloudFormation template.Template creates load balanced Kong instances configured with user provided Cassandra contact points",
   "Parameters": {
     "KongKeyName": {
       "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instances for Kong",
@@ -58,7 +58,7 @@
       "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x\/x."
     },
     "KongInstanceType": {
-      "Description": "Kong EC2 instance type",
+      "Description": "Kong EC2 instance type. Note: T2 instance is not supported on the EC2-Classic platform",
       "Type": "String",
       "Default": "c3.8xlarge",
       "AllowedValues": [

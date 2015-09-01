@@ -78,7 +78,7 @@
       "MinValue": "1"
     },
     "KongInstanceType": {
-      "Description": "Kong EC2 instance type",
+      "Description": "Kong EC2 instance type. Note: T2 instance is not supported on the EC2-Classic platform",
       "Type": "String",
       "Default": "c3.8xlarge",
       "AllowedValues": [
