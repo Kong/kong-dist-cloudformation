@@ -209,6 +209,7 @@
               [
                 "#!\/bin\/bash\n",
                 "yum update -y aws-cfn-bootstrap\n",
+                "yum install openssl098e -y\n",
                 "echo '* soft nofile 65000' >> \/etc\/security\/limits.conf\n",
                 "echo '* hard nofile 65000' >> \/etc\/security\/limits.conf\n",
                 "kong_version=",{ "Ref" : "KongVersion" }, "\n",
