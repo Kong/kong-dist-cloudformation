@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Kong with single node Cassandra cluster CloudFormation template. version v1.0",
+  "Description": "Kong CloudFormation template.Template creates load balanced Kong instances with Cassandra cluster",
   "Parameters": {
     "CassandraKeyName": {
       "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instances for Cassandra",
@@ -35,6 +35,10 @@
       "Default": "0.0.0.0\/0",
       "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\/(\\d{1,2})",
       "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x\/x."
+    },
+    "KongAvailabilityZones": {
+      "Description": "AZ for the Kong instances, please choose non constrained zones only",
+      "Type": "List<AWS::EC2::AvailabilityZone::Name>"
     },
     "KongProxyAccess": {
       "Description": "The IP address range that can be used to access the Kong proxy port 8000",
@@ -222,7 +226,7 @@
       "DependsOn" : "CassandraWaitCondition",
       "Properties": {
         "AvailabilityZones": {
-          "Fn::GetAZs": ""
+          "Ref": "KongAvailabilityZones"
         },
         "LaunchConfigurationName": {
           "Ref": "KongLaunchConfig"
@@ -295,6 +299,7 @@
               [
                 "#!\/bin\/bash\n",
                 "yum update -y aws-cfn-bootstrap\n",
+                "yum install openssl098e -y\n",
                 "echo '* soft nofile 65000' >> \/etc\/security\/limits.conf\n",
                 "echo '* hard nofile 65000' >> \/etc\/security\/limits.conf\n",
                 "kong_version=",{ "Ref" : "KongVersion" }, "\n",
@@ -351,7 +356,7 @@
       "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
       "Properties": {
         "AvailabilityZones": {
-          "Fn::GetAZs": ""
+          "Ref": "KongAvailabilityZones"
         },
         "CrossZone": "true",
         "Listeners": [
