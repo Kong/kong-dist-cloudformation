@@ -20,14 +20,12 @@
       "Description": "Max Number of Kong instances",
       "Type": "Number",
       "Default": "2",
-      "MaxValue": "10",
       "MinValue": "1"
     },
     "KongFleetDesiredSize": {
       "Description": "Desired Number of Kong instances",
       "Type": "Number",
       "Default": "2",
-      "MaxValue": "10",
       "MinValue": "1"
     },
     "KongSSHLocation": {
