@@ -573,7 +573,7 @@
                 "publicip=`curl http://169.254.169.254/latest/meta-data/public-ipv4`\n",
                 "publichost=`curl http://169.254.169.254/latest/meta-data/public-hostname`\n",
                 "cfn-signal -e 0 --data $publicip --id $publichost --reason \"Kong setup completed\" '", { "Ref" : "CassandraWaitHandle" }, "'\n",
-                "--clustername ",{ "Ref": "CassandraClusterName" }, " --totalnodes ", { "Ref": "KongFleetDesiredSize" }," --version ", { "Ref": "CassandraClusterVersion" }," --release ",{"Ref": "CassandraVersion"},
+                "--clustername ",{ "Ref": "CassandraClusterName" }, " --totalnodes ", { "Ref": "CassandraFleetSize" }," --version ", { "Ref": "CassandraClusterVersion" }," --release ",{"Ref": "CassandraVersion"},
                 "\n"   
               ]
             ]
