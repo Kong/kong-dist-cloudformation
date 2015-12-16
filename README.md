@@ -46,7 +46,7 @@ Provisions Kong resources with user provided Cassandra seed nodes.
 | `sa-east-1`       | [![Kong Stack launch][stack-badge]][sa-east-1-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][sa-east-1-pv-stack-url]      |
  
  
-### parameters
+### Parameters
  
 | Parameter                   | Default      | Description                                                                          |
 | --------------------------: | ------------ | ------------------------------------------------------------------------------------ |
