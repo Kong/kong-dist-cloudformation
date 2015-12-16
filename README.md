@@ -131,7 +131,7 @@ You can install SSL Certificate on the Kong Load Balancer or use the SSl plugin 
 5. Enable the Kong [SSL plugin](https://getkong.org/plugins/ssl/).
      
      
-#### Important note
+#### Important Note
 
 1. The security configuration on the templates opens up all externally accessible ports to incoming traffic from any IP address if default is chosen *(`0.0.0.0/0`)*
 2. The risk of data leakage is high. If you desire a more secure configuration, please update access fields with appropiate IP address range
