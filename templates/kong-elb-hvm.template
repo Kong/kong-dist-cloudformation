@@ -93,7 +93,7 @@
       "ConstraintDescription": "must be a valid EC2 instance type."
     },
     "KongVersion": {
-      "Description": "Kong version, leave empty to install latest version",
+      "Description": "Kong version, leave empty to install latest version. (Only 0.6.x supported)",
       "Type": "String"
     }
   },
@@ -218,15 +218,14 @@
               [
                 "#!\/bin\/bash\n",
                 "yum update -y aws-cfn-bootstrap\n",
-                "yum install openssl098e -y\n",
                 "echo '* soft nofile 65000' >> \/etc\/security\/limits.conf\n",
                 "echo '* hard nofile 65000' >> \/etc\/security\/limits.conf\n",
                 "kong_version=",{ "Ref" : "KongVersion" }, "\n",
                 "if [ -z $kong_version ]\n",
                 "then\n",
-                "   wget -O kong.rpm downloadkong.org/el5.noarch.rpm\n",
+                "   wget -O kong.rpm downloadkong.org/aws.rpm\n",
                 "else\n",
-                "   wget -O kong.rpm downloadkong.org/el5.noarch.rpm?version=$kong_version\n",
+                "   wget -O kong.rpm downloadkong.org/aws.rpm?version=$kong_version\n",
                 "fi\n",
                 "if [ -e \".\/kong.rpm\" ]\n",
                 "then\n",
@@ -238,25 +237,29 @@
                 "fi\n", 
                 "yum install -y epel-release\n",
                 "yum install -y kong.rpm --nogpgcheck\n",
+                "echo \"database: cassandra\" >> hosts\n",
+                "echo \"cassandra:\" >> hosts\n",
+                "echo \"  contact_points:\" >> hosts\n",
                 "CASSANDRA_HOSTS=(\"", { "Fn::Join": [ "\" \"", { "Ref": "CassandraSeedNodes" } ] }, "\")\n",
-                "for i in \"${CASSANDRA_HOSTS[@]}\"; do echo -e \"        - $i\"  >> hosts; done;\n",
-                "sed -i $'/.*\"localhost:9042\"\/{r hosts\\n d}' \/etc\/kong\/kong.yml\n",
-                "count=4\n",
-                "until [ -f \"\/usr\/local\/kong\/kong.pid\" ]\n",
-                "do\n",
-                "   if [ $count -le 0 ]\n",
-                "   then\n",
-                "      /opt/aws/bin/cfn-signal -e 1 --reason \"Failed to start Kong\" '", { "Ref" : "KongWaitHandle" }, "'\n",
-                "      echo \"failed to start kong, exiting...\" \n",
-                "      exit\n",
-                "   else\n",
+                "for i in \"${CASSANDRA_HOSTS[@]}\"; do echo -e \"    - $i\"  >> hosts; done;\n",
+                "sed -i $'/# cassandra:\/{r hosts\\n d}' \/etc\/kong\/kong.yml\n",
+                "COUNTER=0\n",
+                "while [ $COUNTER -lt 4 ]; do\n",
+                "   /usr/local/bin/kong status\n",
+                "   if [[ $? -ne 0 ]]; then\n",
                 "      echo \"trying to start kong..\"\n",
                 "      su -s \/bin\/sh -c \"\/usr\/local\/bin\/kong start\" ec2-user\n",
-                "      count=\"$(($count-1))\"\n",
-                "      sleep `echo $(( RANDOM % ( 60 - 30 + 1 ) + 30 ))`\n",
+                "      let COUNTER=COUNTER+1\n",
+                "      sleep `echo $(( RANDOM % ( 120 - 30 + 1 ) + 30 ))`\n",                
+                "   else\n",
+                "      /opt/aws/bin/cfn-signal -e 0 --reason \"Kong setup completed\" '", { "Ref" : "KongWaitHandle" }, "'\n",
+                "      break \n",
                 "   fi\n", 
                 "done\n",
-                "/opt/aws/bin/cfn-signal -e 0 --reason \"Kong setup completed\" '", { "Ref" : "KongWaitHandle" }, "'\n" 
+                "if ! /usr/local/bin/kong status; then\n",
+                "   echo \"failed to start kong, exiting...\" \n",
+                "   /opt/aws/bin/cfn-signal -e 1 --reason \"Failed to start Kong\" '", { "Ref" : "KongWaitHandle" }, "'\n",
+                "fi\n"
               ]
             ]
           }
@@ -321,6 +324,14 @@
             }
           }
         ]
+      }
+    },
+    "Ingress7946": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupName": {"Ref": "InstanceSecurityGroup"}, "IpProtocol": "tcp", "FromPort": "7946", "ToPort": "7946", "SourceSecurityGroupId": {
+          "Fn::GetAtt" : [ "InstanceSecurityGroup", "GroupId" ]
+        }
       }
     }
   },
