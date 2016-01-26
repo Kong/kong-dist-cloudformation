@@ -9,7 +9,7 @@
 
 This CloudFormation template helps you model and set up Kong's resources in AWS easily.
 
-Note: For Kong's version older than 0.4.2 switch to tag 1.0.0
+Note: For Kong's version older than 0.5.x use the tag 2.0.2.
 
 ## Summary
 
@@ -64,7 +64,7 @@ Provisions Kong resources with user provided Cassandra seed nodes.
 | `CassandraAvailabilityZone` | `-`          | Availablity zone in which cassandra cluster would be created, *for multi regions and zones cluster please refer to [Datastax documentation](http://docs.datastax.com/en/cassandra/2.2/cassandra/planning/planPlanningEC2.html?scroll=planPlanningEC2__multi-region-deploy).* |
 | `CassandraInstanceType`     | `c3.2xlarge` | EC2 instance type for Cassandra                                                      |
 | `CassandraClusterName`      | `-`          | Cassandra cluster name                                                               |
-| `CassandraClusterVersion`   | `2.2.0`      | Cassandra cluster version                                                            |
+| `CassandraClusterVersion`   | `2.2.4`      | Cassandra cluster version                                                            |
 | `CassandraVersion`          | `Community`  | Cassandra version                                                                    |
 | `CassandraOpsCenterAccess`  | `0.0.0.0/0`  | The IP address range that can access OpsCenter for Cassandra cluster management      |
 
