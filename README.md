@@ -44,11 +44,28 @@ Provisions Kong resources with user provided Cassandra seed nodes.
 | `ap-southeast-1`  | [![Kong Stack launch][stack-badge]][ap-southeast-1-hvm-stack-url]  | [![Kong Stack launch][stack-badge]][ap-southeast-1-pv-stack-url] |
 | `ap-southeast-2`  | [![Kong Stack launch][stack-badge]][ap-southeast-2-hvm-stack-url]  | [![Kong Stack launch][stack-badge]][ap-southeast-2-pv-stack-url] |
 | `sa-east-1`       | [![Kong Stack launch][stack-badge]][sa-east-1-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][sa-east-1-pv-stack-url]      |
+
+###  3) Kong with Postgres DB
+
+Provisions Kong resources with Postgres.
+
+| Region            | HVM AMIs                                                           | PV AMIs                                                          |
+| ----------------: | ------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| `us-east-1`       | [![Kong Stack launch][stack-badge]][us-east-1-postgres-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][us-east-1-postgres-pv-stack-url]      |
+| `us-west-1`       | [![Kong Stack launch][stack-badge]][us-west-1-postgres-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][us-west-1-postgres-pv-stack-url]      |
+| `us-west-2`       | [![Kong Stack launch][stack-badge]][us-west-2-postgres-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][us-west-2-postgres-pv-stack-url]      |
+| `eu-west-1`       | [![Kong Stack launch][stack-badge]][eu-west-1-postgres-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][eu-west-1-postgres-pv-stack-url]      |
+| `ap-northeast-1`  | [![Kong Stack launch][stack-badge]][ap-northeast-1-postgres-hvm-stack-url]  | [![Kong Stack launch][stack-badge]][ap-northeast-1-postgres-pv-stack-url] |
+| `ap-southeast-1`  | [![Kong Stack launch][stack-badge]][ap-southeast-1-postgres-hvm-stack-url]  | [![Kong Stack launch][stack-badge]][ap-southeast-1-postgres-pv-stack-url] |
+| `ap-southeast-2`  | [![Kong Stack launch][stack-badge]][ap-southeast-2-postgres-hvm-stack-url]  | [![Kong Stack launch][stack-badge]][ap-southeast-2-postgres-pv-stack-url] |
+| `sa-east-1`       | [![Kong Stack launch][stack-badge]][sa-east-1-postgres-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][sa-east-1-postgres-pv-stack-url]      |
  
  
 ### Parameters
 
 <B>Recommended usage: use this cloud formation as basis for your own, adjust the variables and template to better suite your needs.</B>
+
+#### Cassandra
  
 | Parameter                   | Default      | Description                                                                          |
 | --------------------------: | ------------ | ------------------------------------------------------------------------------------ |
@@ -69,6 +86,28 @@ Provisions Kong resources with user provided Cassandra seed nodes.
 | `CassandraClusterVersion`   | `2.2.4`      | Cassandra cluster version                                                            |
 | `CassandraVersion`          | `Community`  | Cassandra version                                                                    |
 | `CassandraOpsCenterAccess`  | `0.0.0.0/0`  | The IP address range that can access OpsCenter for Cassandra cluster management      |
+
+#### Postgres
+ 
+| Parameter                   | Default      | Description                                                                          |
+| --------------------------: | ------------ | ------------------------------------------------------------------------------------ |
+| `SSHLocation`               | `0.0.0.0/0`  | The IP address range that can be used to SSH to the Kong and Cassandra EC2 instances |
+| `KongProxyAccess`           | `0.0.0.0/0`  | The IP address range that can be used to access the Kong admin server                |
+| `KongAdminAccess`           | `0.0.0.0/0`  | The IP address range that can be used to access the Kong proxy server                |
+| `KongKeyName`               | `-`          | Existing EC2 KeyPair to enable SSH access to the Kong instances                      |
+| `KongFleetMaxSize`          | `2`          | Max Number of Kong instances *(Min: `1`)*                                 |
+| `KongFleetDesiredSize`      | `2`          | Desired Number of Kong instances *(Min: `1`)*                             |
+| `KongInstanceType`          | `c3.8xlarge` | EC2 instance type for Kong. Note: T2 instance is not supported on the EC2-Classic platform |
+| `KongVersion`               | `-`          | Kong version, leave empty to install latest version                                  |
+| `KongAvailabilityZones`     | `-`          | AZ for the Kong instances                                                            |
+| `DBName`                    | `Kong`       | Database name                                                                        |
+| `DBHost`                    | `-`          | The database host dns/ip address, leave blank to start a new RDS instance            |
+| `DBPort`                    | `5432`       | The database port, leave blank to start a new RDS instance                           |
+| `DBUsername`                | `kong`   | The database admin account username                                                      |
+| `DBPassword`                | `changeit`          | The database admin account password                                           |
+| `DBClass`                   | `db.m1.large`      | Database instance class                                                        |
+| `DBPublicAccess`            | `false`  | Database public access                                                                   |
+| `DBAllocatedStorage`        | `5`  | The size of the database (Gb)     |
 
 
 ### Instructions:
@@ -188,4 +227,22 @@ Support, Demo, Training, API Certifications and Consulting available at http://g
 [ap-southeast-1-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-1#/stacks/new?stackName=kong-elb-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-pv.template
 [ap-southeast-2-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-2#/stacks/new?stackName=kong-elb-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-pv.template
 [sa-east-1-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=sa-east-1#/stacks/new?stackName=kong-elb-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-pv.template
+[stack-badge]: https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png
+[us-east-1-postgres-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=kong-elb-postgres-hvm&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-postgres-hvm.template
+[us-west-1-postgres-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-1#/stacks/new?stackName=kong-elb-postgres-hvm&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-postgres-hvm.template
+[us-west-2-postgres-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new?stackName=kong-elb-postgres-hvm&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-postgres-hvm.template
+[eu-west-1-postgres-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/new?stackName=kong-elb-postgres-hvm&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-postgres-hvm.template
+[ap-northeast-1-postgres-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/stacks/new?stackName=kong-elb-postgres-hvm&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-postgres-hvm.template
+[ap-southeast-1-postgres-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-1#/stacks/new?stackName=kong-elb-postgres-hvm&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-postgres-hvm.template
+[ap-southeast-2-postgres-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-2#/stacks/new?stackName=kong-elb-postgres-hvm&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-postgres-hvm.template
+[sa-east-1-postgres-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=sa-east-1#/stacks/new?stackName=kong-elb-postgres-hvm&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-postgres-hvm.template
+
+[us-east-1-postgres-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=kong-elb-postgres-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-postgres-pv.template
+[us-west-1-postgres-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-1#/stacks/new?stackName=kong-elb-postgres-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-postgres-pv.template
+[us-west-2-postgres-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new?stackName=kong-elb-postgres-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-postgres-pv.template
+[eu-west-1-postgres-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/new?stackName=kong-elb-postgres-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-postgres-pv.template
+[ap-northeast-1-postgres-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/stacks/new?stackName=kong-elb-postgres-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-postgres-pv.template
+[ap-southeast-1-postgres-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-1#/stacks/new?stackName=kong-elb-postgres-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-postgres-pv.template
+[ap-southeast-2-postgres-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-2#/stacks/new?stackName=kong-elb-postgres-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-postgres-pv.template
+[sa-east-1-postgres-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=sa-east-1#/stacks/new?stackName=kong-elb-postgres-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-postgres-pv.template
 [stack-badge]: https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png

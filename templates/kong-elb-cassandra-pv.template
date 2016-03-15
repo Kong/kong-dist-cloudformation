@@ -161,7 +161,7 @@
       ]
     },
     "KongVersion": {
-      "Description": "Kong version, leave empty to install latest version. (Only 0.6.x supported)",
+      "Description": "Kong version, leave empty to install latest version. (Only 0.6.x and above supported)",
       "Type": "String"
     }
   },
