@@ -437,14 +437,14 @@
     },
     "CassandraWaitCondition" : {
       "Type" : "AWS::CloudFormation::WaitCondition",
-      "DependsOn" : "CaasandraGroup",
+      "DependsOn" : "CassandraGroup",
       "Properties" : {
         "Handle"  : { "Ref" : "CassandraWaitHandle" },
         "Timeout" : "900",
         "Count"   : { "Ref" : "CassandraFleetSize" }
       }
     },
-    "CaasandraGroup": {
+    "CassandraGroup": {
       "Type": "AWS::AutoScaling::AutoScalingGroup",
       "Properties": {
         "LaunchConfigurationName": {
