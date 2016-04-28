@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Kong CloudFormation template.Template creates load balanced Kong instances with a Postgres RDS instance unless user provide one",
+  "Description": "Kong CloudFormation template.Template creates load balanced Kong instances with Postgres RDS instance in a new VPC",
   "Parameters": {
     "DBName": {
       "Default": "kong",
@@ -11,15 +11,44 @@
       "ConstraintDescription" : "must begin with a letter and contain only alphanumeric characters."
     },
     "DBHost": {
-      "Description" : "The database host dns, leave blank to start a new RDS instance",
+      "Description" : "Optional- Database host dns/IP address, leave blank to start a new RDS instance",
       "Type": "String"
     },
     "DBPort": {
       "Default": "5432",
-      "Description" : "The database port, leave it blank to start a new RDS instance",
+      "Description" : "Conditional- required if DBHost provided. The database port",
       "Type": "String",
       "AllowedPattern" : "[0-9]+",
       "ConstraintDescription" : "must be a valid port number"
+    },
+    "DBMultiAZ" : {
+      "Default" : false,
+      "Description" : "Allow MultiAZ database deployment ",
+      "Type" : "String",
+      "AllowedValues" : [ true, false ]
+    },
+    "DBPublicAccess" : {
+      "Default" : false,
+      "Description" : "Allow Public access to database",
+      "Type" : "String",
+      "AllowedValues" : [ true, false ]
+    },
+    "DBVersion" : {
+      "Description": "Postgres version",
+      "Type": "String",
+      "Default": "9.4.7",
+      "AllowedValues": [
+        "9.5.2",
+        "9.4.7",
+        "9.4.5",
+        "9.4.4",
+        "9.4.1"
+      ]
+    },
+    "DBSnapshotIdentifier" : {
+      "Description" : "Optional- The RDS snapshot name to restore to the new DB instance.",
+      "Type": "String",
+      "Default": ""
     },
     "DBUsername": {
       "Default": "kong",
@@ -37,16 +66,11 @@
       "MinLength": "8"
     },
     "DBClass" : {
-      "Default" : "db.m1.large",
+      "Default" : "db.t2.micro",
       "Description" : "Database instance class",
       "Type" : "String",
       "AllowedValues" : [ "db.t2.micro", "db.m1.small", "db.m1.large", "db.m1.xlarge", "db.m2.xlarge" ],
       "ConstraintDescription" : "must select a valid database instance type."
-    },
-    "DBPublicAccess" : {
-      "Type" : "String",
-      "Default" : false,
-      "Description" : "Database public access"
     },
     "DBAllocatedStorage" : {
       "Default": "5",
@@ -57,17 +81,13 @@
       "ConstraintDescription" : "must be between 5+"
     },
     "SSHLocation": {
-      "Description": "The IP address range that can be used to SSH to the Kong instances",
+      "Description": "The IP address range that can be used to SSH to the Kong and Cassandra EC2 instances",
       "Type": "String",
       "MinLength": "9",
       "MaxLength": "18",
       "Default": "0.0.0.0\/0",
       "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\/(\\d{1,2})",
       "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x\/x."
-    },
-    "KongAvailabilityZones": {
-      "Description": "AZ for the Kong instances, please choose non constrained zones only",
-      "Type": "List<AWS::EC2::AvailabilityZone::Name>"
     },
     "KongProxyAccess": {
       "Description": "The IP address range that can be used to access the Kong proxy port 8000",
@@ -88,7 +108,7 @@
       "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x\/x."
     },
     "KongKeyName": {
-      "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instances for Kong",
+      "Description": "Required- Name of an existing EC2 KeyPair to enable SSH access to the instances for Kong",
       "Type": "AWS::EC2::KeyPair::KeyName",
       "Default": ""
     },
@@ -107,7 +127,7 @@
     "KongInstanceType": {
       "Description": "Kong EC2 instance type. Note: T2 instance is not supported on the EC2-Classic platform",
       "Type": "String",
-      "Default": "c3.8xlarge",
+      "Default": "c3.2xlarge",
       "AllowedValues": [
         "t2.small",
         "t2.micro",
@@ -142,7 +162,7 @@
       "ConstraintDescription": "must be a valid EC2 instance type."
     },
     "KongVersion": {
-      "Description": "Kong version, leave empty to install latest version. (Only 0.8.x and up supported)",
+      "Description": "Optional- Kong version, leave empty to install latest version. (Only 0.8.x and up supported)",
       "Type": "String"
     }
   },
@@ -175,15 +195,169 @@
     }
   },
   "Conditions" : {
-    "CreateRDS" : {"Fn::Equals" : [{"Ref" : "DBHost"}, ""]}
+    "CreateRDS" : {
+      "Fn::Equals" : [
+        {"Ref" : "DBHost"}, 
+        ""
+      ]
+    },
+    "UseDbSnapshot" : {
+      "Fn::Not" : [{
+        "Fn::Equals" : [
+          {"Ref" : "DBSnapshotIdentifier"},
+          ""
+        ]
+      }]
+    }
   },
   "Resources": {
-    "KongGroup": {
-      "Type": "AWS::AutoScaling::AutoScalingGroup",
+    "VPC" : {
+      "Condition" : "CreateVpcResources",
+      "Type" : "AWS::EC2::VPC",
+      "Properties" : {
+        "CidrBlock" : "10.0.0.0/16",
+        "EnableDnsSupport" : "true",
+        "EnableDnsHostnames" : "true",
+        "Tags" : [
+          { "Key" : "Application", "Value" : { "Ref" : "AWS::StackId" } },
+          { "Key" : "Network", "Value" : "Public" }
+        ]
+      }
+    },
+    "PublicSubnet1" : {
+      "Condition" : "CreateVpcResources",
+      "Type" : "AWS::EC2::Subnet",
+      "Properties" : {
+        "VpcId" : { "Ref" : "VPC" },
+        "CidrBlock" : "10.0.0.0/23",
+        "AvailabilityZone" : { "Fn::Select" : [ "0", { "Fn::GetAZs" : { "Ref" : "AWS::Region" } } ] },
+        "Tags" : [
+          { "Key" : "Application", "Value" : { "Ref" : "AWS::StackId" } },
+          { "Key" : "Network", "Value" : "Public" }
+        ]
+      }
+    },
+    "PublicSubnet2" : {
+      "Condition" : "CreateVpcResources",
+      "Type" : "AWS::EC2::Subnet",
+      "Properties" : {
+        "VpcId" : { "Ref" : "VPC" },
+        "CidrBlock" : "10.0.4.0/23",
+        "AvailabilityZone" : { "Fn::Select" : [ "1", { "Fn::GetAZs" : { "Ref" : "AWS::Region" } } ] },
+        "Tags" : [
+          { "Key" : "Application", "Value" : { "Ref" : "AWS::StackId" } },
+          { "Key" : "Network", "Value" : "Public" }
+        ]
+      }
+    },
+    "InternetGateway" : {
+      "Condition" : "CreateVpcResources",
+      "Type" : "AWS::EC2::InternetGateway",
+      "Properties" : {
+        "Tags" : [
+          { "Key" : "Application", "Value" : { "Ref" : "AWS::StackId" } },
+          { "Key" : "Network", "Value" : "Public" }
+        ]
+      }
+    },
+    "AttachGateway" : {
+      "Condition" : "CreateVpcResources",
+       "Type" : "AWS::EC2::VPCGatewayAttachment",
+       "Properties" : {
+         "VpcId" : { "Ref" : "VPC" },
+         "InternetGatewayId" : { "Ref" : "InternetGateway" }
+       }
+    },
+    "PublicRouteTable" : {
+      "Condition" : "CreateVpcResources",
+      "Type" : "AWS::EC2::RouteTable",
+      "Properties" : {
+        "VpcId" : {"Ref" : "VPC"},
+        "Tags" : [
+          { "Key" : "Application", "Value" : { "Ref" : "AWS::StackId" } },
+          { "Key" : "Network", "Value" : "Public" }
+        ]
+      }
+    },
+    "PublicRoute" : {
+      "Condition" : "CreateVpcResources",
+      "Type" : "AWS::EC2::Route",
+      "DependsOn" : "AttachGateway",
+      "Properties" : {
+        "RouteTableId" : { "Ref" : "PublicRouteTable" },
+        "DestinationCidrBlock" : "0.0.0.0/0",
+        "GatewayId" : { "Ref" : "InternetGateway" }
+      }
+    },
+    "PublicSubnet1RouteTableAssociation" : {
+      "Condition" : "CreateVpcResources",
+      "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties" : {
+        "SubnetId" : { "Ref" : "PublicSubnet1" },
+        "RouteTableId" : { "Ref" : "PublicRouteTable" }
+      }
+    },
+    "PublicSubnet2RouteTableAssociation" : {
+      "Condition" : "CreateVpcResources",
+      "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties" : {
+        "SubnetId" : { "Ref" : "PublicSubnet2" },
+        "RouteTableId" : { "Ref" : "PublicRouteTable" }
+      }
+    },
+	"KongLoadBalancerNewVPC": {
+      "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
       "Properties": {
-        "AvailabilityZones": {
-          "Ref": "KongAvailabilityZones"
-        },
+        "SecurityGroups" : [ { "Ref" : "LoadBalancerSecurityGroup" } ],
+        "Subnets" : [ { "Ref" : "PublicSubnet1" }, { "Ref" : "PublicSubnet2" } ],
+        "CrossZone" : "true",
+        "Listeners": [
+          {
+            "LoadBalancerPort": "8000",
+            "InstancePort": "8000",
+            "Protocol": "HTTP"
+          },
+          {
+            "LoadBalancerPort": "8001",
+            "InstancePort": "8001",
+            "Protocol": "HTTP"
+          }
+        ],
+        "HealthCheck": {
+          "Target": "TCP:8000",
+          "HealthyThreshold": "3",
+          "UnhealthyThreshold": "5",
+          "Interval" : "90",
+          "Timeout" : "60"
+        }
+      }
+    },
+    "LoadBalancerSecurityGroup" : {
+      "Type" : "AWS::EC2::SecurityGroup",
+      "Properties" : {
+        "GroupDescription" : "Enable HTTP access on port 8000 and 8001",
+        "VpcId" : { "Ref" : "VPC" },
+        "SecurityGroupIngress" : [ 
+          						   { "IpProtocol" : "tcp", "FromPort" : "8000", "ToPort" : "8000", "CidrIp" : { "Ref" : "KongAdminAccess" } },
+          						   { "IpProtocol" : "tcp", "FromPort" : "8001", "ToPort" : "8001", "CidrIp" : { "Ref" : "KongProxyAccess" } }
+          						 ],
+        "SecurityGroupEgress" :  [ 
+          							{ "IpProtocol" : "tcp", "FromPort" : "1", "ToPort" : "65535", "CidrIp" : "0.0.0.0/0" }
+          						 ]
+      }
+    },
+
+    "KongScalingGroup": {
+      "Type": "AWS::AutoScaling::AutoScalingGroup",
+      "CreationPolicy": {
+    		"ResourceSignal": {
+      			"Count"   : { "Ref" : "KongFleetDesiredSize" },
+      			"Timeout": "PT15M"
+    		}
+  	   },
+      "Properties": {
+        "AvailabilityZones" : [{ "Fn::GetAtt" : [ "PublicSubnet1", "AvailabilityZone" ] }, { "Fn::GetAtt" : [ "PublicSubnet2", "AvailabilityZone" ] }],
+        "VPCZoneIdentifier" : [{ "Ref" : "PublicSubnet1" }, { "Ref" : "PublicSubnet2" }],
         "LaunchConfigurationName": {
           "Ref": "KongLaunchConfig"
         },
@@ -195,39 +369,17 @@
           "Ref": "KongFleetDesiredSize"
         },
         "LoadBalancerNames": [
-          {
-            "Ref": "KongLoadBalancer"
-          }
+          {"Ref" : "KongLoadBalancerNewVPC"}
         ],
-        "HealthCheckGracePeriod": "300",
         "Tags" : [
           { "Key" : "Name", "Value" : { "Ref" : "AWS::StackId" }, "PropagateAtLaunch" : "true" }
         ]
-      },
-      "UpdatePolicy": {
-        "AutoScalingRollingUpdate": {
-          "MinInstancesInService": "1",
-          "MaxBatchSize": "1",
-          "PauseTime": "PT15M",
-          "WaitOnResourceSignals": "true"
-        }
-      }
-    },
-    "KongWaitHandle" : {
-      "Type" : "AWS::CloudFormation::WaitConditionHandle"
-    },
-    "KongWaitCondition" : {
-      "Type" : "AWS::CloudFormation::WaitCondition",
-      "DependsOn" : "KongGroup",
-      "Properties" : {
-        "Handle"  : { "Ref" : "KongWaitHandle" },
-        "Timeout" : "900",
-        "Count"   : { "Ref" : "KongFleetDesiredSize" }
       }
     },
     "KongLaunchConfig": {
       "Type": "AWS::AutoScaling::LaunchConfiguration",
       "Properties": {
+        "AssociatePublicIpAddress" : true,
         "ImageId": {
           "Fn::FindInMap": [
             "RegionKongAmiMap",
@@ -268,7 +420,7 @@
                 "then\n",
                 "   echo \"Installing Kong...\" \n",
                 "else\n", 
-                "   /opt/aws/bin/cfn-signal -e 1 --reason \"Failed to download Kong\" '", { "Ref" : "KongWaitHandle" }, "'\n",
+                "   /opt/aws/bin/cfn-signal -e 1 --stack ", { "Ref": "AWS::StackName" }, " --resource KongScalingGroup "," --region ", { "Ref" : "AWS::Region" }, " --reason \"Failed to download Kong\" \n",
                 "   echo \"failed to download kong, exiting...\" \n",
                 "   exit\n",
                 "fi\n", 
@@ -292,13 +444,13 @@
                 "      let COUNTER=COUNTER+1\n",
                 "      sleep `echo $(( RANDOM % ( 120 - 30 + 1 ) + 30 ))`\n",                
                 "   else\n",
-                "      /opt/aws/bin/cfn-signal -e 0 --reason \"Kong setup completed\" '", { "Ref" : "KongWaitHandle" }, "'\n",
+                "      /opt/aws/bin/cfn-signal -e 0 --stack ", { "Ref": "AWS::StackName" }, " --resource KongScalingGroup "," --region ", { "Ref" : "AWS::Region" }, " --reason \"Kong setup completed\" \n",
                 "      break \n",
                 "   fi\n", 
                 "done\n",
                 "if ! /usr/local/bin/kong status; then\n",
                 "   echo \"failed to start kong, exiting...\" \n",
-                "   /opt/aws/bin/cfn-signal -e 1 --reason \"Failed to start Kong\" '", { "Ref" : "KongWaitHandle" }, "'\n",
+                "   /opt/aws/bin/cfn-signal -e 1 --stack ", { "Ref": "AWS::StackName" }, " --resource KongScalingGroup "," --region ", { "Ref" : "AWS::Region" }, " --reason \"Failed to start Kong\" \n",
                 "fi\n"
               ]
             ]
@@ -306,97 +458,86 @@
         }
       }
     },
-    "KongLoadBalancer": {
-      "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
-      "Properties": {
-        "AvailabilityZones": {
-          "Ref": "KongAvailabilityZones"
-        },
-        "Listeners": [
-          {
-            "LoadBalancerPort": "8000",
-            "InstancePort": "8000",
-            "Protocol": "HTTP"
-          },
-          {
-            "LoadBalancerPort": "8001",
-            "InstancePort": "8001",
-            "Protocol": "HTTP"
-          }
-        ],
-        "HealthCheck": {
-          "Target": "TCP:8000",
-          "HealthyThreshold": "3",
-          "UnhealthyThreshold": "5",
-          "Interval": "30",
-          "Timeout": "5"
-        }
-      }
-    },
     "KongSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "Enable SSH access and HTTP access on the inbound port",
+        "VpcId" :  { "Ref" : "VPC" },
         "SecurityGroupIngress": [
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "8000",
-            "ToPort": "8000",
-            "CidrIp": {
-              "Ref": "KongProxyAccess"
-            }
-          },
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "8001",
-            "ToPort": "8001",
-            "CidrIp": {
-              "Ref": "KongAdminAccess"
-            }
-          },
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "22",
-            "ToPort": "22",
-            "CidrIp": {
-              "Ref": "SSHLocation"
-            }
-          }
+          { "IpProtocol" : "tcp", "FromPort" : "8000", "ToPort" : "8001", "SourceSecurityGroupId" :  { "Ref" : "LoadBalancerSecurityGroup" } },
+          { "IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : { "Ref" : "SSHLocation" } }
+        ],
+        "SecurityGroupEgress" :  [ 
+          { "IpProtocol" : "tcp", "FromPort" : "1", "ToPort" : "65535", "CidrIp" : "0.0.0.0/0" }
         ]
       }
     },
     "Ingress7946": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
-        "GroupName": {"Ref": "KongSecurityGroup"}, "IpProtocol": "tcp", "FromPort": "7946", "ToPort": "7946", "SourceSecurityGroupId": {
+        "GroupId" : {
+          "Fn::GetAtt" : [ "KongSecurityGroup", "GroupId" ]
+        },
+        "IpProtocol": "tcp", "FromPort": "7946", "ToPort": "7946", 
+        "SourceSecurityGroupId": {
           "Fn::GetAtt" : [ "KongSecurityGroup", "GroupId" ]
         }
       }
     },
-    "PostgresDB" : {
-	  "Type" : "AWS::RDS::DBInstance",
+    "DBSubnetGroup" : {
+      "Type" : "AWS::RDS::DBSubnetGroup",
       "Condition" : "CreateRDS",
       "Properties" : {
-        "DBSecurityGroups" : [{"Ref" : "DBSecurityGroup"}],
+        "DBSubnetGroupDescription" : "Subnets available for the RDS DB Instance",
+        "SubnetIds" : [ { "Ref" : "PublicSubnet1" }, { "Ref" : "PublicSubnet2" } ]
+      }
+    },
+    "PostgresDB" : {
+	  "Type" : "AWS::RDS::DBInstance",
+      "DependsOn" : "PublicSubnet1",
+      "Condition" : "CreateRDS",
+      "Properties" : {
         "Engine" : "postgres",
         "DBName" : { "Ref" : "DBName" },
+        "DBInstanceIdentifier": {"Ref":"DBName"},
         "MasterUsername" : { "Ref" : "DBUsername" },
         "DBInstanceClass" : { "Ref" : "DBClass" },
-        "DBSecurityGroups" : [ { "Ref" : "DBSecurityGroup" } ],
         "AllocatedStorage" : { "Ref" : "DBAllocatedStorage" },
         "MasterUserPassword" : { "Ref" : "DBPassword" },
-        "PubliclyAccessible" : {"Ref": "DBPublicAccess"}
+        "DBSubnetGroupName" : { "Ref" : "DBSubnetGroup" },
+        "PubliclyAccessible" : {"Ref": "DBPublicAccess"},
+        "EngineVersion" : {"Ref" : "DBVersion"},
+        "DBSnapshotIdentifier" : {
+          "Fn::If" : [
+            "UseDbSnapshot",
+            { "Ref" : "DBSnapshotIdentifier" },
+            { "Ref" : "AWS::NoValue"}
+          ]
+        },
+        "MultiAZ" : { "Ref" : "DBMultiAZ" },
+        "VPCSecurityGroups": [
+          {
+            "Ref": "DBSecurityGroup"
+          }
+        ]
       },
       "DeletionPolicy" : "Snapshot"
     },
     "DBSecurityGroup": {
-      "Type": "AWS::RDS::DBSecurityGroup",
+      "Type" : "AWS::EC2::SecurityGroup",
       "Condition" : "CreateRDS",
-      "Properties": {
-        "DBSecurityGroupIngress": { "EC2SecurityGroupName": { "Ref": "KongSecurityGroup" } },
-        "GroupDescription"      : "Kong Access"
+      "Properties" : {
+        "GroupDescription" : "Database security groups",
+        "SecurityGroupIngress" : [
+          { "IpProtocol" : "tcp", "FromPort": 5432, "ToPort" : "5432", "SourceSecurityGroupId": {"Ref" : "KongSecurityGroup"}},
+          { "IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : { "Ref" : "SSHLocation" } }
+        ],
+        "SecurityGroupEgress" :  [ 
+          { "IpProtocol" : "tcp", "FromPort" : "1", "ToPort" : "65535", "CidrIp" : "0.0.0.0/0" }
+        ],
+        "VpcId" : { "Ref" : "VPC" }
       }
-    }  
+    } 
   },
   "Outputs": {
     "ProxyURL": {
