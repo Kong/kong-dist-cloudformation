@@ -212,7 +212,6 @@
   },
   "Resources": {
     "VPC" : {
-      "Condition" : "CreateVpcResources",
       "Type" : "AWS::EC2::VPC",
       "Properties" : {
         "CidrBlock" : "10.0.0.0/16",
@@ -225,7 +224,6 @@
       }
     },
     "PublicSubnet1" : {
-      "Condition" : "CreateVpcResources",
       "Type" : "AWS::EC2::Subnet",
       "Properties" : {
         "VpcId" : { "Ref" : "VPC" },
@@ -238,7 +236,6 @@
       }
     },
     "PublicSubnet2" : {
-      "Condition" : "CreateVpcResources",
       "Type" : "AWS::EC2::Subnet",
       "Properties" : {
         "VpcId" : { "Ref" : "VPC" },
@@ -251,7 +248,6 @@
       }
     },
     "InternetGateway" : {
-      "Condition" : "CreateVpcResources",
       "Type" : "AWS::EC2::InternetGateway",
       "Properties" : {
         "Tags" : [
@@ -261,7 +257,6 @@
       }
     },
     "AttachGateway" : {
-      "Condition" : "CreateVpcResources",
        "Type" : "AWS::EC2::VPCGatewayAttachment",
        "Properties" : {
          "VpcId" : { "Ref" : "VPC" },
@@ -269,7 +264,6 @@
        }
     },
     "PublicRouteTable" : {
-      "Condition" : "CreateVpcResources",
       "Type" : "AWS::EC2::RouteTable",
       "Properties" : {
         "VpcId" : {"Ref" : "VPC"},
@@ -280,7 +274,6 @@
       }
     },
     "PublicRoute" : {
-      "Condition" : "CreateVpcResources",
       "Type" : "AWS::EC2::Route",
       "DependsOn" : "AttachGateway",
       "Properties" : {
@@ -290,7 +283,6 @@
       }
     },
     "PublicSubnet1RouteTableAssociation" : {
-      "Condition" : "CreateVpcResources",
       "Type" : "AWS::EC2::SubnetRouteTableAssociation",
       "Properties" : {
         "SubnetId" : { "Ref" : "PublicSubnet1" },
@@ -298,7 +290,6 @@
       }
     },
     "PublicSubnet2RouteTableAssociation" : {
-      "Condition" : "CreateVpcResources",
       "Type" : "AWS::EC2::SubnetRouteTableAssociation",
       "Properties" : {
         "SubnetId" : { "Ref" : "PublicSubnet2" },
@@ -549,7 +540,7 @@
             "http:\/\/",
             {
               "Fn::GetAtt": [
-                "KongLoadBalancer",
+                "KongLoadBalancerNewVPC",
                 "DNSName"
               ]
             },
@@ -567,7 +558,7 @@
             "http:\/\/",
             {
               "Fn::GetAtt": [
-                "KongLoadBalancer",
+                "KongLoadBalancerNewVPC",
                 "DNSName"
               ]
             },
