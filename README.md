@@ -130,7 +130,7 @@ Provisions Kong resources with user provided Cassandra seed nodes in a new VPC o
 
 3. **Choose a Region & VM Type**:
 
-    Choose the region closest to your API servers, and pick the virtualization type you'd like from the list of available [templates](#tempaltes) above.
+    Choose the region closest to your API servers, and pick the virtualization type you'd like from the list of available [templates](#templates) above.
 
     You should land on AWS Cloud Formation *"Select Template"* page
 
@@ -155,7 +155,7 @@ Provisions Kong resources with user provided Cassandra seed nodes in a new VPC o
    
 7. **Use Kong:**
 
-    Quickly learn how to use Kong with the [5-minute Quickstart](http://localhost:3000/docs/0.4.x/getting-started/quickstart/).
+    Quickly learn how to use Kong with the [5-minute Quickstart](https://getkong.org/docs/0.4.x/getting-started/quickstart/).
 
 #### SSL Support
 
