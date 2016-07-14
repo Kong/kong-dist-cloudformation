@@ -406,8 +406,8 @@
         "GroupDescription" : "Enable HTTP access on port 8000 and 8001",
         "VpcId" : { "Fn::If" : [ "CreateVpcResources", { "Ref" : "VPC" }, { "Ref" : "VpcId" } ] },
         "SecurityGroupIngress" : [ 
-          						   { "IpProtocol" : "tcp", "FromPort" : "8000", "ToPort" : "8000", "CidrIp" : { "Ref" : "KongAdminAccess" } },
-          						   { "IpProtocol" : "tcp", "FromPort" : "8001", "ToPort" : "8001", "CidrIp" : { "Ref" : "KongProxyAccess" } }
+          						   { "IpProtocol" : "tcp", "FromPort" : "8000", "ToPort" : "8000", "CidrIp" : { "Ref" : "KongProxyAccess" } },
+          						   { "IpProtocol" : "tcp", "FromPort" : "8001", "ToPort" : "8001", "CidrIp" : { "Ref" : "KongAdminAccess" } }
           						 ],
         "SecurityGroupEgress" :  [ 
           							{ "IpProtocol" : "tcp", "FromPort" : "1", "ToPort" : "65535", "CidrIp" : "0.0.0.0/0" }
