@@ -21,12 +21,12 @@
     },
     "Subnet1AZ" : {
       "Type" : "String",
-      "Description" : "Conditional- required if VpcId provided. Existing VPC Subnet 1 AvailabilityZone",
+      "Description" : "Conditional- required if VpcId provided or if *-1a AZ not supported by account. Existing VPC Subnet 1 AvailabilityZone",
       "Default" : ""
     },
     "Subnet2AZ" : {
       "Type" : "String",
-      "Description" : "Conditional- required if VpcId provided. Existing VPC Subnet 2 AvailabilityZone",
+      "Description" : "Conditional- required if either VpcId or Subnet1AZ provided  or *-1b AZ not supported by account. Existing VPC Subnet 2 AvailabilityZone",
       "Default" : ""
     },
     "DBName": {
@@ -236,6 +236,7 @@
  "Conditions" : {
     "CreateRDS" : {"Fn::Equals" : [{"Ref" : "DBHost"}, ""]},
     "CreateVpcResources" : { "Fn::Equals" : [ { "Ref" : "VpcId" }, "" ] },
+    "UseAZParameter": { "Fn::Not" : [ {"Fn::And" : [ { "Fn::Equals" : [ { "Ref" : "Subnet1AZ" }, "" ]} , { "Fn::Equals" : [ { "Ref" : "Subnet1AZ" }, "" ] } ] } ] },
     "ExistingVpcResources" : { "Fn::Not" : [ { "Fn::Equals" : [ { "Ref" : "VpcId" }, "" ] } ] },
     "UseDbSnapshot" : {
       "Fn::Not" : [{
@@ -266,7 +267,7 @@
       "Properties" : {
         "VpcId" : { "Ref" : "VPC" },
         "CidrBlock" : "10.0.0.0/23",
-        "AvailabilityZone" : { "Fn::Select" : [ "0", { "Fn::GetAZs" : { "Ref" : "AWS::Region" } } ] },
+        "AvailabilityZone" : { "Fn::If" : [ "UseAZParameter", { "Ref" : "Subnet1AZ" }, { "Fn::Select" : [ "0", { "Fn::GetAZs" : { "Ref" : "AWS::Region" } } ] } ] },
         "Tags" : [
           { "Key" : "Application", "Value" : { "Ref" : "AWS::StackId" } },
           { "Key" : "Network", "Value" : "Public" }
@@ -280,6 +281,7 @@
         "VpcId" : { "Ref" : "VPC" },
         "CidrBlock" : "10.0.4.0/23",
         "AvailabilityZone" : { "Fn::Select" : [ "1", { "Fn::GetAZs" : { "Ref" : "AWS::Region" } } ] },
+        "AvailabilityZone" : { "Fn::If" : [ "UseAZParameter", { "Ref" : "Subnet2AZ" }, { "Fn::Select" : [ "1", { "Fn::GetAZs" : { "Ref" : "AWS::Region" } } ] } ] },
         "Tags" : [
           { "Key" : "Application", "Value" : { "Ref" : "AWS::StackId" } },
           { "Key" : "Network", "Value" : "Public" }
