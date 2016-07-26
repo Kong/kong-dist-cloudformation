@@ -87,8 +87,8 @@ Provisions Kong resources with user provided Cassandra seed nodes in a new VPC o
 | `VpcId`                  | `-`         | Optional- VPC Id of existing VPC. Leave blank to have a new VPC created      |
 | `SubnetId1`               | `-`         | Conditional- required if VpcId provided. Existing VPC Subnet Id 1 where ECS instances will run      |
 | `SubnetId2`               | `-`         | Conditional- required if VpcId provided. Existing VPC Subnet Id 2 where ECS instances will run     |
-| `Subnet1AZ`               | `-`         | Conditional- required if VpcId provided. Existing VPC Subnet 1 AvailabilityZone      |
-| `Subnet2AZ`               | `-`         | Conditional- required if VpcId provided. Existing VPC Subnet 2 AvailabilityZone      |
+| `Subnet1AZ`               | `-`         | Conditional- required if VpcId provided or if *-1a AZ not supported by AWS account. Existing VPC Subnet 1 AvailabilityZone      |
+| `Subnet2AZ`               | `-`         | Conditional- required if either VpcId or Subnet1AZ provided  or *-1b AZ not supported by account. Existing VPC Subnet 2 AvailabilityZone      |
 
 #### Postgres
  
@@ -115,8 +115,8 @@ Provisions Kong resources with user provided Cassandra seed nodes in a new VPC o
 | `VpcId`                  | `-`         | Optional- VPC Id of existing VPC. Leave blank to have a new VPC created      |
 | `SubnetId1`               | `-`         | Conditional- required if VpcId provided. Existing VPC Subnet Id 1 where ECS instances will run      |
 | `SubnetId2`               | `-`         | Conditional- required if VpcId provided. Existing VPC Subnet Id 2 where ECS instances will run     |
-| `Subnet1AZ`               | `-`         | Conditional- required if VpcId provided. Existing VPC Subnet 1 AvailabilityZone      |
-| `Subnet2AZ`               | `-`         | Conditional- required if VpcId provided. Existing VPC Subnet 2 AvailabilityZone      |
+| `Subnet1AZ`               | `-`         | Conditional- required if VpcId provided or if *-1a AZ not supported by account. Existing VPC Subnet 1 AvailabilityZone      |
+| `Subnet2AZ`               | `-`         | Conditional- required if either VpcId or Subnet1AZ provided  or *-1b AZ not supported by account. Existing VPC Subnet 2 AvailabilityZone      |
 
 
 ### Instructions:
