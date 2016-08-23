@@ -35,9 +35,15 @@
       "Default": ""
     },
     "CassandraSeedNodes": {
-      "Description": "Required- Comma separated Cassandra seed nodes address with or without port ex. example.com:1234[, abc.com]",
+      "Description": "Required- Comma separated Cassandra seed nodes address  ex. example.com[, 123.123.123.123]",
       "Type": "CommaDelimitedList",
-      "ConstraintDescription": "must be a valid host name, ex. example.com:1234, example.com, 123.123.123.123:1234 "
+      "ConstraintDescription": "must be a valid host name, ex. example.com, 123.123.123.123"
+    },
+    "CassandraPort": {
+      "Description": "Required- Cassandra nodes native query port ex. 9042",
+      "Type": "String",
+      "Default": "9042",
+      "ConstraintDescription": "must be a valid port number and all cassandra nodes must be listening on the same port"
     },
     "KongFleetMaxSize": {
       "Description": "Max Number of Kong instances",
@@ -105,7 +111,7 @@
       "ConstraintDescription": "must be a valid EC2 instance type."
     },
     "KongVersion": {
-      "Description": "Optional- Kong version, leave empty to install latest version. (Only 0.6.x and above supported)",
+      "Description": "Optional- Kong version, leave empty to install latest version. (Only 0.9.x and above supported)",
       "Type": "String"
     }
   },
@@ -391,15 +397,20 @@
                 "fi\n", 
                 "yum install -y epel-release\n",
                 "yum install -y kong.rpm --nogpgcheck\n",
-                "echo \"database: cassandra\" >> hosts\n",
-                "echo \"cassandra:\" >> hosts\n",
-                "echo \"  contact_points:\" >> hosts\n",
                 "CASSANDRA_HOSTS=(\"", { "Fn::Join": [ "\" \"", { "Ref": "CassandraSeedNodes" } ] }, "\")\n",
-                "for i in \"${CASSANDRA_HOSTS[@]}\"; do echo -e \"    - $i\"  >> hosts; done;\n",
-                "sed -i $'/# cassandra:\/{r hosts\\n d}' \/etc\/kong\/kong.yml\n",
+                "for i in \"${CASSANDRA_HOSTS[@]}\"\n",
+				"do\n",
+				"   KONG_CASSANDRA_CONTACT_POINTS+=\"$i,\" \n",
+				"done;\n",
+    			"KONG_CASSANDRA_CONTACT_POINTS=${KONG_CASSANDRA_CONTACT_POINTS:0:${#KONG_CASSANDRA_CONTACT_POINTS}-1}\n",
+				"export KONG_DATABASE=cassandra\n",
+				"export KONG_CASSANDRA_CONTACT_POINTS\n",
+                "export KONG_CASSANDRA_PORT=", {"Ref": "CassandraPort"}, "\n",
+				"export KONG_SERF_PATH=\/usr\/local\/bin\/serf\n",
+                "sleep `echo $(( RANDOM % ( 200 - 100 + 1 ) + 50  ))`\n",
                 "COUNTER=0\n",
                 "while [ $COUNTER -lt 4 ]; do\n",
-                "   /usr/local/bin/kong status\n",
+                "   /usr/local/bin/kong health\n",
                 "   if [[ $? -ne 0 ]]; then\n",
                 "      echo \"trying to start kong..\"\n",
                 "      su -s \/bin\/sh -c \"\/usr\/local\/bin\/kong start\" ec2-user\n",
@@ -410,7 +421,7 @@
                 "      break \n",
                 "   fi\n", 
                 "done\n",
-                "if ! /usr/local/bin/kong status; then\n",
+                "if ! /usr/local/bin/kong health; then\n",
                 "   echo \"failed to start kong, exiting...\" \n",
                 "   /opt/aws/bin/cfn-signal -e 1 --stack ", { "Ref": "AWS::StackName" }, " --resource KongScalingGroup "," --region ", { "Ref" : "AWS::Region" }, " --reason \"Failed to start Kong\" \n",
                 "fi\n"

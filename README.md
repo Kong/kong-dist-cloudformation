@@ -9,7 +9,7 @@
 
 This CloudFormation template helps you model and set up Kong's resources in AWS easily.
 
-Note: For Kong's version older than 0.6.x use the tag 2.0.2.
+Note: For Kong's version older than 0.8.x use the tag 3.0.0.
 
 ## Summary
 
@@ -84,7 +84,9 @@ Provisions Kong resources with user provided Cassandra seed nodes in a new VPC o
 | `CassandraClusterVersion`   | `2.2.4`      | Cassandra cluster version                                                            |
 | `CassandraVersion`          | `Community`  | Cassandra version                                                                    |
 | `CassandraOpsCenterAccess`  | `0.0.0.0/0`  | The IP address range that can access OpsCenter for Cassandra cluster management      |
-| `VpcId`                  | `-`         | Optional- VPC Id of existing VPC. Leave blank to have a new VPC created      |
+| `CassandraSeedNodes`        | `-`          | Comma separated Cassandra seed nodes DNS/IP address  ex. example.com[, 123.123.123.123]      |
+| `CassandraPort`             | `9042`       | Cassandra nodes query port ex. 9042      |
+| `VpcId`                     | `-`         | Optional- VPC Id of existing VPC. Leave blank to have a new VPC created      |
 | `SubnetId1`               | `-`         | Conditional- required if VpcId provided. Existing VPC Subnet Id 1 where ECS instances will run      |
 | `SubnetId2`               | `-`         | Conditional- required if VpcId provided. Existing VPC Subnet Id 2 where ECS instances will run     |
 | `Subnet1AZ`               | `-`         | Conditional- required if VpcId provided or if *-1a AZ not supported by AWS account. Existing VPC Subnet 1 AvailabilityZone      |
