@@ -9,7 +9,7 @@
 
 This CloudFormation template helps you model and set up Kong's resources in AWS easily.
 
-Note: For Kong's version older than 0.8.x use the tag 3.0.0.
+Note: For Kong's version 0.8.x use the tag 3.0.0.
 
 ## Summary
 
