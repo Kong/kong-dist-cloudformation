@@ -76,7 +76,7 @@ Provisions Kong resources with user provided Cassandra seed nodes in a new VPC o
 | `KongFleetMaxSize`          | `2`          | Max Number of Kong instances *(Min: `1`)*                                 |
 | `KongFleetDesiredSize`      | `2`          | Desired Number of Kong instances *(Min: `1`)*                             |
 | `KongInstanceType`          | `c3.2xlarge` | EC2 instance type for Kong. Note: T2 instance is not supported on the EC2-Classic platform |
-| `KongVersion`               | `-`          | Kong version, leave empty to install latest version                                  |
+| `KongVersion`               | `-`          | Kong version to be deployed                                                          |
 | `CassandraKeyName`          | `-`          | Existing EC2 KeyPair to enable SSH access to the instances for Cassandra             |
 | `CassandraFleetSize`        | `1`          | Number of nodes in cluster. *(Min: `1`)*                                  |
 | `CassandraInstanceType`     | `c3.2xlarge` | EC2 instance type for Cassandra                                                      |
@@ -103,7 +103,7 @@ Provisions Kong resources with user provided Cassandra seed nodes in a new VPC o
 | `KongFleetMaxSize`          | `2`          | Max Number of Kong instances *(Min: `1`)*                                 |
 | `KongFleetDesiredSize`      | `2`          | Desired Number of Kong instances *(Min: `1`)*                             |
 | `KongInstanceType`          | `c3.2xlarge` | EC2 instance type for Kong. Note: T2 instance is not supported on the EC2-Classic platform |
-| `KongVersion`               | `-`          | Kong version, leave empty to install latest version                                  |
+| `KongVersion`               | `-`          | Kong version to be deployed                                                          |
 | `DBName`                    | `Kong`       | Database name                                                                        |
 | `DBHost`                    | `-`          | The database host dns/ip address, leave blank to start a new RDS instance            |
 | `DBPort`                    | `5432`       | The database port, leave blank to start a new RDS instance                           |

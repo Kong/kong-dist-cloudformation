@@ -111,8 +111,13 @@
       "ConstraintDescription": "must be a valid EC2 instance type."
     },
     "KongVersion": {
-      "Description": "Optional- Kong version, leave empty to install latest version. (Only 0.9.x and above supported)",
-      "Type": "String"
+      "Description": "Kong version (Only 0.9.x and above supported)",
+      "Type": "String",
+      "Default": "0.9.1",
+      "AllowedValues": [
+        "0.9.1",
+        "0.9.0"
+      ]  
     }
   },
   "Mappings": {
@@ -381,12 +386,7 @@
                 "echo '* soft nofile 65000' >> \/etc\/security\/limits.conf\n",
                 "echo '* hard nofile 65000' >> \/etc\/security\/limits.conf\n",
                 "kong_version=",{ "Ref" : "KongVersion" }, "\n",
-                "if [ -z $kong_version ]\n",
-                "then\n",
-                "   wget -O kong.rpm downloadkong.org/aws.rpm\n",
-                "else\n",
-                "   wget -O kong.rpm downloadkong.org/aws.rpm?version=$kong_version\n",
-                "fi\n",
+                "wget -O kong.rpm https://github.com/Mashape/kong/releases/download/$kong_version/kong-$kong_version.aws.rpm\n",
                 "if [ -e \".\/kong.rpm\" ]\n",
                 "then\n",
                 "   echo \"Installing Kong...\" \n",
