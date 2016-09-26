@@ -167,16 +167,16 @@ You can install SSL Certificate on the Kong Load Balancer or use the SSL plugin 
 
 1. Obtain the Kong Load Balancer `id` from the *"Resources tab"*.
 2. Find the matching Kong Load Balancer instance.
-6  Edit Listeners from the bottom pane, click Add.
-7. In the Load Balancer Protocol column, select HTTPS (Secure HTTP). This updates the Load Balancer Port, Instance Protocol, and Instance Port columns. In the Instance Protocol column, select HTTP and update the Instance port to 8000.
-8. By default, Elastic Load Balancing selects the current predefined security policy, ELBSecurityPolicy-2015-05, for your HTTPS/SSL listener. This is the recommended setting.
-9. In the SSL Certificate column, click Change, and then you either upload a new certificate or choose an existing Certificate.
-10. Click Save to add the listeners you just configured.
-11. Click on Security tab. 
-12. Click on Security Group id.
-13. In the bottom pane, select the Inbound tab.
-14. Click Edit.
-15. Add Load Balancer Port for the HTTPS to the list and save.
+3.  Edit Listeners from the bottom pane, click Add.
+4. In the Load Balancer Protocol column, select HTTPS (Secure HTTP). This updates the Load Balancer Port, Instance Protocol, and Instance Port columns. In the Instance Protocol column, select HTTP and update the Instance port to 8000.
+5. By default, Elastic Load Balancing selects the current predefined security policy, ELBSecurityPolicy-2015-05, for your HTTPS/SSL listener. This is the recommended setting.
+6. In the SSL Certificate column, click Change, and then you either upload a new certificate or choose an existing Certificate.
+7. Click Save to add the listeners you just configured.
+8. Click on Security tab.
+9. Click on Security Group id.
+10. In the bottom pane, select the Inbound tab.
+11. Click Edit.
+12. Add Load Balancer Port for the HTTPS to the list and save.
 
 #####  2) [Using Kong SSL Plugin](https://getkong.org/plugins/ssl/)
 
