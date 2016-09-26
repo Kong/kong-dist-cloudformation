@@ -169,14 +169,12 @@
     "CassandraVersion": {
       "Description": "Cassandra version",
       "Type": "String",
-      "Default": "2.2.4",
+      "Default": "2.2.7",
       "AllowedValues": [
+        "2.2.7",
         "2.2.4",
         "2.2.3",
-        "2.2.0",
-        "2.1.12",
-        "2.1.9",
-        "2.1.8"
+        "2.2.0"
       ]
     },
     "KongVersion": {
