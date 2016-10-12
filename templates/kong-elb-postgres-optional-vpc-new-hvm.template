@@ -50,6 +50,21 @@
       "Type": "String",
       "Default": ""
     },
+    "DBStorageEncrypted" : {
+      "Default" : false,
+      "Description" : "Specifies whether the DB instance is encrypted",
+      "Type" : "String",
+      "AllowedValues" : [ true, false ]
+    },
+    "DBStorageType" : {
+      "Description": "Storage Type for RDS volume",
+      "Type": "String",
+      "Default": "gp2",
+      "AllowedValues": [
+        "gp2",
+        "standard"
+      ]
+    },
     "DBUsername": {
       "Default": "kong",
       "Description" : "The database admin account username",
@@ -507,7 +522,8 @@
           ]
         },
         "MultiAZ" : { "Ref" : "DBMultiAZ" },
-        "StorageType" : "gp2",
+        "StorageEncrypted" : { "Ref" : "DBStorageEncrypted" },
+        "StorageType" : { "Ref" : "DBStorageType" },
         "VPCSecurityGroups": [
           {
             "Ref": "DBSecurityGroup"
