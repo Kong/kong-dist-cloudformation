@@ -584,6 +584,7 @@
           ]
         },
         "MultiAZ" : { "Ref" : "DBMultiAZ" },
+        "StorageType" : "gp2",
         "VPCSecurityGroups": [
           {
             "Ref": "DBSecurityGroup"
