@@ -130,6 +130,21 @@
       "Type": "String",
       "Default": ""
     },
+    "DBStorageEncrypted" : {
+      "Default" : false,
+      "Description" : "Specifies whether the DB instance is encrypted",
+      "Type" : "String",
+      "AllowedValues" : [ true, false ]
+    },
+    "DBStorageType" : {
+      "Description": "Storage Type for RDS volume",
+      "Type": "String",
+      "Default": "gp2",
+      "AllowedValues": [
+        "gp2",
+        "standard"
+      ]
+    },
     "SSHLocation": {
       "Description": "The IP address range that can be used to SSH to the Kong and Cassandra EC2 instances",
       "Type": "String",
@@ -584,6 +599,8 @@
           ]
         },
         "MultiAZ" : { "Ref" : "DBMultiAZ" },
+        "StorageEncrypted" : { "Ref" : "DBStorageEncrypted" },
+        "StorageType" : { "Ref" : "DBStorageType" },
         "VPCSecurityGroups": [
           {
             "Ref": "DBSecurityGroup"
