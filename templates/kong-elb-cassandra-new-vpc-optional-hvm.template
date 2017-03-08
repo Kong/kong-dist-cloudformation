@@ -191,8 +191,9 @@
     "KongVersion": {
       "Description": "Kong version (Only 0.9.x and above supported)",
       "Type": "String",
-      "Default": "0.9.9",
+      "Default": "0.10.0",
       "AllowedValues": [
+        "0.10.0",
         "0.9.9",
         "0.9.8",
         "0.9.7",
@@ -235,28 +236,28 @@
     },
     "RegionCassAmiMap": {
       "us-east-1": {
-        "HVM": "ami-ada2b6c4"
+        "HVM": "ami-711ca91a"
       },
       "us-west-1": {
-        "HVM": "ami-3cf7c979"
+        "HVM": "ami-17728c53"
       },
       "us-west-2": {
-        "HVM": "ami-1cff962c"
+        "HVM": "ami-8b392cbb"
       },
       "eu-west-1" : {
-        "HVM": "ami-7f33cd08"
+        "HVM": "ami-72520e05"
       },
       "ap-northeast-1" : {
-        "HVM": "ami-714a3770"
+        "HVM": "ami-580eb458"
       },
       "ap-southeast-1" : {
-        "HVM": "ami-b47828e6"
+        "HVM": "ami-a43836f6"
       },
       "ap-southeast-2" : {
-        "HVM": "ami-55d54d6f"
+        "HVM": "ami-df0042e5"
       },
       "sa-east-1" : {
-        "HVM": "ami-1dda7800"
+        "HVM": "ami-43971f5e"
       }
     }
   },
@@ -517,33 +518,33 @@
                 "cassandra_hosts=$(echo $cassandra_hosts | awk -F\"}\" '{print $1}')\n",
                 "IFS=', ' read -a host_array <<< \"$cassandra_hosts\"\n", 
                 "for i in \"${host_array[@]}\"\n",
-				"do\n",
-				"   hostName=$(echo $i | awk -F\":\" '{print $1}')\n",
-				"   KONG_CASSANDRA_CONTACT_POINTS+=\"$hostName,\" \n",
-				"done;\n",
-				"KONG_CASSANDRA_CONTACT_POINTS=${KONG_CASSANDRA_CONTACT_POINTS:0:${#KONG_CASSANDRA_CONTACT_POINTS}-1}\n", 
-				"echo \"$KONG_CASSANDRA_CONTACT_POINTS\"\n",
-				"export KONG_DATABASE=cassandra\n",
-				"export KONG_CASSANDRA_CONTACT_POINTS\n",
-				"export KONG_SERF_PATH=\/usr\/local\/bin\/serf\n",
-				"sleep `echo $(( RANDOM % ( 200 - 100 + 1 ) + 50))`\n",
-				"COUNTER=0\n",
-				"while [ $COUNTER -lt 4 ]; do\n",
-				"   /usr/local/bin/kong health\n",
-				"   if [[ $? -ne 0 ]]; then\n",
-				"      echo \"trying to start kong..\"\n",
-				"      su -s \/bin\/sh -c \"\/usr\/local\/bin\/kong start\" ec2-user\n",
-				"      let COUNTER=COUNTER+1\n",
-				"      sleep `echo $(( RANDOM % ( 120 - 30 + 1 ) + 30 ))`\n",                
-				"   else\n",
-				"      /opt/aws/bin/cfn-signal -e 0 --stack ", { "Ref": "AWS::StackName" }, " --resource KongScalingGroup "," --region ", { "Ref" : "AWS::Region" }, " --reason \"Kong setup completed\" \n",
-				"      break \n",
-				"   fi\n", 
-				"done\n",
-				"if ! /usr/local/bin/kong health; then\n",
-				"   echo \"failed to start kong, exiting...\" \n",
-				"   /opt/aws/bin/cfn-signal -e 1 --stack ", { "Ref": "AWS::StackName" }, " --resource KongScalingGroup "," --region ", { "Ref" : "AWS::Region" }, " --reason \"Failed to start Kong\" \n",
-				"fi\n"
+        				"do\n",
+        				"   hostName=$(echo $i | awk -F\":\" '{print $1}')\n",
+        				"   KONG_CASSANDRA_CONTACT_POINTS+=\"$hostName,\" \n",
+        				"done;\n",
+        				"KONG_CASSANDRA_CONTACT_POINTS=${KONG_CASSANDRA_CONTACT_POINTS:0:${#KONG_CASSANDRA_CONTACT_POINTS}-1}\n", 
+        				"echo \"$KONG_CASSANDRA_CONTACT_POINTS\"\n",
+        				"export KONG_DATABASE=cassandra\n",
+        				"export KONG_CASSANDRA_CONTACT_POINTS\n",
+        				"export KONG_SERF_PATH=\/usr\/local\/bin\/serf\n",
+        				"sleep `echo $(( RANDOM % ( 200 - 100 + 1 ) + 50))`\n",
+        				"COUNTER=0\n",
+        				"while [ $COUNTER -lt 4 ]; do\n",
+        				"   /usr/local/bin/kong health\n",
+        				"   if [[ $? -ne 0 ]]; then\n",
+        				"      echo \"trying to start kong..\"\n",
+        				"      su -s \/bin\/sh -c \"\/usr\/local\/bin\/kong start\" ec2-user\n",
+        				"      let COUNTER=COUNTER+1\n",
+        				"      sleep `echo $(( RANDOM % ( 120 - 30 + 1 ) + 30 ))`\n",                
+        				"   else\n",
+        				"      /opt/aws/bin/cfn-signal -e 0 --stack ", { "Ref": "AWS::StackName" }, " --resource KongScalingGroup "," --region ", { "Ref" : "AWS::Region" }, " --reason \"Kong setup completed\" \n",
+        				"      break \n",
+        				"   fi\n", 
+        				"done\n",
+        				"if ! /usr/local/bin/kong health; then\n",
+        				"   echo \"failed to start kong, exiting...\" \n",
+        				"   /opt/aws/bin/cfn-signal -e 1 --stack ", { "Ref": "AWS::StackName" }, " --resource KongScalingGroup "," --region ", { "Ref" : "AWS::Region" }, " --reason \"Failed to start Kong\" \n",
+        				"fi\n"
               ]
             ]
           }

@@ -179,8 +179,9 @@
     "KongVersion": {
       "Description": "Kong version (Only 0.9.x and above supported)",
       "Type": "String",
-      "Default": "0.9.9",
+      "Default": "0.10.0",
       "AllowedValues": [
+        "0.10.0",
         "0.9.9",
         "0.9.8",
         "0.9.7",
@@ -440,7 +441,7 @@
                 "fi\n", 
                 "yum install -y epel-release\n",
                 "yum install -y kong.rpm --nogpgcheck\n",
-				"export KONG_DATABASE=postgres\n",
+				        "export KONG_DATABASE=postgres\n",
                 "export KONG_PG_HOST=", { "Fn::If" : [ "CreateRDS", { "Fn::GetAtt" : [ "PostgresDB", "Endpoint.Address" ] }, {"Ref" : "DBHost"}] }, "\n",
                 "export KONG_PG_PORT=", { "Fn::If" : [ "CreateRDS", { "Fn::GetAtt" : [ "PostgresDB", "Endpoint.Port" ] }, {"Ref" : "DBPort"}] }, "\n",
                 "export KONG_PG_USER=", { "Ref" : "DBUsername" }, "\n",
