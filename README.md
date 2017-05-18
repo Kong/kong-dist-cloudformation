@@ -15,7 +15,7 @@ Note: For Kong's version 0.8.x use the tag 3.0.0.
 
 You have option to chose between two templates:
 
-###  1) Kong with Cassandra DB
+###  1) Kong with Cassandra DB(Deprecated)
 
 Provision Kong resources along with a new [Cassandra cluster](http://cassandra.apache.org/), using The [Datastax Cassandra](http://docs.datastax.com/en/cassandra/2.2/cassandra/install/installAMI.html) AMI in a new VPC or existing VPC.
 
