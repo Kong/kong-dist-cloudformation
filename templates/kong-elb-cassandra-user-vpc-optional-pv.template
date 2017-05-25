@@ -113,8 +113,9 @@
     "KongVersion": {
       "Description": "Kong version (Only 0.9.x and above supported)",
       "Type": "String",
-      "Default": "0.10.2",
+      "Default": "0.10.3",
       "AllowedValues": [
+        "0.10.3",
         "0.10.2",
         "0.10.1",
         "0.10.0",
