@@ -580,6 +580,18 @@
         }
       }
     },
+    "IngressUDP7946": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId" : {
+          "Fn::GetAtt" : [ "KongSecurityGroup", "GroupId" ]
+        },
+        "IpProtocol": "udp", "FromPort": "7946", "ToPort": "7946",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt" : [ "KongSecurityGroup", "GroupId" ]
+        }
+      }
+    },
     "DBSubnetGroup" : {
       "Type" : "AWS::RDS::DBSubnetGroup",
       "Condition" : "CreateRDS",

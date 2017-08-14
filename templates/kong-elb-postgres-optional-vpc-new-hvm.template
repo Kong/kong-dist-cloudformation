@@ -444,7 +444,7 @@
                 "fi\n", 
                 "yum install -y epel-release\n",
                 "yum install -y kong.rpm --nogpgcheck\n",
-				        "export KONG_DATABASE=postgres\n",
+				"export KONG_DATABASE=postgres\n",
                 "export KONG_PG_HOST=", { "Fn::If" : [ "CreateRDS", { "Fn::GetAtt" : [ "PostgresDB", "Endpoint.Address" ] }, {"Ref" : "DBHost"}] }, "\n",
                 "export KONG_PG_PORT=", { "Fn::If" : [ "CreateRDS", { "Fn::GetAtt" : [ "PostgresDB", "Endpoint.Port" ] }, {"Ref" : "DBPort"}] }, "\n",
                 "export KONG_PG_USER=", { "Ref" : "DBUsername" }, "\n",
@@ -496,6 +496,18 @@
           "Fn::GetAtt" : [ "KongSecurityGroup", "GroupId" ]
         },
         "IpProtocol": "tcp", "FromPort": "7946", "ToPort": "7946", 
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt" : [ "KongSecurityGroup", "GroupId" ]
+        }
+      }
+    },
+    "IngressUDP7946": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId" : {
+          "Fn::GetAtt" : [ "KongSecurityGroup", "GroupId" ]
+        },
+        "IpProtocol": "udp", "FromPort": "7946", "ToPort": "7946",
         "SourceSecurityGroupId": {
           "Fn::GetAtt" : [ "KongSecurityGroup", "GroupId" ]
         }

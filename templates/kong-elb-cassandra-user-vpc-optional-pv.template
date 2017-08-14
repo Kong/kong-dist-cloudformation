@@ -334,7 +334,6 @@
           						 ]
       }
     },
-
     "KongScalingGroup": {
       "Type": "AWS::AutoScaling::AutoScalingGroup",
       "CreationPolicy": {
@@ -411,14 +410,14 @@
                 "yum install -y kong.rpm --nogpgcheck\n",
                 "CASSANDRA_HOSTS=(\"", { "Fn::Join": [ "\" \"", { "Ref": "CassandraSeedNodes" } ] }, "\")\n",
                 "for i in \"${CASSANDRA_HOSTS[@]}\"\n",
-        				"do\n",
-        				"   KONG_CASSANDRA_CONTACT_POINTS+=\"$i,\" \n",
-        				"done;\n",
-            			"KONG_CASSANDRA_CONTACT_POINTS=${KONG_CASSANDRA_CONTACT_POINTS:0:${#KONG_CASSANDRA_CONTACT_POINTS}-1}\n",
-        				"export KONG_DATABASE=cassandra\n",
-        				"export KONG_CASSANDRA_CONTACT_POINTS\n",
-                        "export KONG_CASSANDRA_PORT=", {"Ref": "CassandraPort"}, "\n",
-        				"export KONG_SERF_PATH=\/usr\/local\/bin\/serf\n",
+                "do\n",
+                "   KONG_CASSANDRA_CONTACT_POINTS+=\"$i,\" \n",
+                "done;\n",
+                "KONG_CASSANDRA_CONTACT_POINTS=${KONG_CASSANDRA_CONTACT_POINTS:0:${#KONG_CASSANDRA_CONTACT_POINTS}-1}\n",
+                "export KONG_DATABASE=cassandra\n",
+                "export KONG_CASSANDRA_CONTACT_POINTS\n",
+                "export KONG_CASSANDRA_PORT=", {"Ref": "CassandraPort"}, "\n",
+                "export KONG_SERF_PATH=\/usr\/local\/bin\/serf\n",
                 "sleep `echo $(( RANDOM % ( 200 - 100 + 1 ) + 50  ))`\n",
                 "COUNTER=0\n",
                 "while [ $COUNTER -lt 4 ]; do\n",
@@ -455,6 +454,18 @@
         "SecurityGroupEgress" :  [ 
           { "IpProtocol" : "tcp", "FromPort" : "1", "ToPort" : "65535", "CidrIp" : "0.0.0.0/0" }
         ]
+      }
+    },
+    "IngressUDP7946": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId" : {
+          "Fn::GetAtt" : [ "KongSecurityGroup", "GroupId" ]
+        },
+        "IpProtocol": "udp", "FromPort": "7946", "ToPort": "7946",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt" : [ "KongSecurityGroup", "GroupId" ]
+        }
       }
     },
     "Ingress7946": {

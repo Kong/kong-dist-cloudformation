@@ -510,32 +510,32 @@
                 "cassandra_hosts=$(echo $cassandra_hosts | awk -F\"}\" '{print $1}')\n",
                 "IFS=', ' read -a host_array <<< \"$cassandra_hosts\"\n", 
                 "for i in \"${host_array[@]}\"\n",
-        				"do\n",
-        				"   hostName=$(echo $i | awk -F\":\" '{print $1}')\n",
-        				"   KONG_CASSANDRA_CONTACT_POINTS+=\"$hostName,\" \n",
-        				"done;\n",
-        				"KONG_CASSANDRA_CONTACT_POINTS=${KONG_CASSANDRA_CONTACT_POINTS:0:${#KONG_CASSANDRA_CONTACT_POINTS}-1}\n", 
-        				"export KONG_DATABASE=cassandra\n",
-        				"export KONG_CASSANDRA_CONTACT_POINTS\n",
-        				"export KONG_SERF_PATH=\/usr\/local\/bin\/serf\n",
-        				"sleep `echo $(( RANDOM % ( 200 - 100 + 1 ) + 50  ))`\n",
-        				"COUNTER=0\n",
-        				"while [ $COUNTER -lt 4 ]; do\n",
-        				"   /usr/local/bin/kong health\n",
-        				"   if [[ $? -ne 0 ]]; then\n",
-        				"      echo \"trying to start kong..\"\n",
-        				"      su -s \/bin\/sh -c \"\/usr\/local\/bin\/kong start\" ec2-user\n",
-        				"      let COUNTER=COUNTER+1\n",
-        				"      sleep `echo $(( RANDOM % ( 120 - 30 + 1 ) + 30 ))`\n",                
-        				"   else\n",
-        				"      /opt/aws/bin/cfn-signal -e 0 --stack ", { "Ref": "AWS::StackName" }, " --resource KongScalingGroup "," --region ", { "Ref" : "AWS::Region" }, " --reason \"Kong setup completed\" \n",
-        				"      break \n",
-        				"   fi\n", 
-        				"done\n",
-        				"if ! /usr/local/bin/kong health; then\n",
-        				"   echo \"failed to start kong, exiting...\" \n",
-        				"   /opt/aws/bin/cfn-signal -e 1 --stack ", { "Ref": "AWS::StackName" }, " --resource KongScalingGroup "," --region ", { "Ref" : "AWS::Region" }, " --reason \"Failed to start Kong\" \n",
-        				"fi\n"
+                "do\n",
+                "   hostName=$(echo $i | awk -F\":\" '{print $1}')\n",
+                "   KONG_CASSANDRA_CONTACT_POINTS+=\"$hostName,\" \n",
+                "done;\n",
+                "KONG_CASSANDRA_CONTACT_POINTS=${KONG_CASSANDRA_CONTACT_POINTS:0:${#KONG_CASSANDRA_CONTACT_POINTS}-1}\n",
+                "export KONG_DATABASE=cassandra\n",
+                "export KONG_CASSANDRA_CONTACT_POINTS\n",
+                "export KONG_SERF_PATH=\/usr\/local\/bin\/serf\n",
+                "sleep `echo $(( RANDOM % ( 200 - 100 + 1 ) + 50  ))`\n",
+                "COUNTER=0\n",
+                "while [ $COUNTER -lt 4 ]; do\n",
+                "   /usr/local/bin/kong health\n",
+                "   if [[ $? -ne 0 ]]; then\n",
+                "      echo \"trying to start kong..\"\n",
+                "      su -s \/bin\/sh -c \"\/usr\/local\/bin\/kong start\" ec2-user\n",
+                "      let COUNTER=COUNTER+1\n",
+                "      sleep `echo $(( RANDOM % ( 120 - 30 + 1 ) + 30 ))`\n",
+                "   else\n",
+                "      /opt/aws/bin/cfn-signal -e 0 --stack ", { "Ref": "AWS::StackName" }, " --resource KongScalingGroup "," --region ", { "Ref" : "AWS::Region" }, " --reason \"Kong setup completed\" \n",
+                "      break \n",
+                "   fi\n",
+                "done\n",
+                "if ! /usr/local/bin/kong health; then\n",
+                "   echo \"failed to start kong, exiting...\" \n",
+                "   /opt/aws/bin/cfn-signal -e 1 --stack ", { "Ref": "AWS::StackName" }, " --resource KongScalingGroup "," --region ", { "Ref" : "AWS::Region" }, " --reason \"Failed to start Kong\" \n",
+                "fi\n"
               ]
             ]
           }
@@ -554,6 +554,18 @@
         "SecurityGroupEgress" :  [ 
           { "IpProtocol" : "tcp", "FromPort" : "1", "ToPort" : "65535", "CidrIp" : "0.0.0.0/0" }
         ]
+      }
+    },
+    "IngressUDP7946": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId" : {
+          "Fn::GetAtt" : [ "KongSecurityGroup", "GroupId" ]
+        },
+        "IpProtocol": "udp", "FromPort": "7946", "ToPort": "7946",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt" : [ "KongSecurityGroup", "GroupId" ]
+        }
       }
     },
     "Ingress7946": {
