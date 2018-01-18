@@ -232,7 +232,7 @@
   "Conditions" : {
     "CreateRDS" : {
       "Fn::Equals" : [
-        {"Ref" : "DBHost"}, 
+        {"Ref" : "DBHost"},
         ""
       ]
     },
@@ -363,11 +363,11 @@
       "Properties" : {
         "GroupDescription" : "Enable HTTP access on port 8000 and 8001",
         "VpcId" : { "Ref" : "VPC" },
-        "SecurityGroupIngress" : [ 
+        "SecurityGroupIngress" : [
           						   { "IpProtocol" : "tcp", "FromPort" : "8000", "ToPort" : "8000", "CidrIp" : { "Ref" : "KongProxyAccess" } },
           						   { "IpProtocol" : "tcp", "FromPort" : "8001", "ToPort" : "8001", "CidrIp" : { "Ref" : "KongAdminAccess" } }
           						 ],
-        "SecurityGroupEgress" :  [ 
+        "SecurityGroupEgress" :  [
           							{ "IpProtocol" : "tcp", "FromPort" : "1", "ToPort" : "65535", "CidrIp" : "0.0.0.0/0" }
           						 ]
       }
@@ -506,6 +506,8 @@
                 "export KONG_PG_USER=", { "Ref" : "DBUsername" }, "\n",
                 "export KONG_PG_DATABASE=", { "Ref" : "DBName" }, "\n",
                 "export KONG_PG_PASSWORD=", { "Ref" : "DBPassword" }, "\n",
+                "export KONG_ADMIN_LISTEN=0.0.0.0:8001\n",
+                "export KONG_ADMIN_LISTEN_SSL=0.0.0.0:8444\n",
                 "echo \"[kong] installing Kong with following environments:\" \n",
                 "env\n",
                 "mkdir \/usr\/local\/kong && chown ec2-user \/usr\/local\/kong \n",
@@ -556,7 +558,7 @@
           { "IpProtocol" : "tcp", "FromPort" : "8000", "ToPort" : "8001", "SourceSecurityGroupId" :  { "Ref" : "LoadBalancerSecurityGroup" } },
           { "IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : { "Ref" : "SSHLocation" } }
         ],
-        "SecurityGroupEgress" :  [ 
+        "SecurityGroupEgress" :  [
           { "IpProtocol" : "tcp", "FromPort" : "1", "ToPort" : "65535", "CidrIp" : "0.0.0.0/0" }
         ]
       }
@@ -567,7 +569,7 @@
         "GroupId" : {
           "Fn::GetAtt" : [ "KongSecurityGroup", "GroupId" ]
         },
-        "IpProtocol": "tcp", "FromPort": "7946", "ToPort": "7946", 
+        "IpProtocol": "tcp", "FromPort": "7946", "ToPort": "7946",
         "SourceSecurityGroupId": {
           "Fn::GetAtt" : [ "KongSecurityGroup", "GroupId" ]
         }
@@ -623,12 +625,12 @@
           { "IpProtocol" : "tcp", "FromPort": 5432, "ToPort" : "5432", "SourceSecurityGroupId": {"Ref" : "KongSecurityGroup"}},
           { "IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : { "Ref" : "SSHLocation" } }
         ],
-        "SecurityGroupEgress" :  [ 
+        "SecurityGroupEgress" :  [
           { "IpProtocol" : "tcp", "FromPort" : "1", "ToPort" : "65535", "CidrIp" : "0.0.0.0/0" }
         ],
         "VpcId" : { "Ref" : "VPC" }
       }
-    } 
+    }
   },
   "Outputs": {
     "ProxyURL": {
