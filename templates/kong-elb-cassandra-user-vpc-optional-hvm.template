@@ -122,7 +122,7 @@
       "ConstraintDescription": "must be a valid EC2 instance type."
     },
     "KongVersion": {
-      "Description": "Kong version (Only 0.11.x and above supported). Leave it blank to install latest version.",
+      "Description": "Kong version (Only 0.13.x and above supported). Leave it blank to install latest version.",
       "Type": "String"
     },
     "KongMigration": {
