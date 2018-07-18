@@ -36,13 +36,10 @@
     "DBVersion" : {
       "Description": "Postgres version",
       "Type": "String",
-      "Default": "9.4.7",
+      "Default": "9.6.8",
       "AllowedValues": [
-        "9.5.2",
-        "9.4.7",
-        "9.4.5",
-        "9.4.4",
-        "9.4.1"
+        "9.6.8",
+        "9.5.12"
       ]
     },
     "DBSnapshotIdentifier" : {
