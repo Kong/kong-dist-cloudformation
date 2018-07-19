@@ -1,9 +1,9 @@
 # [KONG][website-url] :heavy_plus_sign: [AWS CloudFormation](https://aws.amazon.com/cloudformation/)
 
-[![Website][website-badge]][website-url]
-[![Documentation][documentation-badge]][documentation-url]
-[![Mailing List][mailing-list-badge]][mailing-list-url]
-[![Gitter Badge][gitter-badge]][gitter-url]
+[Website][website-url] |
+[Documentation](https://getkong.org/docs) |
+[Forum](https://discuss.konghq.com) |
+[Blog](https://konghq.com/blog)
 
 [![][kong-logo]][website-url]
 
@@ -151,7 +151,7 @@ own, adjust the variables and template to better suite your needs.</B>
    
 7. **Use Kong:**
 
-    Quickly learn how to use Kong with the [5-minute Quickstart](https://getkong.org/docs/0.4.x/getting-started/quickstart/).
+    Quickly learn how to use Kong with the [5-minute Quickstart](https://getkong.org/docs/latest/getting-started/quickstart/).
 
 #### SSL Support
 
@@ -184,16 +184,8 @@ You can install SSL Certificate on the Kong Load Balancer.
 
 Support, Demo, Training, API Certifications and Consulting available at http://getkong.org/enterprise.
 
-[kong-logo]: http://i.imgur.com/4jyQQAZ.png
-[website-url]: https://getkong.org/
-[website-badge]: https://img.shields.io/badge/GETKong.org-Learn%20More-43bf58.svg
-[documentation-url]: https://getkong.org/docs/
-[documentation-badge]: https://img.shields.io/badge/Documentation-Read%20Online-green.svg
-[gitter-url]: https://gitter.im/Mashape/kong
-[gitter-badge]: https://img.shields.io/badge/Gitter-Join%20Chat-blue.svg
-[mailing-list-badge]: https://img.shields.io/badge/Email-Join%20Mailing%20List-blue.svg
-[mailing-list-url]: https://groups.google.com/forum/#!forum/konglayer
-
+[kong-logo]: https://konghq.com/wp-content/uploads/2018/05/kong-logo-github-readme.png
+[website-url]: https://konghq.com
 
 [us-east-1-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=kong-elb-hvm&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-cassandra-user-vpc-optional-hvm.template
 [us-west-1-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-1#/stacks/new?stackName=kong-elb-hvm&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-cassandra-user-vpc-optional-hvm.template
