@@ -35,7 +35,7 @@ in a new VPC or existing VPC.
 
 ###  2) Kong with Postgres DB
 
-Provisions Kong resources with user provided Cassandra seed nodes
+Provisions Kong resources - including the necessary Postgres database -
 in a new VPC or existing VPC.
 
 | Region            | HVM AMIs                                                           | PV AMIs                                                          |
