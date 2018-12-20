@@ -48,15 +48,15 @@ in a new VPC or existing VPC.
 | `ap-southeast-1`  | [![Kong Stack launch][stack-badge]][ap-southeast-1-postgres-hvm-stack-url]  | [![Kong Stack launch][stack-badge]][ap-southeast-1-postgres-pv-stack-url] |
 | `ap-southeast-2`  | [![Kong Stack launch][stack-badge]][ap-southeast-2-postgres-hvm-stack-url]  | [![Kong Stack launch][stack-badge]][ap-southeast-2-postgres-pv-stack-url] |
 | `sa-east-1`       | [![Kong Stack launch][stack-badge]][sa-east-1-postgres-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][sa-east-1-postgres-pv-stack-url]      |
- 
- 
+
+
 ### Parameters
 
 <B>Recommended usage: use this cloud formation as basis for your
 own, adjust the variables and template to better suite your needs.</B>
 
 #### Cassandra
- 
+
 | Parameter                   | Default      | Description                                                                          |
 | --------------------------: | ------------ | ------------------------------------------------------------------------------------ |
 | `SSHLocation`               | `0.0.0.0/0`  | The IP address range that can be used to SSH to the Kong and Cassandra EC2 instances |
@@ -67,7 +67,7 @@ own, adjust the variables and template to better suite your needs.</B>
 | `KongFleetDesiredSize`      | `2`          | Desired Number of Kong instances *(Min: `1`)*                             |
 | `KongInstanceType`          | `c3.2xlarge` | EC2 instance type for Kong. Note: T2 instance is not supported on the EC2-Classic platform |
 | `KongVersion`               | `-`          | Kong version to be deployed. Leave it blank to install latest version.               |
-| `KongMigration `            | `true`       | Select `false` to not run the Kong migrations while Kong starts                      |
+| `KongBootstrapMigration `   | `true`       | Select `false` to not run the Kong bootstrap migrations while Kong starts            |
 | `KongConfigs`               | ``           | Comma separated Kong configurations in KONG_<SUPPORTED_CONFIG>=Val format            |
 | `CassandraKeyName`          | `-`          | Existing EC2 KeyPair to enable SSH access to the instances for Cassandra             |
 | `CassandraFleetSize`        | `1`          | Number of nodes in cluster. *(Min: `1`)*                                  |
@@ -85,7 +85,7 @@ own, adjust the variables and template to better suite your needs.</B>
 | `Subnet2AZ`               | `-`         | Conditional- required if either VpcId or Subnet1AZ provided  or *-1b AZ not supported by account. Existing VPC Subnet 2 AvailabilityZone      |
 
 #### Postgres
- 
+
 | Parameter                   | Default      | Description                                                                          |
 | --------------------------: | ------------ | ------------------------------------------------------------------------------------ |
 | `SSHLocation`               | `0.0.0.0/0`  | The IP address range that can be used to SSH to the Kong and Cassandra EC2 instances |
@@ -96,7 +96,7 @@ own, adjust the variables and template to better suite your needs.</B>
 | `KongFleetDesiredSize`      | `2`          | Desired Number of Kong instances *(Min: `1`)*                             |
 | `KongInstanceType`          | `c3.2xlarge` | EC2 instance type for Kong. Note: T2 instance is not supported on the EC2-Classic platform |
 | `KongVersion`               | `-`          | Kong version to be deployed. Leave it blank to install latest version.               |
-| `KongMigration `            | `true`       | Select `false` to not run the Kong migrations when Kong starts                       |
+| `KongBootstrapMigration `            | `true`       | Select `false` to not run the Kong bootstrap migrations when Kong starts                       |
 | `KongConfigs`               | ``           | Comma separated Kong configurations in KONG_<SUPPORTED_CONFIG>=Val format             |
 | `DBName`                    | `Kong`       | Database name                                                                        |
 | `DBHost`                    | `-`          | The database host dns/ip address, leave blank to start a new RDS instance            |
@@ -120,8 +120,8 @@ own, adjust the variables and template to better suite your needs.</B>
 1. **Initial Setup**:
 
     Create the required key pairs, one to access Kong instances and one for Cassandra if template povisioning a new Cassandra cluster. If you providing your own DB instances, make sure its accessible by Kong instances.
-    If you want to create instances in existing VPC, VPC need to have two public subnet and all required ports open to allow access to Kong Load balancer. 
-    
+    If you want to create instances in existing VPC, VPC need to have two public subnet and all required ports open to allow access to Kong Load balancer.
+
     *Continue to next step if you want to use an existing key pair*
 
 3. **Choose a Region & VM Type**:
@@ -132,14 +132,14 @@ own, adjust the variables and template to better suite your needs.</B>
 
 4. **Parameters**:
 
-    Fill in all the parameters details. If you chose to launch Kong with Cassandra/Postgres you would be asked to fill in extra parameters to create a Cassandra cluster or Postgres RDS instance. 
+    Fill in all the parameters details. If you chose to launch Kong with Cassandra/Postgres you would be asked to fill in extra parameters to create a Cassandra cluster or Postgres RDS instance.
     check the description of each field and provide appropriate values.
 
     **Note**: *consult the [parameters table](#parameters) for detailed description of parameters*
 
 5. **Option page**:
 
-    Add Tags and other fields according to your requirements.  
+    Add Tags and other fields according to your requirements.
 
     **Note:** *The template is configured to add a "Name" tag to each relevant resource*
 
@@ -148,7 +148,7 @@ own, adjust the variables and template to better suite your needs.</B>
     It will take several minutes *(~20 minutes)* to create the stack. Once the stack has a status of `CREATE_COMPLETE`, click on *"Output"* tab to get the proxy and Admin URL, it may take *60 seconds* more for links to become active.
 
     **Note**: *To monitor the progress go to AWS CloudFormation console, select the stack in the list. In the stack details pane, click the "Events" tab to see the progress.*
-   
+
 7. **Use Kong:**
 
     Quickly learn how to use Kong with the [5-minute Quickstart](https://getkong.org/docs/latest/getting-started/quickstart/).

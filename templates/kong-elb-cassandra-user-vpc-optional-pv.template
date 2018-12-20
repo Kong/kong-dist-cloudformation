@@ -111,11 +111,11 @@
       "ConstraintDescription": "must be a valid EC2 instance type."
     },
     "KongVersion": {
-      "Description": "Kong version (Only 0.13.x and above supported). Leave it blank to install latest version.",
+      "Description": "Kong version (Only 0.15.x and above supported). Leave it blank to install latest version.",
       "Type": "String"
     },
-    "KongMigration": {
-      "Description": "Run the Kong migrations by default, set it to false to disable it.",
+    "KongBootstrapMigration": {
+      "Description": "Run the Kong bootstrap migrations by default, set it to false to disable it.",
       "Type": "String",
       "Default": "true",
       "AllowedValues": [
@@ -457,7 +457,7 @@
                 "then\n",
                 "   kong_version=\"-$kong_version\"\n",
                 "fi\n",
-                "kong_migrations=",{ "Ref" : "KongMigration" }, "\n",
+                "kong_migrations=",{ "Ref" : "KongBootstrapMigration" }, "\n",
                 "KONG_ENV=\"", { "Fn::Join": [ " ", { "Ref": "KongConfigs" } ] }, "\"\n",
                 "export $KONG_ENV\n",
                 "CASSANDRA_HOSTS=(\"", { "Fn::Join": [ "\" \"", { "Ref": "CassandraSeedNodes" } ] }, "\")\n",
@@ -493,7 +493,7 @@
                 "if [ \"$kong_migrations\" == \"true\" ]\n",
                 "then\n",
                 "   echo \"[kong] starting migrations...\" \n",
-                "   su -s \/bin\/sh -c \"\/usr\/local\/bin\/kong migrations up\" ec2-user\n",
+                "   su -s \/bin\/sh -c \"\/usr\/local\/bin\/kong migrations bootstrap\" ec2-user\n",
                 "fi\n",
                 "su -s \/bin\/sh -c \"\/usr\/local\/bin\/kong start\" ec2-user\n",
                 "if ! /usr/local/bin/kong health; then\n",
