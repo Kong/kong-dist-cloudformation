@@ -50,6 +50,25 @@ in a new VPC or existing VPC.
 | `sa-east-1`       | [![Kong Stack launch][stack-badge]][sa-east-1-postgres-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][sa-east-1-postgres-pv-stack-url]      |
 
 
+###  3) Kong in DB-less mode
+
+Provisions Kong resources in a new VPC or existing VPC.
+
+<B>User would need to provide a S3 bucket location where `kong.yml` is stored
+ with declarative configuration to bootstrap all the Kong instances.</B>
+
+| Region            | HVM AMIs                                                           | PV AMIs                                                          |
+| ----------------: | ------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| `us-east-1`       | [![Kong Stack launch][stack-badge]][us-east-1-dbless-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][us-east-1-dbless-pv-stack-url]      |
+| `us-west-1`       | [![Kong Stack launch][stack-badge]][us-west-1-dbless-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][us-west-1-dbless-pv-stack-url]      |
+| `us-west-2`       | [![Kong Stack launch][stack-badge]][us-west-2-dbless-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][us-west-2-dbless-pv-stack-url]      |
+| `eu-west-1`       | [![Kong Stack launch][stack-badge]][eu-west-1-dbless-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][eu-west-1-dbless-pv-stack-url]      |
+| `ap-northeast-1`  | [![Kong Stack launch][stack-badge]][ap-northeast-1-dbless-hvm-stack-url]  | [![Kong Stack launch][stack-badge]][ap-northeast-1-dbless-pv-stack-url] |
+| `ap-southeast-1`  | [![Kong Stack launch][stack-badge]][ap-southeast-1-dbless-hvm-stack-url]  | [![Kong Stack launch][stack-badge]][ap-southeast-1-dbless-pv-stack-url] |
+| `ap-southeast-2`  | [![Kong Stack launch][stack-badge]][ap-southeast-2-dbless-hvm-stack-url]  | [![Kong Stack launch][stack-badge]][ap-southeast-2-dbless-pv-stack-url] |
+| `sa-east-1`       | [![Kong Stack launch][stack-badge]][sa-east-1-dbless-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][sa-east-1-dbless-pv-stack-url]      |
+
+
 ### Parameters
 
 <B>Recommended usage: use this cloud formation as basis for your
@@ -108,6 +127,26 @@ own, adjust the variables and template to better suite your needs.</B>
 | `DBVersion`              | `9.4.7`  | Postgres version                                                                   |
 | `DBAllocatedStorage`        | `5`  | The size of the database (Gb)     |
 | `DBSnapshotIdentifier`        | `-`  | The RDS snapshot name to restore to the new DB instance.     |
+| `VpcId`                  | `-`         | Optional- VPC Id of existing VPC. Leave blank to have a new VPC created      |
+| `SubnetId1`               | `-`         | Conditional- required if VpcId provided. Existing VPC Subnet Id 1 where ECS instances will run      |
+| `SubnetId2`               | `-`         | Conditional- required if VpcId provided. Existing VPC Subnet Id 2 where ECS instances will run     |
+| `Subnet1AZ`               | `-`         | Conditional- required if VpcId provided or if *-1a AZ not supported by account. Existing VPC Subnet 1 AvailabilityZone      |
+| `Subnet2AZ`               | `-`         | Conditional- required if either VpcId or Subnet1AZ provided  or *-1b AZ not supported by account. Existing VPC Subnet 2 AvailabilityZone      |
+
+#### DB-less mode
+
+| Parameter                   | Default      | Description                                                                          |
+| --------------------------: | ------------ | ------------------------------------------------------------------------------------ |
+| `SSHLocation`               | `0.0.0.0/0`  | The IP address range that can be used to SSH to the Kong and Cassandra EC2 instances |
+| `KongProxyAccess`           | `0.0.0.0/0`  | The IP address range that can be used to access the Kong admin server                |
+| `KongAdminAccess`           | `0.0.0.0/0`  | The IP address range that can be used to access the Kong proxy server                |
+| `KongKeyName`               | `-`          | Existing EC2 KeyPair to enable SSH access to the Kong instances                      |
+| `KongFleetMaxSize`          | `2`          | Max Number of Kong instances *(Min: `1`)*                                 |
+| `KongFleetDesiredSize`      | `2`          | Desired Number of Kong instances *(Min: `1`)*                             |
+| `KongInstanceType`          | `c3.2xlarge` | EC2 instance type for Kong. Note: T2 instance is not supported on the EC2-Classic platform |
+| `KongVersion`               | `-`          | Kong version to be deployed. Leave it blank to install latest version.               |
+| `KongConfigBucketName `     | ``       | S3 bucket where kong declarative config file `kong.yml` is stored |
+| `KongConfigs`               | ``           | Comma separated Kong configurations in KONG_<SUPPORTED_CONFIG>=Val format             |
 | `VpcId`                  | `-`         | Optional- VPC Id of existing VPC. Leave blank to have a new VPC created      |
 | `SubnetId1`               | `-`         | Conditional- required if VpcId provided. Existing VPC Subnet Id 1 where ECS instances will run      |
 | `SubnetId2`               | `-`         | Conditional- required if VpcId provided. Existing VPC Subnet Id 2 where ECS instances will run     |
@@ -222,4 +261,23 @@ Support, Demo, Training, API Certifications and Consulting available at http://g
 [ap-southeast-1-postgres-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-1#/stacks/new?stackName=kong-elb-postgres-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-postgres-optional-vpc-optional-pv.template
 [ap-southeast-2-postgres-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-2#/stacks/new?stackName=kong-elb-postgres-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-postgres-optional-vpc-optional-pv.template
 [sa-east-1-postgres-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=sa-east-1#/stacks/new?stackName=kong-elb-postgres-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-postgres-optional-vpc-optional-pv.template
+
+[us-east-1-dbless-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=kong-elb-dbless-hvm&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-dbless-vpc-optional-hvm.template
+[us-west-1-dbless-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-1#/stacks/new?stackName=kong-elb-dbless-hvm&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-dbless-vpc-optional-hvm.template
+[us-west-2-dbless-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new?stackName=kong-elb-dbless-hvm&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-dbless-vpc-optional-hvm.template
+[eu-west-1-dbless-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/new?stackName=kong-elb-dbless-hvm&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-dbless-vpc-optional-hvm.template
+[ap-northeast-1-dbless-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/stacks/new?stackName=kong-elb-dbless-hvm&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-dbless-vpc-optional-hvm.template
+[ap-southeast-1-dbless-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-1#/stacks/new?stackName=kong-elb-dbless-hvm&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-dbless-vpc-optional-hvm.template
+[ap-southeast-2-dbless-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-2#/stacks/new?stackName=kong-elb-dbless-hvm&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-dbless-vpc-optional-hvm.template
+[sa-east-1-dbless-hvm-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=sa-east-1#/stacks/new?stackName=kong-elb-dbless-hvm&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-dbless-hvm.template
+
+[us-east-1-dbless-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=kong-elb-dbless-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-dbless-vpc-optional-pv.template
+[us-west-1-dbless-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-1#/stacks/new?stackName=kong-elb-dbless-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-dbless-vpc-optional-pv.template
+[us-west-2-dbless-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new?stackName=kong-elb-dbless-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-dbless-vpc-optional-pv.template
+[eu-west-1-dbless-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/new?stackName=kong-elb-dbless-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-dbless-vpc-optional-pv.template
+[ap-northeast-1-dbless-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/stacks/new?stackName=kong-elb-dbless-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-dbless-vpc-optional-pv.template
+[ap-southeast-1-dbless-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-1#/stacks/new?stackName=kong-elb-dbless-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-dbless-vpc-optional-pv.template
+[ap-southeast-2-dbless-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-2#/stacks/new?stackName=kong-elb-dbless-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-dbless-vpc-optional-pv.template
+[sa-east-1-dbless-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=sa-east-1#/stacks/new?stackName=kong-elb-dbless-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-dbless-vpc-optional-pv.template
+
 [stack-badge]: https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png
