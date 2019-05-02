@@ -146,7 +146,7 @@
   },
   "Conditions" : {
     "CreateVpcResources" : { "Fn::Equals" : [ { "Ref" : "VpcId" }, "" ] },
-    "UseAZParameter": { "Fn::Not" : [ {"Fn::And" : [ { "Fn::Equals" : [ { "Ref" : "Subnet1AZ" }, "" ]} , { "Fn::Equals" : [ { "Ref" : "Subnet1AZ" }, "" ] } ] } ] },
+    "UseAZParameter": { "Fn::Not" : [ {"Fn::And" : [ { "Fn::Equals" : [ { "Ref" : "Subnet1AZ" }, "" ]} , { "Fn::Equals" : [ { "Ref" : "Subnet2AZ" }, "" ] } ] } ] },
     "ExistingVpcResources" : { "Fn::Not" : [ { "Fn::Equals" : [ { "Ref" : "VpcId" }, "" ] } ] }
   },
   "Resources": {
