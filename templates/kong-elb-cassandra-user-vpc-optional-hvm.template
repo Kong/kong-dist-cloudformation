@@ -177,7 +177,7 @@
   "Conditions" : {
     "CreateVpcResources" : { "Fn::Equals" : [ { "Ref" : "VpcId" }, "" ] },
     "ExistingVpcResources" : { "Fn::Not" : [ { "Fn::Equals" : [ { "Ref" : "VpcId" }, "" ] } ] },
-    "UseAZParameter": { "Fn::Not" : [ {"Fn::And" : [ { "Fn::Equals" : [ { "Ref" : "Subnet1AZ" }, "" ]} , { "Fn::Equals" : [ { "Ref" : "Subnet1AZ" }, "" ] } ] } ] }
+    "UseAZParameter": { "Fn::Not" : [ {"Fn::And" : [ { "Fn::Equals" : [ { "Ref" : "Subnet1AZ" }, "" ]} , { "Fn::Equals" : [ { "Ref" : "Subnet2AZ" }, "" ] } ] } ] }
   },
   "Resources": {
     "VPC" : {
@@ -490,7 +490,7 @@
                 "wget https://bintray.com/kong/kong-rpm/rpm -O bintray-kong-kong-rpm.repo\n",
                 "if [ \"$?\" -ne \"0\" ]\n",
                 "then\n",
-                "   /opt/aws/bin/cfn-signal -e 1 --stack ", { "Ref": "AWS::StackName" }, " --resource KongScalingGroup "," --region ", { "Ref" : "AWS::Region" }, " --reason \"failed to install kong-community-edition$kong_version\" \n",
+                "   /opt/aws/bin/cfn-signal -e 1 --stack ", { "Ref": "AWS::StackName" }, " --resource KongScalingGroup "," --region ", { "Ref" : "AWS::Region" }, " --reason \"failed to install kong$kong_version\" \n",
                 "   echo \"[kong] failed to install kong$kong_version, exiting...\" \n",
                 "   exit\n",
                 "fi\n",
@@ -502,7 +502,7 @@
                 "yum install -y kong$kong_version\n",
                 "if [ \"$?\" -ne \"0\" ]\n",
                 "then\n",
-                "   /opt/aws/bin/cfn-signal -e 1 --stack ", { "Ref": "AWS::StackName" }, " --resource KongScalingGroup "," --region ", { "Ref" : "AWS::Region" }, " --reason \"failed to install kong-community-edition$kong_version\" \n",
+                "   /opt/aws/bin/cfn-signal -e 1 --stack ", { "Ref": "AWS::StackName" }, " --resource KongScalingGroup "," --region ", { "Ref" : "AWS::Region" }, " --reason \"failed to install kong$kong_version\" \n",
                 "   echo \"[kong] failed to install kong$kong_version, exiting...\" \n",
                 "   exit\n",
                 "fi\n",
