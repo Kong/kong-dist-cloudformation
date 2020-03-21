@@ -15,9 +15,11 @@ check out the 4.0.0 or older tags.
 
 ## Summary
 
-You have option to chose between two templates:
+You have option to chose between three templates:
 
-###  1) Kong with Cassandra DB (you need to bring yours own Cassandra cluster)
+### Templates
+
+####  1) Kong with Cassandra DB (you need to bring yours own Cassandra cluster)
 
 Provisions Kong resources with user provided Cassandra seed nodes
 in a new VPC or existing VPC.
@@ -33,7 +35,7 @@ in a new VPC or existing VPC.
 | `ap-southeast-2`  | [![Kong Stack launch][stack-badge]][ap-southeast-2-hvm-stack-url]  | [![Kong Stack launch][stack-badge]][ap-southeast-2-pv-stack-url] |
 | `sa-east-1`       | [![Kong Stack launch][stack-badge]][sa-east-1-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][sa-east-1-pv-stack-url]      |
 
-###  2) Kong with Postgres DB
+####  2) Kong with Postgres DB
 
 Provisions Kong resources - including the necessary Postgres database -
 in a new VPC or existing VPC.
@@ -50,7 +52,7 @@ in a new VPC or existing VPC.
 | `sa-east-1`       | [![Kong Stack launch][stack-badge]][sa-east-1-postgres-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][sa-east-1-postgres-pv-stack-url]      |
 
 
-###  3) Kong in DB-less mode
+####  3) Kong in DB-less mode
 
 Provisions Kong resources in a new VPC or existing VPC.
 
