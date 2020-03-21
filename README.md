@@ -15,9 +15,11 @@ check out the 4.0.0 or older tags.
 
 ## Summary
 
-You have option to chose between two templates:
+You have option to chose between three templates:
 
-###  1) Kong with Cassandra DB (you need to bring yours own Cassandra cluster)
+### Templates
+
+####  1) Kong with Cassandra DB (you need to bring yours own Cassandra cluster)
 
 Provisions Kong resources with user provided Cassandra seed nodes
 in a new VPC or existing VPC.
@@ -33,7 +35,7 @@ in a new VPC or existing VPC.
 | `ap-southeast-2`  | [![Kong Stack launch][stack-badge]][ap-southeast-2-hvm-stack-url]  | [![Kong Stack launch][stack-badge]][ap-southeast-2-pv-stack-url] |
 | `sa-east-1`       | [![Kong Stack launch][stack-badge]][sa-east-1-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][sa-east-1-pv-stack-url]      |
 
-###  2) Kong with Postgres DB
+####  2) Kong with Postgres DB
 
 Provisions Kong resources - including the necessary Postgres database -
 in a new VPC or existing VPC.
@@ -50,7 +52,7 @@ in a new VPC or existing VPC.
 | `sa-east-1`       | [![Kong Stack launch][stack-badge]][sa-east-1-postgres-hvm-stack-url]       | [![Kong Stack launch][stack-badge]][sa-east-1-postgres-pv-stack-url]      |
 
 
-###  3) Kong in DB-less mode
+####  3) Kong in DB-less mode
 
 Provisions Kong resources in a new VPC or existing VPC.
 
@@ -165,7 +167,7 @@ own, adjust the variables and template to better suite your needs.</B>
 
 3. **Choose a Region & VM Type**:
 
-    Choose the region closest to your API servers, and pick the virtualization type you'd like from the list of available [templates] above.
+    Choose the region closest to your API servers, and pick the virtualization type you'd like from the list of available [templates](#templates) above.
 
     You should land on AWS Cloud Formation *"Select Template"* page
 
@@ -281,4 +283,3 @@ Support, Demo, Training, API Certifications and Consulting available at http://g
 [sa-east-1-dbless-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=sa-east-1#/stacks/new?stackName=kong-elb-dbless-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-dbless-vpc-optional-pv.template
 
 [stack-badge]: https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png
-[templates]: ./templates
