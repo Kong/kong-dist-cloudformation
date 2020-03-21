@@ -165,7 +165,7 @@ own, adjust the variables and template to better suite your needs.</B>
 
 3. **Choose a Region & VM Type**:
 
-    Choose the region closest to your API servers, and pick the virtualization type you'd like from the list of available [templates](#templates) above.
+    Choose the region closest to your API servers, and pick the virtualization type you'd like from the list of available [templates] above.
 
     You should land on AWS Cloud Formation *"Select Template"* page
 
@@ -281,3 +281,4 @@ Support, Demo, Training, API Certifications and Consulting available at http://g
 [sa-east-1-dbless-pv-stack-url]: https://console.aws.amazon.com/cloudformation/home?region=sa-east-1#/stacks/new?stackName=kong-elb-dbless-pv&templateURL=https:%2F%2Fs3.amazonaws.com%2Fkong-cf-templates%2Flatest%2Fkong-elb-dbless-vpc-optional-pv.template
 
 [stack-badge]: https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png
+[templates]: ./templates
